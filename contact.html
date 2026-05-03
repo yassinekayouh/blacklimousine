@@ -1,0 +1,399 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Limousine — Contact & Réservation</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .contact-section { display:grid; grid-template-columns:1fr 1fr; min-height:calc(100vh - 370px); }
+        .contact-l { background:var(--card); padding:80px 64px; position:relative; overflow:hidden; }
+        .contact-l::after { content:''; position:absolute; bottom:-60px; right:-60px; width:260px; height:260px; background:radial-gradient(circle,rgba(232,97,26,.1) 0%,transparent 70%); }
+        .contact-items { margin-top:44px; display:flex; flex-direction:column; gap:26px; }
+        .citem { display:flex; align-items:flex-start; gap:16px; }
+        .cicon { width:46px; height:46px; flex-shrink:0; background:rgba(232,97,26,.09); border-left:3px solid var(--orange); display:flex; align-items:center; justify-content:center; font-size:1.1rem; }
+        .clabel { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:3px; }
+        .cval { font-size:.9rem; color:var(--white); text-decoration:none; transition:color .25s; display:block; }
+        .cval:hover { color:var(--orange); }
+        .contact-hours { margin-top:36px; padding:20px 24px; border-left:3px solid var(--orange); background:rgba(232,97,26,.06); }
+        .contact-hours strong { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); display:block; margin-bottom:6px; }
+        .contact-hours p { font-size:.84rem; color:var(--grey); line-height:1.65; }
+
+        .whatsapp-btn { display:flex; align-items:center; gap:12px; background:rgba(37,211,102,.1); border:1px solid rgba(37,211,102,.3); padding:16px 22px; margin-top:28px; text-decoration:none; transition:all .3s; }
+        .whatsapp-btn:hover { background:rgba(37,211,102,.18); border-color:rgba(37,211,102,.6); }
+        .whatsapp-icon { width:36px; height:36px; background:#25D366; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.2rem; }
+        .whatsapp-text { font-family:var(--font-h); font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:#25D366; }
+        .whatsapp-sub { font-size:.72rem; color:var(--grey); }
+
+        .contact-r { background:var(--dark); padding:80px 64px; }
+        .cform { display:flex; flex-direction:column; gap:16px; margin-top:36px; }
+        .crow { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .cgroup { display:flex; flex-direction:column; gap:6px; }
+        .cgroup label { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--grey); }
+        .cgroup input, .cgroup select, .cgroup textarea { background:var(--card); border:1px solid var(--border); color:var(--white); padding:13px 16px; font-family:var(--font-b); font-size:.88rem; outline:none; transition:border-color .25s; width:100%; }
+        .cgroup input:focus, .cgroup select:focus, .cgroup textarea:focus { border-color:var(--orange); }
+        .cgroup textarea { height:100px; resize:vertical; }
+        .cgroup select option { background:var(--card); }
+
+        .form-note { font-size:.76rem; color:var(--grey); margin-top:4px; }
+
+        .contact-cards { background:var(--black); padding:80px 64px; }
+        .cards-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .ccard { padding:36px 30px; background:var(--card); border-top:3px solid var(--border); text-align:center; transition:border-color .3s; }
+        .ccard:hover { border-top-color:var(--orange); }
+        .ccard-icon { font-size:2rem; margin-bottom:16px; }
+        .ccard-title { font-family:var(--font-h); font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; color:var(--white); margin-bottom:8px; }
+        .ccard-val { font-size:.88rem; color:var(--grey); line-height:1.6; }
+        .ccard-val a { color:var(--orange); text-decoration:none; }
+        .ccard-val a:hover { text-decoration:underline; }
+
+        .form-btns { display:flex; gap:12px; flex-wrap:wrap; align-items:center; }
+        .btn-wp-form {
+            display:inline-flex; align-items:center; gap:8px;
+            background:#25D366; color:#fff; border:none; cursor:pointer;
+            font-family:var(--font-h); font-size:.7rem; font-weight:700;
+            letter-spacing:.1em; text-transform:uppercase;
+            padding:13px 24px; transition:background .25s;
+            clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+        }
+        .btn-wp-form:hover { background:#1ebe5d; }
+
+        @media (max-width: 768px) {
+            /* Contact layout */
+            .contact-section { grid-template-columns: 1fr; min-height: auto; }
+            .contact-l { padding: 48px 24px; }
+            .contact-r { padding: 48px 24px; }
+            .crow { grid-template-columns: 1fr; }
+            /* Cards */
+            .contact-cards { padding: 56px 24px; }
+            .cards-grid { grid-template-columns: 1fr; gap: 8px; }
+            /* Form buttons */
+            .form-btns { flex-direction: column; }
+            .btn-wp-form { justify-content: center; }
+            .btn-orange { justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item active"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<div class="page-hero" style="background-image:url('images/Whatmage%202026-04-11%20at%2017.31.42.jpeg')">
+    <div class="page-hero-content">
+        <div class="page-hero-label" data-i18n="contact.label">Contact</div>
+        <h1 data-i18n="contact.h1">Réservez votre <span>transfert</span></h1>
+        <p class="page-hero-sub" data-i18n="contact.pg.sub">Disponibles 24h/24, 7j/7. Réponse en moins de 30 minutes.</p>
+    </div>
+</div>
+
+<!-- CONTACT SPLIT -->
+<section class="contact-section">
+    <div class="contact-l">
+        <div class="section-label" data-i18n="contact.coords.label">Coordonnées</div>
+        <h2 class="section-h2" data-i18n="contact.talk.h2">Parlons de votre <span>transfert</span></h2>
+
+        <div class="contact-items reveal">
+            <div class="citem">
+                <div class="cicon">✉</div>
+                <div>
+                    <div class="clabel" data-i18n="contact.email.label">Email</div>
+                    <a class="cval" href="mailto:info@blacklimousine.be">info@blacklimousine.be</a>
+                </div>
+            </div>
+            <div class="citem">
+                <div class="cicon">📍</div>
+                <div>
+                    <div class="clabel" data-i18n="contact.loc.label">Zone de service</div>
+                    <span class="cval" data-i18n="contact.loc.val">Bruxelles, Zaventem, Belgique</span>
+                </div>
+            </div>
+            <div class="citem">
+                <div class="cicon">🏢</div>
+                <div>
+                    <div class="clabel" data-i18n="contact.company">Numéro d'entreprise</div>
+                    <span class="cval">TVA BE 0791.634.024</span>
+                </div>
+            </div>
+        </div>
+
+        <a href="https://wa.me/32485964008?text=Bonjour %F0%9F%91%8B Je souhaite r%C3%A9server un transfert avec Black Limousine. Pouvez-vous me contacter %3F Merci." class="whatsapp-btn reveal">
+            <div class="whatsapp-icon">💬</div>
+            <div>
+                <div class="whatsapp-text" data-i18n="contact.wp.text">Écrire sur WhatsApp</div>
+                <div class="whatsapp-sub" data-i18n="contact.wp.sub">+32 485 96 40 08 · Réponse rapide garantie</div>
+            </div>
+        </a>
+
+        <div class="contact-hours reveal">
+            <strong data-i18n="contact.hours.title">Disponibilité</strong>
+            <p data-i18n="contact.hours.text">Service disponible 24h/24, 7j/7, 365 jours par an.<br>Réservation minimum 2h à l'avance recommandée.<br>Urgences acceptées selon disponibilité.</p>
+        </div>
+    </div>
+
+    <div class="contact-r">
+        <div class="section-label" data-i18n="form.label">Formulaire</div>
+        <h2 class="section-h2" data-i18n="form.h2">Demande de <span>devis</span></h2>
+        <!-- ══ FORMSPREE : remplace YOUR_FORM_ID par ton ID Formspree ══
+             1. Va sur https://formspree.io et crée un compte gratuit
+             2. Crée un nouveau formulaire → copie l'ID (ex: xpwqkzqr)
+             3. Remplace YOUR_FORM_ID ci-dessous par ton ID
+             Les soumissions arriveront directement dans ta boîte email. -->
+        <form class="cform reveal"
+              action="https://formspree.io/f/mgordker"
+              method="POST"
+              onsubmit="handleSubmit(event)">
+
+            <!-- Champ caché : email de destination de secours -->
+            <input type="hidden" name="_subject" value="🚗 Nouvelle demande Black Limousine">
+            <input type="hidden" name="_language" value="fr">
+
+            <div class="crow">
+                <div class="cgroup"><label data-i18n="form.firstname">Prénom *</label><input type="text" name="prenom" data-i18n-ph="ph.firstname" data-i18n-ph="ph.firstname" placeholder="Votre prénom" required></div>
+                <div class="cgroup"><label data-i18n="form.lastname">Nom *</label><input type="text" name="nom" data-i18n-ph="ph.lastname" data-i18n-ph="ph.lastname" placeholder="Votre nom" required></div>
+            </div>
+            <div class="crow">
+                <div class="cgroup"><label data-i18n="form.phone">Téléphone *</label><input type="tel" name="telephone" data-i18n-ph="ph.phone" placeholder="+32 ..." required></div>
+                <div class="cgroup"><label data-i18n="form.email">Email *</label><input type="email" name="email" data-i18n-ph="ph.email" placeholder="votre@email.be" required></div>
+            </div>
+            <div class="crow">
+                <div class="cgroup">
+                    <label data-i18n="form.service">Type de service</label>
+                    <select name="service">
+                        <option value="" data-i18n="form.service.opt0">Sélectionner...</option>
+                        <option data-i18n="form.service.opt1">Transfert Aéroport</option>
+                        <option data-i18n="form.service.opt2">Corporate / Entreprise</option>
+                        <option data-i18n="form.service.opt3">Délégation Diplomatique</option>
+                        <option data-i18n="form.service.opt4">Événement / Groupe</option>
+                        <option data-i18n="form.service.opt5">Service à l'Heure</option>
+                        <option data-i18n="form.service.opt6">Hôtel de Prestige</option>
+                    </select>
+                </div>
+                <div class="cgroup">
+                    <label data-i18n="form.vehicle">Véhicule souhaité</label>
+                    <select name="vehicule">
+                        <option value="" data-i18n="form.vehicle.opt0">Pas de préférence</option>
+                        <option>Mercedes E-Class (1-3 pax)</option>
+                        <option>Mercedes S-Class (1-3 pax)</option>
+                        <option>Mercedes V-Class (1-7 pax)</option>
+                        <option>Mercedes Sprinter Mini Coach (1-16 pax)</option>
+                    </select>
+                </div>
+            </div>
+            <div class="crow">
+                <div class="cgroup"><label data-i18n="form.date">Date de départ</label><input type="date" name="date"></div>
+                <div class="cgroup"><label data-i18n="form.time">Heure de prise en charge</label><input type="time" name="heure"></div>
+            </div>
+            <div class="cgroup">
+                <label data-i18n="form.pickup">Adresse de prise en charge *</label>
+                <input type="text" name="adresse_depart" data-i18n-ph="ph.pickup" placeholder="Ex: Brussels Airport, Rue de la Loi 16, Bruxelles..." required>
+            </div>
+            <div class="cgroup">
+                <label data-i18n="form.dropoff">Adresse de dépôt *</label>
+                <input type="text" name="adresse_depot" data-i18n-ph="ph.dropoff" placeholder="Ex: Hôtel Amigo, Grand Place, Bruxelles..." required>
+            </div>
+            <div class="crow">
+                <div class="cgroup">
+                    <label data-i18n="form.persons">Nombre de personnes *</label>
+                    <select name="nb_personnes" required>
+                        <option value="" data-i18n="form.persons.opt0">Sélectionner...</option>
+                        <option data-i18n="form.persons.1">1 personne</option>
+                        <option data-i18n="form.persons.2">2 personnes</option>
+                        <option data-i18n="form.persons.3">3 personnes</option>
+                        <option data-i18n="form.persons.4">4 personnes</option>
+                        <option data-i18n="form.persons.5">5 personnes</option>
+                        <option data-i18n="form.persons.6">6 personnes</option>
+                        <option data-i18n="form.persons.7">7 personnes</option>
+                        <option data-i18n="form.persons.8">8 personnes ou plus</option>
+                    </select>
+                </div>
+                <div class="cgroup">
+                    <label data-i18n="form.luggage">Nombre de bagages *</label>
+                    <select name="nb_bagages" required>
+                        <option value="" data-i18n="form.luggage.opt0">Sélectionner...</option>
+                        <option data-i18n="form.luggage.0">Aucun bagage</option>
+                        <option data-i18n="form.luggage.1">1 bagage</option>
+                        <option data-i18n="form.luggage.2">2 bagages</option>
+                        <option data-i18n="form.luggage.3">3 bagages</option>
+                        <option data-i18n="form.luggage.4">4 bagages</option>
+                        <option data-i18n="form.luggage.5">5 bagages</option>
+                        <option data-i18n="form.luggage.6">6 bagages ou plus</option>
+                    </select>
+                </div>
+            </div>
+            <div class="cgroup">
+                <label data-i18n="form.message">Message complémentaire</label>
+                <textarea name="message" data-i18n-ph="ph.message" placeholder="Informations de vol, besoins particuliers, remarques..."></textarea>
+            </div>
+            <div class="form-btns">
+                <button type="submit" class="btn-orange" style="border:none;cursor:pointer" data-i18n="form.submit">Envoyer la demande →</button>
+                <button type="button" class="btn-wp-form" onclick="sendViaWhatsApp()" data-i18n="form.btn.wp">💬 Envoyer par WhatsApp</button>
+            </div>
+            <p class="form-note" style="margin-top:10px" data-i18n="form.note">* Champs obligatoires. Réponse sous 30 minutes.</p>
+            <div id="form-success" style="display:none; background:rgba(232,97,26,.1); border-left:3px solid var(--orange); padding:16px 20px;">
+                <p style="font-family:var(--font-h); font-size:.78rem; font-weight:700; text-transform:uppercase; color:var(--orange)" data-i18n="form.success.title">✓ Demande envoyée avec succès</p>
+                <p style="font-size:.82rem; color:var(--grey); margin-top:4px" data-i18n="form.success.sub">Nous vous contacterons dans les 30 minutes.</p>
+            </div>
+        </form>
+    </div>
+</section>
+
+<!-- CONTACT CARDS -->
+<section class="contact-cards">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="contact.cards.label">Nos canaux</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="contact.cards.h2">Comment nous <span>joindre</span></h2>
+    </div>
+    <div class="cards-grid">
+        <div class="ccard reveal">
+            <div class="ccard-icon">💬</div>
+            <div class="ccard-title" data-i18n="contact.wp.title">WhatsApp</div>
+            <div class="ccard-val"><span data-i18n="contact.wp.desc">Réponse rapide garantie</span><br><a href="https://wa.me/32485964008?text=Bonjour %F0%9F%91%8B Je souhaite r%C3%A9server un transfert avec Black Limousine. Pouvez-vous me contacter %3F Merci.">+32 485 96 40 08</a></div>
+        </div>
+        <div class="ccard reveal" style="transition-delay:.1s">
+            <div class="ccard-icon">✉</div>
+            <div class="ccard-title" data-i18n="contact.email.title">Email</div>
+            <div class="ccard-val"><span data-i18n="contact.email.desc">Pour vos devis & contrats</span><br><a href="mailto:info@blacklimousine.be">info@blacklimousine.be</a></div>
+        </div>
+        <div class="ccard reveal" style="transition-delay:.2s">
+            <div class="ccard-icon">📍</div>
+            <div class="ccard-title" data-i18n="contact.zone.title">Zone de service</div>
+            <div class="ccard-val" data-i18n="contact.zone.desc">Bruxelles & Zaventem<br>Disponible 24h/24, 7j/7</div>
+        </div>
+    </div>
+</section>
+
+<!-- ══ PARTNERS STRIP ══ -->
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center" data-i18n="partners.label">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="partners.sub">Nous sommes fiers d'être membres des plus grands réseaux de transport au monde, garantissant les normes les plus élevées de sécurité, d'éthique et d'excellence professionnelle.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="Black Limousine" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag" data-i18n="footer.tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t" data-i18n="footer.col.pages">Pages</div><ul class="flinks"><li><a href="index.html" data-i18n="drop.accueil">Accueil</a></li><li><a href="services.html" data-i18n="drop.services">Services</a></li><li><a href="flotte.html" data-i18n="drop.flotte">Flotte</a></li><li><a href="a-propos.html" data-i18n="drop.apropos">À propos</a></li><li><a href="contact.html" data-i18n="drop.contact">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t" data-i18n="footer.col.services">Services</div><ul class="flinks"><li><a href="service-aeroport.html" data-i18n="footer.link.airport">Aéroport</a></li><li><a href="service-corporate.html" data-i18n="footer.link.corp">Corporate</a></li><li><a href="service-diplomatique.html" data-i18n="footer.link.diplo">Diplomatique</a></li><li><a href="service-evenements.html" data-i18n="footer.link.events">Événements</a></li><li><a href="service-heure.html">À l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t" data-i18n="footer.col.quick">Contact rapide</div><ul class="flinks"><li><a href="https://wa.me/32485964008?text=Bonjour %F0%9F%91%8B Je souhaite r%C3%A9server un transfert avec Black Limousine. Pouvez-vous me contacter %3F Merci.">WhatsApp</a></li><li><a href="mailto:info@blacklimousine.be">info@blacklimousine.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — TVA BE 0791.634.024</p>
+        <div class="footer-leg"><a href="#" data-i18n="footer.mentions">Mentions légales</a><a href="#" data-i18n="footer.privacy">Confidentialité</a><a href="#" data-i18n="footer.cgv">CGV</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    async function handleSubmit(e) {
+        const form = e.target;
+        // Si Formspree pas encore configuré (YOUR_FORM_ID), utilise mailto en fallback
+        if (form.action.includes('YOUR_FORM_ID')) {
+            e.preventDefault();
+            const data = new FormData(form);
+            const body = [...data.entries()].map(([k,v]) => `${k}: ${v}`).join('\n');
+            window.location.href = `mailto:info@blacklimousine.be?subject=Nouvelle demande Black Limousine&body=${encodeURIComponent(body)}`;
+            showSuccess();
+            return;
+        }
+        // Formspree configuré : soumission AJAX
+        e.preventDefault();
+        const btn = form.querySelector('button[type="submit"]');
+        btn.textContent = 'Envoi en cours...';
+        btn.disabled = true;
+        try {
+            const res = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+            if (res.ok) {
+                showSuccess();
+                form.reset();
+            } else {
+                btn.textContent = 'Erreur — réessayer';
+                btn.disabled = false;
+            }
+        } catch {
+            btn.textContent = 'Erreur réseau — réessayer';
+            btn.disabled = false;
+        }
+    }
+    function sendViaWhatsApp() {
+        const g = name => document.querySelector(`[name="${name}"]`)?.value || '';
+        const msg =
+`🚗 *Demande de transfert — Black Limousine*
+
+👤 *Client :* ${g('prenom')} ${g('nom')}
+📞 *Téléphone :* ${g('telephone')}
+📧 *Email :* ${g('email')}
+
+🛎 *Service :* ${g('service') || 'Non précisé'}
+🚘 *Véhicule :* ${g('vehicule') || 'Sans préférence'}
+📅 *Date :* ${g('date') || 'Non précisée'}
+⏰ *Heure :* ${g('heure') || 'Non précisée'}
+
+📍 *Prise en charge :* ${g('adresse_depart') || 'Non précisée'}
+📍 *Dépôt :* ${g('adresse_depot') || 'Non précisé'}
+👥 *Personnes :* ${g('nb_personnes') || 'Non précisé'}
+🧳 *Bagages :* ${g('nb_bagages') || 'Non précisé'}
+
+💬 *Message :* ${g('message') || 'Aucun'}`;
+
+        window.open('https://wa.me/32485964008?text=' + encodeURIComponent(msg), '_blank');
+    }
+    function showSuccess() {
+        document.getElementById('form-success').style.display = 'block';
+        document.getElementById('form-success').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+</script>
+<script src="translations.js"></script>
+</body>
+</html>

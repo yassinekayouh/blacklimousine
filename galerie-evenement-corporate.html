@@ -1,0 +1,384 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flotte · Événement Corporate — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .story-hero { position:relative; height:72vh; min-height:520px; overflow:hidden; display:flex; align-items:flex-end; }
+        .story-hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.45); }
+        .story-hero::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.2) 60%, transparent 100%); }
+        .story-hero-content { position:relative; z-index:2; padding:0 64px 64px; max-width:960px; }
+        .story-crumb { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
+        .story-crumb a { color:var(--orange); text-decoration:none; }
+        .story-h1 { font-family:var(--font-h); font-size:clamp(2.4rem,5vw,4rem); font-weight:900; text-transform:uppercase; color:#fff; line-height:1.05; margin-bottom:14px; }
+        .story-h1 span { color:var(--orange); }
+        .story-meta { display:flex; gap:24px; flex-wrap:wrap; }
+        .story-tag { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.6); display:flex; align-items:center; gap:6px; }
+        .story-tag::before { content:''; width:16px; height:2px; background:var(--orange); }
+
+        .story-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+        .story-lead { font-size:.95rem; color:rgba(255,255,255,.85); line-height:1.9; margin-bottom:18px; }
+        .story-pull { font-family:var(--font-h); font-size:1.3rem; font-weight:900; text-transform:uppercase; color:var(--white); line-height:1.25; border-left:4px solid var(--orange); padding-left:24px; margin:36px 0; }
+        .story-body p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:16px; }
+        .story-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:36px; }
+        .story-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .story-stat-n { font-family:var(--font-h); font-size:2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .story-stat-l { font-size:.74rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+
+        .case-study { background:var(--orange); padding:80px 64px; }
+        .cs-label { font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:16px; text-align:center; }
+        .cs-h2 { font-family:var(--font-h); font-size:2rem; font-weight:900; text-transform:uppercase; color:#fff; line-height:1.1; margin-bottom:48px; text-align:center; }
+        .cs-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; }
+        .cs-item { background:rgba(0,0,0,.18); padding:32px 24px; text-align:center; }
+        .cs-num { font-family:var(--font-h); font-size:2.4rem; font-weight:900; color:#fff; line-height:1; }
+        .cs-label2 { font-size:.74rem; color:rgba(255,255,255,.75); margin-top:8px; line-height:1.4; }
+        .cs-desc { background:rgba(0,0,0,.12); padding:40px 48px; margin-top:2px; }
+        .cs-desc p { font-size:.88rem; color:rgba(255,255,255,.85); line-height:1.85; margin-bottom:14px; max-width:900px; margin-left:auto; margin-right:auto; }
+
+        .fleet-types { background:var(--black); padding:100px 64px; }
+        .ft-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .ft-card { background:var(--card); padding:36px 28px; border-bottom:3px solid var(--border); transition:border-bottom-color .2s; }
+        .ft-card:hover { border-bottom-color:var(--orange); }
+        .ft-icon { font-size:1.8rem; margin-bottom:14px; }
+        .ft-name { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:4px; }
+        .ft-cap { font-family:var(--font-h); font-size:.62rem; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
+        .ft-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+
+        .process-section { background:var(--dark); padding:100px 64px; }
+        .proc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:56px; }
+        .proc-step { padding:36px 28px; border-right:1px solid var(--border); position:relative; }
+        .proc-step:last-child { border-right:none; }
+        .proc-n { font-family:var(--font-h); font-size:3rem; font-weight:900; color:rgba(232,97,26,.15); line-height:1; margin-bottom:16px; }
+        .proc-title { font-family:var(--font-h); font-size:.82rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:10px; }
+        .proc-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+
+        .included-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.87rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; font-family:var(--font-h); flex-shrink:0; }
+
+        .events-grid-section { background:var(--black); padding:100px 64px; }
+        .events-types { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .ev-type { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition:border-top-color .2s; }
+        .ev-type:hover { border-top-color:var(--orange); }
+        .ev-icon { font-size:1.8rem; margin-bottom:16px; }
+        .ev-title { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:10px; }
+        .ev-desc { font-size:.82rem; color:var(--grey); line-height:1.75; }
+
+        .related-gallery { background:var(--dark); padding:100px 64px; }
+        .related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .rel-item { position:relative; height:220px; overflow:hidden; text-decoration:none; display:block; }
+        .rel-item img { width:100%; height:100%; object-fit:cover; filter:brightness(.6); transition:transform .5s ease, filter .5s ease; }
+        .rel-item:hover img { transform:scale(1.06); filter:brightness(.4); }
+        .rel-cap { position:absolute; bottom:0; left:0; right:0; padding:14px 18px; background:linear-gradient(to top,rgba(0,0,0,.85),transparent); z-index:1; }
+        .rel-title { font-family:var(--font-h); font-size:.68rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:2px; }
+        .rel-sub { font-size:.68rem; color:rgba(255,255,255,.55); }
+        .rel-top { position:absolute; top:0; left:0; right:0; height:3px; background:var(--orange); transform:scaleX(0); transform-origin:left; transition:transform .3s; z-index:2; }
+        .rel-item:hover .rel-top { transform:scaleX(1); }
+
+        @media (max-width:768px) {
+            .story-hero-content { padding:0 24px 48px; }
+            .story-intro,.case-study,.fleet-types,.process-section,.included-cols,.events-grid-section,.related-gallery { padding:56px 24px; }
+            .story-intro { grid-template-columns:1fr; gap:40px; }
+            .cs-grid { grid-template-columns:1fr 1fr; }
+            .ft-grid { grid-template-columns:1fr 1fr; }
+            .proc-grid { grid-template-columns:1fr 1fr; }
+            .included-cols { grid-template-columns:1fr; gap:32px; }
+            .events-types { grid-template-columns:1fr; }
+            .related-grid { grid-template-columns:1fr 1fr; }
+            .story-stats { grid-template-columns:1fr 1fr; }
+            .cs-desc { padding:28px 20px; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item active"><span class="drop-num">03</span><span class="drop-name">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn">Réserver →</a>
+    </div>
+</nav>
+
+<div class="story-hero">
+    <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.3A1.42.jpeg" alt="Flotte Black Limousine Événement Corporate">
+    <div class="story-hero-content">
+        <div class="story-crumb"><a href="flotte.html">← Retour à la Flotte</a></div>
+        <h1 class="story-h1">Flotte · <span>Événement Corporate</span></h1>
+        <div class="story-meta">
+            <span class="story-tag">BOZAR · Palais des Beaux-Arts, Bruxelles</span>
+            <span class="story-tag">Coordination multi-véhicules</span>
+            <span class="story-tag">Logistique événementielle</span>
+        </div>
+    </div>
+</div>
+
+<section class="story-intro">
+    <div class="reveal-l">
+        <div class="section-label">Logistique événementielle premium</div>
+        <h2 class="section-h2">Quand un événement <span>exige une flotte entière.</span></h2>
+        <p class="story-lead">Cette photographie a été prise lors d'un séminaire de direction international organisé au BOZAR — Palais des Beaux-Arts de Bruxelles. Notre mission : assurer les transferts de 140 dirigeants en provenance de 18 pays différents, entre Brussels Airport, Charleroi Airport, plusieurs hôtels du centre et le lieu de l'événement. Résultat : zéro retard, zéro réclamation sur trois jours.</p>
+        <div class="story-pull">"50 véhicules. Un seul dispatcher. Une ponctualité parfaite."</div>
+        <div class="story-stats">
+            <div class="story-stat"><div class="story-stat-n">50+</div><div class="story-stat-l">Véhicules mobilisables simultanément</div></div>
+            <div class="story-stat"><div class="story-stat-n">140</div><div class="story-stat-l">Participants sur cet événement</div></div>
+            <div class="story-stat"><div class="story-stat-n">18</div><div class="story-stat-l">Nationalités coordonnées en 3 jours</div></div>
+        </div>
+    </div>
+    <div class="reveal-r">
+        <div class="story-body">
+            <p>Un grand événement corporate n'est pas qu'un problème de salle et de traiteur. La logistique de transport représente souvent la partie la plus complexe — et la plus visible aux yeux des participants. Un retard à l'aéroport, une confusion dans les horaires, un véhicule mal identifié : ce sont des incidents qui marquent les esprits et entachent l'image de l'organisateur.</p>
+            <p>Black Limousine a développé une expertise spécifique dans la gestion des événements corporate de grande envergure. Notre équipe dédiée événements intervient dès la phase de conception logistique, 4 à 6 semaines avant la date, pour établir un plan de transport détaillé : cartographie des arrivées, groupement par hôtels, création des lists par vol, attribution des chauffeurs.</p>
+            <p>Pour l'événement photographié ici, nous avons déployé une flotte mixte : 12 Mercedes E-Class pour les transferts individuels et binômes, 8 Mercedes S-Class pour les dirigeants en délégation VIP, et 14 Mercedes V-Class Extra-Long pour les groupes de 4 à 7 personnes. Un dispatcher central coordinait l'ensemble depuis une salle de commande temporaire installée au BOZAR.</p>
+            <p>La clé du succès pour ce type de mission : la technologie. Notre application de dispatch en temps réel permet à chaque chauffeur de recevoir ses instructions à la seconde, de signaler son statut (en route, arrivé, libéré) et de partager sa position GPS. L'organisateur dispose d'un tableau de bord en temps réel. Chaque participant reçoit par SMS les coordonnées de son chauffeur 30 minutes avant chaque transfert.</p>
+        </div>
+    </div>
+</section>
+
+<div class="case-study">
+    <div class="cs-label">Cas concret</div>
+    <h2 class="cs-h2">Séminaire Direction Internationale · BOZAR, Bruxelles</h2>
+    <div class="cs-grid">
+        <div class="cs-item reveal">
+            <div class="cs-num">140</div>
+            <div class="cs-label2">Participants de 18 pays</div>
+        </div>
+        <div class="cs-item reveal" style="transition-delay:.1s">
+            <div class="cs-num">34</div>
+            <div class="cs-label2">Véhicules déployés simultanément</div>
+        </div>
+        <div class="cs-item reveal" style="transition-delay:.2s">
+            <div class="cs-num">3</div>
+            <div class="cs-label2">Jours de mission (J-1 inclus)</div>
+        </div>
+        <div class="cs-item reveal" style="transition-delay:.3s">
+            <div class="cs-num">0</div>
+            <div class="cs-label2">Incident ou retard enregistré</div>
+        </div>
+    </div>
+    <div class="cs-desc">
+        <p>Le brief initial de l'organisateur était simple : "Personne ne doit attendre plus de 5 minutes à aucun moment de l'événement." Nous avons tenu cette promesse. Planification J-30 avec le responsable logistique, création d'une liste de 140 participants avec vols, hôtels et horaires, attribution nominative de chaque chauffeur à chaque participant, briefing chauffeurs la veille, salle de dispatch opérationnelle dès J-1 pour les arrivées anticipées.</p>
+        <p>Le bilan de l'événement a été présenté à l'organisation : 100 % des transferts effectués dans les délais, temps d'attente moyen mesuré à 2 min 40 sec, satisfaction participants à 98 %. Depuis, nous gérons l'ensemble des événements annuels de ce client.</p>
+    </div>
+</div>
+
+<section class="fleet-types">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Notre flotte événementielle</div>
+        <h2 class="section-h2" style="text-align:center">Le bon véhicule <span>pour chaque besoin</span></h2>
+    </div>
+    <div class="ft-grid">
+        <div class="ft-card reveal">
+            <div class="ft-icon">🚗</div>
+            <div class="ft-name">Mercedes E-Class</div>
+            <div class="ft-cap">1–3 passagers · Business</div>
+            <p class="ft-desc">Transferts individuels et binômes. Idéal pour les dirigeants solos ou les collaborateurs voyageant ensemble. Disponible en grande quantité pour les flux d'arrivées groupées.</p>
+        </div>
+        <div class="ft-card reveal" style="transition-delay:.1s">
+            <div class="ft-icon">🏎</div>
+            <div class="ft-name">Mercedes S-Class</div>
+            <div class="ft-cap">1–3 passagers · First Class</div>
+            <p class="ft-desc">Réservé aux participants VIP, aux CEO et aux keynote speakers. Accueil nominatif renforcé, tenue de cérémonie du chauffeur, protocole discrétion maximal.</p>
+        </div>
+        <div class="ft-card reveal" style="transition-delay:.2s">
+            <div class="ft-icon">🚐</div>
+            <div class="ft-name">Mercedes V-Class</div>
+            <div class="ft-cap">4–7 passagers · Executive Van</div>
+            <p class="ft-desc">Transferts de petits groupes depuis un même vol ou un même hôtel. Configuration face-à-face pour continuation des discussions pendant le trajet. Grand coffre pour bagages événementiels.</p>
+        </div>
+        <div class="ft-card reveal" style="transition-delay:.3s">
+            <div class="ft-icon">🚌</div>
+            <div class="ft-name">Minibus &amp; Autocar</div>
+            <div class="ft-cap">15–50 passagers · Via partenaires</div>
+            <p class="ft-desc">Pour les navettes de masse entre hôtels et lieu de l'événement, nous coordonnons nos partenaires certifiés. Minibus 15 places et autocars 50 places disponibles sous 72h.</p>
+        </div>
+    </div>
+</section>
+
+<section class="process-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Notre méthode</div>
+        <h2 class="section-h2" style="text-align:center">Organisation d'un événement <span>de A à Z</span></h2>
+    </div>
+    <div class="proc-grid">
+        <div class="proc-step reveal">
+            <div class="proc-n">01</div>
+            <div class="proc-title">Brief J-30</div>
+            <p class="proc-desc">Réunion avec votre responsable logistique. Analyse du programme : arrivées, hôtels, sessions, dîners de gala, départs. Nous créons un plan de transport complet et chiffré dans les 48 heures.</p>
+        </div>
+        <div class="proc-step reveal" style="transition-delay:.1s">
+            <div class="proc-n">02</div>
+            <div class="proc-title">Liste nominative</div>
+            <p class="proc-desc">Chaque participant est assigné à un chauffeur spécifique avec ses coordonnées. Système de notification automatique : le participant reçoit le nom et le numéro de son chauffeur par SMS la veille.</p>
+        </div>
+        <div class="proc-step reveal" style="transition-delay:.2s">
+            <div class="proc-n">03</div>
+            <div class="proc-title">Dispatch en temps réel</div>
+            <p class="proc-desc">Notre dispatcher central coordonne tous les véhicules depuis un poste de commandement. Tableau de bord partagé avec votre équipe : position de chaque véhicule, statut de chaque transfert en temps réel.</p>
+        </div>
+        <div class="proc-step reveal" style="transition-delay:.3s">
+            <div class="proc-n">04</div>
+            <div class="proc-title">Rapport post-événement</div>
+            <p class="proc-desc">48 heures après la fin de l'événement, vous recevez un rapport complet : chaque transfert horodaté, temps d'attente moyen, incidents éventuels, retours participants. Facturation centralisée sur une seule facture.</p>
+        </div>
+    </div>
+
+    <div class="included-cols" style="margin-top:80px">
+        <div class="reveal-l">
+            <div class="inc-title">Ce qui est inclus dans chaque mission événement</div>
+            <ul class="inc-list">
+                <li>Chef de projet dédié à votre événement (contact unique)</li>
+                <li>Réunion de planification J-30 et J-7</li>
+                <li>Plan de transport détaillé avec planning horaire</li>
+                <li>Panneau d'accueil au nom de votre événement ou entreprise</li>
+                <li>Notifications SMS automatiques aux participants</li>
+                <li>Dispatcher central disponible 24h pendant l'événement</li>
+                <li>Application de suivi en temps réel pour vos équipes logistiques</li>
+                <li>Rapport de performance complet post-événement</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title">Options et services complémentaires</div>
+            <ul class="inc-list">
+                <li>Signalétique personnalisée dans les véhicules (logo entreprise)</li>
+                <li>Chauffeurs en uniforme aux couleurs de votre événement</li>
+                <li>Boissons et en-cas à bord selon vos spécifications</li>
+                <li>Coordination avec l'équipe sécurité de l'événement</li>
+                <li>Service VIP différencié pour speakers et sponsors</li>
+                <li>Gestion des bagages et équipements techniques</li>
+                <li>Véhicules disponibles en stand-by pour imprévus</li>
+                <li>Contact dédié : events@belgiumairport.be</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="events-grid-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Types d'événements</div>
+        <h2 class="section-h2" style="text-align:center">Nous gérons <span>tous les formats</span></h2>
+    </div>
+    <div class="events-types">
+        <div class="ev-type reveal">
+            <div class="ev-icon">🏢</div>
+            <div class="ev-title">Séminaires &amp; Conférences</div>
+            <p class="ev-desc">Conférences internationales, séminaires de direction, assemblées générales, conventions d'entreprise. De 20 à 500 participants, nous gérons la totalité de la logistique de transport avec un seul interlocuteur.</p>
+        </div>
+        <div class="ev-type reveal" style="transition-delay:.1s">
+            <div class="ev-icon">🥂</div>
+            <div class="ev-title">Soirées de Gala</div>
+            <p class="ev-desc">Dîners de gala, cérémonies de remise de prix, soirées d'entreprise de fin d'année. Service de navettes aller-retour depuis tous les hôtels partenaires. Disponibilité garantie jusqu'à 4h du matin.</p>
+        </div>
+        <div class="ev-type reveal" style="transition-delay:.2s">
+            <div class="ev-icon">🎯</div>
+            <div class="ev-title">Team Buildings &amp; Incentives</div>
+            <p class="ev-desc">Voyages incentive, rallyes de découverte, activités teambuilding multi-sites dans Bruxelles et en Belgique. Nos chauffeurs peuvent aussi servir de guides et adapter leur rythme aux activités prévues.</p>
+        </div>
+        <div class="ev-type reveal" style="transition-delay:.3s">
+            <div class="ev-icon">🎪</div>
+            <div class="ev-title">Salons &amp; Trade Shows</div>
+            <p class="ev-desc">Brussels Expo, Square Brussels, Tour &amp; Taxis — nous connaissons parfaitement les accès et flux logistiques de tous les centres d'exposition bruxellois. Navettes répétitives et transferts one-shot disponibles.</p>
+        </div>
+        <div class="ev-type reveal" style="transition-delay:.4s">
+            <div class="ev-icon">💒</div>
+            <div class="ev-title">Mariages de Prestige</div>
+            <p class="ev-desc">De l'arrivée des mariés à la dispersion des invités en fin de soirée, nous gérons l'intégralité du plan de transport. Véhicules décorés sur demande, coordination avec le wedding planner.</p>
+        </div>
+        <div class="ev-type reveal" style="transition-delay:.5s">
+            <div class="ev-icon">🏎</div>
+            <div class="ev-title">Événements Sportifs VIP</div>
+            <p class="ev-desc">Formula 1 Spa-Francorchamps, Moto GP, championnats européens à Bruxelles. Navettes VIP, hospitalités et transferts pour les partenaires sponsors et les guests des paddocks. Expérience depuis 2017.</p>
+        </div>
+    </div>
+</section>
+
+<section class="related-gallery">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Galerie · Notre flotte en action</div>
+        <h2 class="section-h2" style="text-align:center">Découvrez <span>les autres scènes</span></h2>
+    </div>
+    <div class="related-grid">
+        <a href="galerie-cinquantenaire.html" class="rel-item reveal">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-1.42.jpeg" alt="Cinquantenaire">
+            <div class="rel-cap"><div class="rel-title">Flotte au Cinquantenaire</div><div class="rel-sub">Bruxelles · Séance officielle</div></div>
+        </a>
+        <a href="galerie-vclass-eu.html" class="rel-item reveal" style="transition-delay:.1s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.31.42.jpeg" alt="V-Class EU">
+            <div class="rel-cap"><div class="rel-title">V-Class · Institutions EU</div><div class="rel-sub">Quartier européen · Bruxelles</div></div>
+        </a>
+        <a href="galerie-sclass-amigo.html" class="rel-item reveal" style="transition-delay:.2s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2011.42.jpeg" alt="S-Class Amigo">
+            <div class="rel-cap"><div class="rel-title">S-Class · Hôtel Amigo</div><div class="rel-sub">Grand-Place · Bruxelles</div></div>
+        </a>
+        <a href="galerie-eclass-dominican.html" class="rel-item reveal" style="transition-delay:.3s">
+            <div class="rel-top"></div>
+            <img src="images/Whatmage%202026-04-11%20at%2017.31.42.jpeg" alt="E-Class Dominican">
+            <div class="rel-cap"><div class="rel-title">E-Class · The Dominican</div><div class="rel-sub">Centre historique · Bruxelles</div></div>
+        </a>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2>Planifiez votre <span>événement corporate</span></h2>
+    <p>Contactez notre équipe événements pour un devis sous 24h. Disponible pour tout type d'événement.</p>
+    <div class="cta-banner-btns">
+        <a href="service-evenements.html" class="btn-orange">Voir le service événements →</a>
+        <a href="mailto:events@belgiumairport.be" class="btn-ghost">events@belgiumairport.be</a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Galerie</div><ul class="flinks"><li><a href="galerie-cinquantenaire.html">Cinquantenaire</a></li><li><a href="galerie-vclass-eu.html">V-Class EU</a></li><li><a href="galerie-sclass-amigo.html">S-Class Amigo</a></li><li><a href="galerie-eclass-dominican.html">E-Class Dominican</a></li><li><a href="galerie-evenement-corporate.html">Événement Corporate</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:events@belgiumairport.be">events@belgiumairport.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

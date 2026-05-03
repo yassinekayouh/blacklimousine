@@ -1,0 +1,330 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Limousine — Flotte</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .fleet-section { background: var(--black); padding: 100px 64px; }
+        .fleet-tabs { display:flex; gap:0; border-bottom:1px solid var(--border); margin-top:48px; }
+        .ftab { padding:12px 30px; font-family:var(--font-h); font-size:.7rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--grey); cursor:pointer; background:none; border:none; border-bottom:2px solid transparent; margin-bottom:-1px; transition:all .25s; }
+        .ftab.active { color:var(--orange); border-bottom-color:var(--orange); }
+        .ftab:hover { color:var(--white); }
+        .fpanel { display:none; grid-template-columns:1.1fr 1fr; gap:80px; align-items:center; padding-top:70px; }
+        .fpanel.active { display:grid; }
+        .fcar { position:relative; }
+        .fcar img { width:100%; object-fit:contain; filter:drop-shadow(0 24px 72px rgba(0,0,0,.95)); border-radius:20px; }
+        .fcar-badge { position:absolute; top:0; left:0; background:var(--orange); color:var(--white); font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; padding:7px 16px; clip-path:polygon(0 0,100% 0,calc(100% - 8px) 100%,0 100%); }
+        .fcar-num { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--orange); margin-bottom:10px; }
+        .fcar-name { font-family:var(--font-h); font-size:clamp(2rem,3.2vw,2.8rem); font-weight:900; text-transform:uppercase; color:var(--white); line-height:1.0; margin-bottom:6px; }
+        .fcar-name span { color:var(--orange); }
+        .fcar-cat { font-size:.82rem; color:var(--grey); margin-bottom:36px; }
+        .fspecs { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:36px; }
+        .fspec { padding:16px 18px; background:var(--card); border-left:3px solid var(--orange); }
+        .fspec-l { font-family:var(--font-h); font-size:.58rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); margin-bottom:3px; }
+        .fspec-v { font-family:var(--font-h); font-size:.94rem; font-weight:700; color:var(--white); }
+        .fcar-desc { font-size:.88rem; color:var(--grey); line-height:1.82; margin-bottom:36px; }
+        .fcar-features { display:flex; flex-direction:column; gap:10px; margin-bottom:36px; }
+        .fcar-feat { display:flex; align-items:center; gap:10px; font-size:.82rem; color:rgba(255,255,255,.75); }
+        .fcar-feat::before { content:'✓'; color:var(--orange); font-family:var(--font-h); font-weight:700; }
+
+        .fleet-gallery { background:var(--dark); padding:100px 64px; }
+        .gallery-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .gal-item { position:relative; height:280px; overflow:hidden; }
+        .gal-item img { width:100%; height:100%; object-fit:cover; filter:brightness(.7); transition: transform .6s ease, filter .6s ease; }
+        .gal-item:hover img { transform:scale(1.06); filter:brightness(.5); }
+        .gal-item.tall { grid-row: span 2; height: 100%; }
+        .gal-caption { position:absolute; bottom:0; left:0; right:0; padding:18px 20px; background:linear-gradient(to top,rgba(0,0,0,.8),transparent); z-index:1; }
+        .gal-caption span { font-family:var(--font-h); font-size:.72rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--white); }
+
+        @media (max-width: 768px) {
+            /* Fleet section */
+            .fleet-section { padding: 56px 24px; }
+            .fleet-tabs { overflow-x: auto; gap: 0; padding-bottom: 0; }
+            .ftab { padding: 10px 20px; font-size: .62rem; white-space: nowrap; flex-shrink: 0; }
+            .fpanel { grid-template-columns: 1fr; gap: 36px; padding-top: 44px; }
+            .fpanel.active { display: flex; flex-direction: column; }
+            .fcar img { border-radius: 14px; }
+            .fspecs { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .fcar-name { font-size: clamp(1.8rem, 8vw, 2.4rem); }
+            /* Gallery */
+            .fleet-gallery { padding: 56px 24px; }
+            .gallery-grid { grid-template-columns: 1fr 1fr; }
+            .gal-item.tall { grid-row: auto; height: 200px; }
+            .gal-item { height: 180px; }
+        }
+        @media (max-width: 480px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+            .gal-item { height: 220px; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item active"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<div class="page-hero" style="background-image:url('images/WhatsApp%20Image%202026-04-1.42.jpeg');background-position:center 35%">
+    <div class="page-hero-content">
+        <div class="page-hero-label" data-i18n="fleet.pg.hero.label">03 — Nos véhicules</div>
+        <h1 data-i18n="fleet.pg.h1">Notre <span>Flotte</span></h1>
+        <p class="page-hero-sub" data-i18n="fleet.pg.hero.sub">Véhicules Mercedes haut de gamme pour chaque type de transfert.</p>
+    </div>
+</div>
+
+<!-- FLEET TABS -->
+<section class="fleet-section">
+    <div>
+        <div class="section-label" data-i18n="fleet.pg.select.label">Sélectionnez un véhicule</div>
+        <h2 class="section-h2" data-i18n="fleet.pg.h2">Véhicules <span>d'exception</span></h2>
+    </div>
+    <div class="fleet-tabs">
+        <button class="ftab active" onclick="showFleet('e',this)">Mercedes E-Class</button>
+        <button class="ftab" onclick="showFleet('s',this)">Mercedes S-Class</button>
+        <button class="ftab" onclick="showFleet('v',this)">Mercedes V-Class</button>
+        <button class="ftab" onclick="showFleet('sp',this)">Mercedes Sprinter</button>
+    </div>
+
+    <!-- E-Class -->
+    <div class="fpanel active" id="fp-e">
+        <div class="fcar reveal-l">
+            <div class="fcar-badge" data-i18n="fleet.e.badge">Business</div>
+            <img src="images/CLASSE.png" alt="Mercedes E-Class">
+        </div>
+        <div class="reveal-r">
+            <div class="fcar-num" data-i18n="fleet.e.num">Modèle 01 / 04</div>
+            <h3 class="fcar-name" data-i18n="fleet.e.name">Mercedes-Benz <span>E-Class</span></h3>
+            <p class="fcar-cat" data-i18n="fleet.e.cat">Berline de Prestige · Business Class · 2024</p>
+            <div class="fspecs">
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.pax">Passagers</div><div class="fspec-v" data-i18n="fleet.e.specs.pax">Jusqu'à 3</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.bag">Bagages</div><div class="fspec-v" data-i18n="fleet.e.specs.bag">2 valises</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.cat">Catégorie</div><div class="fspec-v" data-i18n="fleet.e.badge">Business</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.avail">Disponibilité</div><div class="fspec-v" data-i18n="fleet.avail.val">24h / 7j</div></div>
+            </div>
+            <div class="fcar-features">
+                <div class="fcar-feat" data-i18n="fleet.e.f1">Intérieur cuir premium</div>
+                <div class="fcar-feat" data-i18n="fleet.e.f2">Climatisation bi-zone</div>
+                <div class="fcar-feat" data-i18n="fleet.e.f3">Connectivité Bluetooth & USB</div>
+                <div class="fcar-feat" data-i18n="fleet.e.f4">Eau minérale offerte</div>
+                <div class="fcar-feat" data-i18n="fleet.e.f5">Chargeur sans fil</div>
+            </div>
+            <p class="fcar-desc" data-i18n="fleet.e.desc">La Mercedes E-Class allie élégance et performance pour vos transferts professionnels quotidiens. Confort optimal avec isolation phonique avancée et système d'assistance à la conduite dernière génération.</p>
+            <a href="contact.html" class="btn-orange" data-i18n="fleet.btn.reserve">Réserver ce véhicule →</a>
+        </div>
+    </div>
+
+    <!-- S-Class -->
+    <div class="fpanel" id="fp-s">
+        <div class="fcar">
+            <div class="fcar-badge" data-i18n="fleet.s.badge">First Class</div>
+            <img src="images/classeS (2).png" alt="Mercedes S-Class">
+        </div>
+        <div>
+            <div class="fcar-num" data-i18n="fleet.s.num">Modèle 02 / 04</div>
+            <h3 class="fcar-name" data-i18n="fleet.s.name">Mercedes-Benz <span>S-Class</span></h3>
+            <p class="fcar-cat" data-i18n="fleet.s.cat">Limousine Executive · First Class · 2024</p>
+            <div class="fspecs">
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.pax">Passagers</div><div class="fspec-v" data-i18n="fleet.s.specs.pax">Jusqu'à 3</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.bag">Bagages</div><div class="fspec-v" data-i18n="fleet.s.specs.bag">3 valises</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.cat">Catégorie</div><div class="fspec-v" data-i18n="fleet.s.badge">First Class</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.s.specs.equip.l">Équipement</div><div class="fspec-v" data-i18n="fleet.s.specs.equip.v">Massants</div></div>
+            </div>
+            <div class="fcar-features">
+                <div class="fcar-feat" data-i18n="fleet.s.f1">Sièges massants & ventilés</div>
+                <div class="fcar-feat" data-i18n="fleet.s.f2">Système audio Burmester® 4D</div>
+                <div class="fcar-feat" data-i18n="fleet.s.f3">Isolation phonique renforcée</div>
+                <div class="fcar-feat" data-i18n="fleet.s.f4">Tablettes individuelles</div>
+                <div class="fcar-feat" data-i18n="fleet.s.f5">Champagne & rafraîchissements</div>
+            </div>
+            <p class="fcar-desc" data-i18n="fleet.s.desc">L'ultime expression du luxe automobile. La S-Class offre une expérience sensorielle inégalée — sièges massants, audio Burmester 4D et isolation phonique de référence pour vos occasions les plus prestigieuses.</p>
+            <a href="contact.html" class="btn-orange" data-i18n="fleet.btn.reserve">Réserver ce véhicule →</a>
+        </div>
+    </div>
+
+    <!-- V-Class -->
+    <div class="fpanel" id="fp-v">
+        <div class="fcar">
+            <div class="fcar-badge" data-i18n="fleet.v.badge">VIP Group</div>
+            <img src="images/classeV (2).png" alt="Mercedes V-Class">
+        </div>
+        <div>
+            <div class="fcar-num" data-i18n="fleet.v.num">Modèle 03 / 04</div>
+            <h3 class="fcar-name" data-i18n="fleet.v.name">Mercedes-Benz <span>V-Class</span></h3>
+            <p class="fcar-cat" data-i18n="fleet.v.cat">Minivan VIP · Groupes & Délégations · 2024</p>
+            <div class="fspecs">
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.pax">Passagers</div><div class="fspec-v" data-i18n="fleet.v.specs.pax">Jusqu'à 7</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.bag">Bagages</div><div class="fspec-v" data-i18n="fleet.v.specs.bag">7 valises</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.cat">Catégorie</div><div class="fspec-v" data-i18n="fleet.v.badge">VIP Group</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.v.specs.config.l">Config.</div><div class="fspec-v" data-i18n="fleet.v.specs.config.v">Face-à-face</div></div>
+            </div>
+            <div class="fcar-features">
+                <div class="fcar-feat" data-i18n="fleet.v.f1">Configuration salon face-à-face</div>
+                <div class="fcar-feat" data-i18n="fleet.v.f2">Cloison de séparation disponible</div>
+                <div class="fcar-feat" data-i18n="fleet.v.f3">Wi-Fi intégré</div>
+                <div class="fcar-feat" data-i18n="fleet.v.f4">Porte coulissante électrique</div>
+                <div class="fcar-feat" data-i18n="fleet.v.f5">Idéal délégations & familles VIP</div>
+            </div>
+            <p class="fcar-desc" data-i18n="fleet.v.desc">Véritable salon roulant configuré en face-à-face, la V-Class transforme chaque trajet en espace de travail ou de réunion mobile. Idéale pour délégations officielles, groupes corporate et transferts familiaux premium.</p>
+            <a href="contact.html" class="btn-orange" data-i18n="fleet.btn.reserve">Réserver ce véhicule →</a>
+        </div>
+    </div>
+
+    <!-- Sprinter -->
+    <div class="fpanel" id="fp-sp">
+        <div class="fcar">
+            <div class="fcar-badge" data-i18n="fleet.sp.badge">Mini Coach</div>
+            <img src="images/minicoachMercedesSSPRINTER16PASSAGER.png" alt="Mercedes Sprinter Mini Coach">
+        </div>
+        <div>
+            <div class="fcar-num" data-i18n="fleet.sp.num">Modèle 04 / 04</div>
+            <h3 class="fcar-name" data-i18n="fleet.sp.name">Mercedes-Benz <span>Sprinter</span></h3>
+            <p class="fcar-cat" data-i18n="fleet.sp.cat">Mini Coach · Groupes & Événements</p>
+            <div class="fspecs">
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.pax">Passagers</div><div class="fspec-v" data-i18n="fleet.sp.specs.pax">Jusqu'à 16</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.bag">Bagages</div><div class="fspec-v" data-i18n="fleet.sp.specs.bag">16 valises</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.sp.specs.cap.l">Capacité</div><div class="fspec-v" data-i18n="fleet.sp.specs.cap.v">Grands groupes</div></div>
+                <div class="fspec"><div class="fspec-l" data-i18n="fleet.spec.avail">Disponibilité</div><div class="fspec-v" data-i18n="fleet.avail.val">24h / 7j</div></div>
+            </div>
+            <div class="fcar-features">
+                <div class="fcar-feat" data-i18n="fleet.sp.f1">Climatisation multi-zones</div>
+                <div class="fcar-feat" data-i18n="fleet.sp.f2">Sièges individuels confortables</div>
+                <div class="fcar-feat" data-i18n="fleet.sp.f3">Grand coffre à bagages</div>
+                <div class="fcar-feat" data-i18n="fleet.sp.f4">Idéal événements & transferts groupes</div>
+                <div class="fcar-feat" data-i18n="fleet.sp.f5">Wi-Fi & ports USB à bord</div>
+            </div>
+            <p class="fcar-desc" data-i18n="fleet.sp.desc">Le Mercedes Sprinter Mini Coach est la solution idéale pour vos déplacements en groupe. Avec 16 places assises et 16 espaces bagage, il convient parfaitement aux transferts aéroportuaires de groupe, événements d'entreprise et excursions VIP.</p>
+            <a href="contact.html" class="btn-orange" data-i18n="fleet.btn.reserve">Réserver ce véhicule →</a>
+        </div>
+    </div></section>
+
+<!-- GALLERY -->
+<section class="fleet-gallery">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="fleet.gal.label">En situation</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="fleet.gal.h2">Notre flotte <span>en action</span></h2>
+    </div>
+    <div class="gallery-grid" style="margin-top:56px">
+        <a href="galerie-cinquantenaire.html" class="gal-item tall reveal-l" style="height:auto;display:block;text-decoration:none">
+            <img src="images/WhatsApp%20Image%202026-04-1.42.jpeg" alt="Flotte Cinquantenaire" style="height:100%;min-height:564px">
+            <div class="gal-caption"><span>Flotte au Cinquantenaire →</span></div>
+        </a>
+        <a href="galerie-vclass-eu.html" class="gal-item reveal" style="display:block;text-decoration:none">
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.31.42.jpeg" alt="V-Class EU">
+            <div class="gal-caption"><span>V-Class · Institutions EU →</span></div>
+        </a>
+        <a href="galerie-sclass-amigo.html" class="gal-item reveal" style="display:block;text-decoration:none;transition-delay:.1s">
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2011.42.jpeg" alt="S-Class Hotel Amigo">
+            <div class="gal-caption"><span>S-Class · Hôtel Amigo →</span></div>
+        </a>
+        <a href="galerie-eclass-dominican.html" class="gal-item reveal" style="display:block;text-decoration:none;transition-delay:.2s">
+            <img src="images/Whatmage%202026-04-11%20at%2017.31.42.jpeg" alt="E-Class Dominican">
+            <div class="gal-caption"><span>E-Class · The Dominican →</span></div>
+        </a>
+        <a href="galerie-evenement-corporate.html" class="gal-item reveal" style="display:block;text-decoration:none;transition-delay:.3s">
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.3A1.42.jpeg" alt="Flotte Événement">
+            <div class="gal-caption"><span>Flotte · Événement Corporate →</span></div>
+        </a>
+    </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-banner">
+    <div class="stats-grid">
+        <div class="stat reveal"><div class="stat-n" data-target="3">0</div><div class="stat-l" data-i18n="fleet.stat.models">Modèles disponibles</div></div>
+        <div class="stat reveal" style="transition-delay:.1s"><div class="stat-n" data-target="7">0</div><div class="stat-l" data-i18n="fleet.stat.pax">Passagers max (V-Class)</div></div>
+        <div class="stat reveal" style="transition-delay:.2s"><div class="stat-n" data-target="24">0</div><div class="stat-l" data-i18n="fleet.stat.hours">Heures / 7 jours</div></div>
+        <div class="stat reveal" style="transition-delay:.3s"><div class="stat-n" data-target="100">0</div><div class="stat-l" data-i18n="fleet.stat.new">% Véhicules neufs</div></div>
+    </div>
+</div>
+
+<div class="cta-banner">
+    <h2 data-i18n="fleet.cta.h2">Choisissez votre <span>véhicule idéal</span></h2>
+    <p data-i18n="fleet.cta.p">Besoin d'aide pour sélectionner le bon véhicule ? Contactez-nous, nous vous conseillerons.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange" data-i18n="cta.btn.book">Réserver maintenant →</a>
+        <a href="services.html" class="btn-ghost" data-i18n="cta.btn.services">Nos services</a>
+    </div>
+</div>
+
+<!-- ══ PARTNERS STRIP ══ -->
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center" data-i18n="partners.label">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="partners.sub">Nous sommes fiers d'être membres des plus grands réseaux de transport au monde, garantissant les normes les plus élevées de sécurité, d'éthique et d'excellence professionnelle.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="Black Limousine" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag" data-i18n="footer.tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t" data-i18n="footer.col.pages">Pages</div><ul class="flinks"><li><a href="index.html" data-i18n="drop.accueil">Accueil</a></li><li><a href="services.html" data-i18n="drop.services">Services</a></li><li><a href="flotte.html" data-i18n="drop.flotte">Flotte</a></li><li><a href="a-propos.html" data-i18n="drop.apropos">À propos</a></li><li><a href="contact.html" data-i18n="drop.contact">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t" data-i18n="footer.col.services">Services</div><ul class="flinks"><li><a href="service-aeroport.html">Aéroport</a></li><li><a href="service-corporate.html">Corporate</a></li><li><a href="service-diplomatique.html">Diplomatique</a></li><li><a href="service-evenements.html">Événements</a></li><li><a href="service-heure.html">À l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t" data-i18n="footer.col.contact">Contact</div><ul class="flinks"><li><a href="https://wa.me/32485964008?text=Bonjour %F0%9F%91%8B Je souhaite r%C3%A9server un transfert avec Black Limousine. Pouvez-vous me contacter %3F Merci.">WhatsApp</a></li><li><a href="mailto:info@blacklimousine.be">info@blacklimousine.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — TVA BE 0791.634.024</p>
+        <div class="footer-leg"><a href="#" data-i18n="footer.mentions">Mentions légales</a><a href="#" data-i18n="footer.privacy">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    function showFleet(type, btn) {
+        document.querySelectorAll('.fpanel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.ftab').forEach(t => t.classList.remove('active'));
+        document.getElementById('fp-' + type).classList.add('active');
+        btn.classList.add('active');
+    }
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+    const cObs = new IntersectionObserver(entries => { entries.forEach(e => { if (!e.isIntersecting) return; const el = e.target, target = +el.dataset.target; const suffix = target === 100 ? '%' : '+'; let v = 0; const t = setInterval(() => { v += target/60; if (v >= target) { v = target; clearInterval(t); } el.textContent = Math.floor(v) + suffix; }, 28); cObs.unobserve(el); }); }, { threshold: 0.5 });
+    document.querySelectorAll('.stat-n').forEach(el => cObs.observe(el));
+</script>
+<script src="translations.js"></script>
+</body>
+</html>

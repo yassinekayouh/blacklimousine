@@ -1,0 +1,326 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transfert Aéroport → Paris — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .dest-hero { position:relative; height:75vh; min-height:540px; overflow:hidden; display:flex; align-items:flex-end; }
+        .dest-hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.5); }
+        .dest-hero::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.15) 65%, transparent 100%); }
+        .dest-hero-content { position:relative; z-index:2; padding:0 64px 64px; max-width:1000px; }
+        .dest-crumb { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
+        .dest-crumb a { color:var(--orange); text-decoration:none; }
+        .dest-h1 { font-family:var(--font-h); font-size:clamp(2.8rem,6vw,5rem); font-weight:900; text-transform:uppercase; color:#fff; line-height:1.0; margin-bottom:14px; }
+        .dest-h1 span { color:var(--orange); }
+        .dest-hero-tags { display:flex; gap:16px; flex-wrap:wrap; }
+        .dest-hero-tag { background:rgba(232,97,26,.9); color:#fff; font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; padding:7px 16px; }
+
+        .dest-intro { background:var(--dark); padding:80px 64px; display:grid; grid-template-columns:2fr 1fr; gap:64px; align-items:start; }
+        .dest-lead { font-size:.95rem; color:rgba(255,255,255,.85); line-height:1.9; margin-bottom:16px; }
+        .dest-body p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:14px; }
+        .dest-times { display:flex; flex-direction:column; gap:2px; }
+        .dest-time-card { background:var(--card); padding:24px 28px; border-left:4px solid var(--orange); }
+        .dtc-label { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:6px; }
+        .dtc-time { font-family:var(--font-h); font-size:1.6rem; font-weight:900; color:var(--white); line-height:1; }
+        .dtc-sub { font-size:.76rem; color:var(--grey); margin-top:4px; }
+        .dest-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:20px; }
+        .dest-stat { background:rgba(232,97,26,.08); padding:20px 18px; text-align:center; border:1px solid rgba(232,97,26,.15); }
+        .ds-n { font-family:var(--font-h); font-size:1.6rem; font-weight:900; color:var(--orange); line-height:1; }
+        .ds-l { font-size:.7rem; color:var(--grey); margin-top:4px; }
+
+        .dest-highlights { background:var(--black); padding:100px 64px; }
+        .hl-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .hl-card { background:var(--card); padding:36px 30px; border-top:3px solid var(--border); transition:border-top-color .2s; }
+        .hl-card:hover { border-top-color:var(--orange); }
+        .hl-icon { font-size:1.8rem; margin-bottom:14px; }
+        .hl-title { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:8px; }
+        .hl-desc { font-size:.82rem; color:var(--grey); line-height:1.75; }
+
+        .addresses-section { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:64px; }
+        .addr-col-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .addr-list { list-style:none; display:flex; flex-direction:column; gap:0; }
+        .addr-item { display:flex; justify-content:space-between; align-items:baseline; padding:12px 0; border-bottom:1px solid var(--border); gap:16px; }
+        .addr-name { font-size:.84rem; color:var(--white); font-weight:500; }
+        .addr-dist { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.1em; color:var(--orange); white-space:nowrap; }
+
+        .dest-included { background:var(--black); padding:100px 64px; }
+        .inc-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:12px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.86rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; flex-shrink:0; }
+
+        .other-dest { background:var(--dark); padding:100px 64px; }
+        .od-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .od-card { background:var(--card); padding:0; overflow:hidden; text-decoration:none; display:block; position:relative; height:200px; }
+        .od-card img { width:100%; height:100%; object-fit:cover; filter:brightness(.55); transition:transform .5s ease, filter .5s ease; }
+        .od-card:hover img { transform:scale(1.06); filter:brightness(.35); }
+        .od-top { position:absolute; top:0; left:0; right:0; height:3px; background:var(--orange); transform:scaleX(0); transform-origin:left; transition:transform .3s; z-index:2; }
+        .od-card:hover .od-top { transform:scaleX(1); }
+        .od-info { position:absolute; bottom:0; left:0; right:0; padding:14px 18px; background:linear-gradient(to top,rgba(0,0,0,.85),transparent); z-index:1; }
+        .od-flag { font-size:.9rem; }
+        .od-name { font-family:var(--font-h); font-size:.72rem; font-weight:800; text-transform:uppercase; color:#fff; }
+        .od-time { font-size:.66rem; color:rgba(255,255,255,.55); }
+
+        @media (max-width:768px) {
+            .dest-hero-content { padding:0 24px 48px; }
+            .dest-intro,.dest-highlights,.addresses-section,.dest-included,.other-dest { padding:56px 24px; }
+            .dest-intro { grid-template-columns:1fr; gap:36px; }
+            .hl-grid { grid-template-columns:1fr; }
+            .addresses-section { grid-template-columns:1fr; gap:40px; }
+            .inc-cols { grid-template-columns:1fr; gap:32px; }
+            .od-grid { grid-template-columns:1fr 1fr; }
+            .dest-stats { grid-template-columns:1fr 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn">Réserver →</a>
+    </div>
+</nav>
+
+<div class="dest-hero">
+    <img src="images/parigi_trocadero_non-editorial_vny0uo.avif" alt="Paris Champs-Élysées transfert">
+    <div class="dest-hero-content">
+        <div class="dest-crumb"><a href="service-aeroport.html" data-i18n="dest.crumb">← Retour aux destinations</a></div>
+        <h1 class="dest-h1">🇫🇷 <span>Paris</span></h1>
+        <div class="dest-hero-tags">
+            <span class="dest-hero-tag" data-i18n="dest.par.tag1">3h 15min–4h depuis BRU</span>
+            <span class="dest-hero-tag" data-i18n="dest.par.tag2">313 km depuis Zaventem</span>
+            <span class="dest-hero-tag" data-i18n="dest.par.tag3">Capitale mondiale</span>
+        </div>
+    </div>
+</div>
+
+<section class="dest-intro">
+    <div>
+        <div class="section-label" data-i18n="dest.par.lbl">Transfert Brussels Airport → Paris</div>
+        <h2 class="section-h2" data-i18n="dest.par.h2">La Ville <span>Lumière.</span></h2>
+        <p class="dest-lead" data-i18n="dest.par.lead">Paris est la destination longue distance la plus demandée au départ de Brussels Airport. À 313 km par l'autoroute E19/A1, la capitale française est accessible en 3h 15 à 4h selon le trafic — une alternative sérieuse au train pour les clients qui privilégient le confort absolu, la discrétion et la flexibilité d'horaire. Nos Mercedes S-Class sont la référence pour ce trajet emblématique.</p>
+        <div class="dest-body">
+            <p data-i18n="dest.par.p1">Le trajet s'effectue entièrement par autoroute : E19 depuis Brussels Airport jusqu'à la frontière belgo-française, puis l'A1 jusqu'à Paris. Le trafic est prévisible en dehors des périodes de congestion classiques (vendredi après-midi, week-ends de grandes fêtes, Fashion Weeks parisiennes). Nos chauffeurs partent systématiquement avec une marge de sécurité pour absorber les aléas.</p>
+            <p data-i18n="dest.par.p2">Pour les missions Paris, nous proposons la mise à disposition complète (chauffeur en attente sur place) ainsi que la prise en charge retour. Ce service est très prisé des délégations diplomatiques et des équipes dirigeantes qui font l'aller-retour dans la journée.</p>
+        </div>
+        <div class="dest-stats" style="margin-top:28px">
+            <div class="dest-stat"><div class="ds-n">313 km</div><div class="ds-l" data-i18n="dest.par.stat1.l">Distance BRU–Paris</div></div>
+            <div class="dest-stat"><div class="ds-n">3h 15–4h</div><div class="ds-l" data-i18n="dest.stat.duration">Durée estimée</div></div>
+            <div class="dest-stat"><div class="ds-n">24/7</div><div class="ds-l" data-i18n="dest.stat.avail">Disponibilité</div></div>
+        </div>
+    </div>
+    <div>
+        <div class="dest-times">
+            <div class="dest-time-card">
+                <div class="dtc-label" data-i18n="dest.from.bru">Depuis Brussels Airport (BRU)</div>
+                <div class="dtc-time">3h 15–4h</div>
+                <div class="dtc-sub">Via E19/A1 · 313 km · Selon trafic</div>
+            </div>
+            <div class="dest-time-card" style="border-left-color:var(--orange); background:rgba(232,97,26,.07)">
+                <div class="dtc-label" data-i18n="dest.avail.label">Disponibilité</div>
+                <div class="dtc-time" style="font-size:1.2rem" data-i18n="dest.avail.val">24 h / 7 j</div>
+                <div class="dtc-sub" data-i18n="dest.recoms.6h">Réservation recommandée 6h avant</div>
+            </div>
+            <div class="dest-time-card" style="border-left-color:#888">
+                <div class="dtc-label" style="color:var(--grey)">Mise à disposition</div>
+                <div class="dtc-time" style="font-size:1.0rem; color:var(--grey)">Chauffeur sur place</div>
+                <div class="dtc-sub">Devis personnalisé — aller-retour dans la journée</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="dest-highlights">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="dest.sec.city">La ville</div>
+        <h2 class="section-h2" style="text-align:center">Paris — <span data-i18n="dest.sec.city.h2">ce que nous desservons</span></h2>
+    </div>
+    <div class="hl-grid">
+        <div class="hl-card reveal">
+            <div class="hl-icon">✈️</div>
+            <div class="hl-title" data-i18n="dest.par.hl1.t">Aéroports CDG &amp; Orly</div>
+            <p class="hl-desc">Transferts depuis Brussels Airport vers l'aéroport Charles de Gaulle (CDG) ou Orly pour correspondances internationales. Prise en charge de passagers arrivant à Paris pour des destinations belges — coordination avec les vols en temps réel.</p>
+        </div>
+        <div class="hl-card reveal" style="transition-delay:.1s">
+            <div class="hl-icon">🏛️</div>
+            <div class="hl-title" data-i18n="dest.par.hl2.t">Institutions &amp; Diplomatie</div>
+            <p class="hl-desc">Palais de l'Élysée, Matignon, Quai d'Orsay, UNESCO, OCDE, OTAN (siège historique) — transferts diplomatiques vers les grandes institutions françaises et internationales basées à Paris, avec chauffeurs accrédités.</p>
+        </div>
+        <div class="hl-card reveal" style="transition-delay:.2s">
+            <div class="hl-icon">💼</div>
+            <div class="hl-title" data-i18n="dest.par.hl3.t">Business &amp; Congrès</div>
+            <p class="hl-desc">Palais des Congrès, Paris Le Bourget (salons), La Défense (Tour TotalEnergies, LVMH, BNP Paribas), Viparis — le centre d'affaires parisien est régulièrement la destination de nos clients corporate belges et internationaux.</p>
+        </div>
+        <div class="hl-card reveal" style="transition-delay:.3s">
+            <div class="hl-icon">👗</div>
+            <div class="hl-title" data-i18n="dest.par.hl4.t">Fashion &amp; Luxe</div>
+            <p class="hl-desc">Fashion Week Paris (janvier, mars, juin, septembre), showrooms Chanel, Dior, Hermès, Louis Vuitton — transferts discrets pour acheteurs, rédacteurs et invités VIP des maisons de couture, avec véhicules banalisés disponibles.</p>
+        </div>
+        <div class="hl-card reveal" style="transition-delay:.4s">
+            <div class="hl-icon">🏨</div>
+            <div class="hl-title" data-i18n="dest.par.hl5.t">Palaces &amp; Grands Hôtels</div>
+            <p class="hl-desc">Le Meurice, Hôtel de Crillon, Ritz Paris, Plaza Athénée, Four Seasons George V — les palaces parisiens accueillent une clientèle internationale qui apprécie l'arrivée en Mercedes depuis Brussels Airport plutôt que le train.</p>
+        </div>
+        <div class="hl-card reveal" style="transition-delay:.5s">
+            <div class="hl-icon">🎨</div>
+            <div class="hl-title" data-i18n="dest.par.hl6.t">Culture &amp; Tourisme VIP</div>
+            <p class="hl-desc">Tour Eiffel, Louvre, Musée d'Orsay, Opéra Garnier, Versailles (30 min de Paris), Champagne (Reims, Épernay) — circuits culturels et gastronomiques sur mesure au départ de Paris en mise à disposition.</p>
+        </div>
+    </div>
+</section>
+
+<section class="addresses-section">
+    <div class="reveal-l">
+        <div class="addr-col-title">Palaces &amp; Hôtels — temps depuis BRU</div>
+        <ul class="addr-list">
+            <li class="addr-item"><span class="addr-name">Le Meurice (1er arr.)</span><span class="addr-dist">3h 25 min</span></li>
+            <li class="addr-item"><span class="addr-name">Hôtel de Crillon (8e arr.)</span><span class="addr-dist">3h 30 min</span></li>
+            <li class="addr-item"><span class="addr-name">Ritz Paris (1er arr.)</span><span class="addr-dist">3h 25 min</span></li>
+            <li class="addr-item"><span class="addr-name">Plaza Athénée (8e arr.)</span><span class="addr-dist">3h 30 min</span></li>
+            <li class="addr-item"><span class="addr-name">Four Seasons George V</span><span class="addr-dist">3h 28 min</span></li>
+            <li class="addr-item"><span class="addr-name">Le Bristol Paris (8e arr.)</span><span class="addr-dist">3h 30 min</span></li>
+            <li class="addr-item"><span class="addr-name">Mandarin Oriental Paris</span><span class="addr-dist">3h 27 min</span></li>
+            <li class="addr-item"><span class="addr-name">Hôtel Costes (1er arr.)</span><span class="addr-dist">3h 26 min</span></li>
+        </ul>
+    </div>
+    <div class="reveal-r">
+        <div class="addr-col-title">Institutions &amp; Aéroports — temps depuis BRU</div>
+        <ul class="addr-list">
+            <li class="addr-item"><span class="addr-name">Aéroport CDG — Terminal 1</span><span class="addr-dist">3h 15 min</span></li>
+            <li class="addr-item"><span class="addr-name">Aéroport Orly</span><span class="addr-dist">3h 45 min</span></li>
+            <li class="addr-item"><span class="addr-name">Palais des Congrès</span><span class="addr-dist">3h 25 min</span></li>
+            <li class="addr-item"><span class="addr-name">La Défense (CNIT)</span><span class="addr-dist">3h 20 min</span></li>
+            <li class="addr-item"><span class="addr-name">UNESCO (7e arr.)</span><span class="addr-dist">3h 32 min</span></li>
+            <li class="addr-item"><span class="addr-name">OCDE (16e arr.)</span><span class="addr-dist">3h 30 min</span></li>
+            <li class="addr-item"><span class="addr-name">Palais de l'Élysée</span><span class="addr-dist">3h 28 min</span></li>
+            <li class="addr-item"><span class="addr-name">Paris Le Bourget (salons)</span><span class="addr-dist">3h 18 min</span></li>
+        </ul>
+    </div>
+</section>
+
+<section class="dest-included">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="dest.sec.inc">Tout inclus</div>
+        <h2 class="section-h2" style="text-align:center">Votre transfert <span>BRU → Paris</span></h2>
+    </div>
+    <div class="inc-cols">
+        <div class="reveal-l">
+            <div class="inc-title" data-i18n="dest.inc.col1">Inclus dans chaque transfert</div>
+            <ul class="inc-list">
+                <li data-i18n="inc.nominatif">Accueil nominatif dans le hall d'arrivée de BRU</li>
+                <li data-i18n="inc.vol">Suivi de vol en temps réel — aucune pénalité pour retard</li>
+                <li data-i18n="inc.attente">45 minutes d'attente gratuites incluses</li>
+                <li data-i18n="inc.vehicule.sc">Mercedes S-Class (confort longue distance premium)</li>
+                <li data-i18n="inc.eau.full">Eau minérale, rafraîchissements et collations à bord</li>
+                <li data-i18n="inc.wifi.full">Wi-Fi 4G et prises de charge USB-C + 220V</li>
+                <li>Tarif fixe garanti, péages A1 et périphérique inclus</li>
+                <li>Chauffeur expérimenté sur la liaison BRU–Paris</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title" data-i18n="dest.inc.col2">Options disponibles</div>
+            <ul class="inc-list">
+                <li>Mise à disposition complète (chauffeur en attente à Paris)</li>
+                <li>Chauffeur bilingue FR/EN (trilingue FR/EN/NL)</li>
+                <li>Panneau d'accueil personnalisé (logo maison, discrétion)</li>
+                <li>Transfert retour coordonné simultanément</li>
+                <li>Véhicule banalisé pour clientèle discrète</li>
+                <li data-i18n="opt.corporate">Compte corporate avec facturation mensuelle</li>
+                <li>Arrêt intermédiaire (Reims, Compiègne) sur demande</li>
+                <li>Connexion CDG ou Orly pour correspondances internationales</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="other-dest">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="dest.sec.other">Autres destinations</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="dest.other.h2">Nous desservons <span>toute l'Europe</span></h2>
+    </div>
+    <div class="od-grid">
+        <a href="ville-bruxelles.html" class="od-card reveal">
+            <div class="od-top"></div>
+            <img src="images/Bruxelles-en-ete.jpg" alt="Bruxelles">
+            <div class="od-info"><div class="od-flag">🇧🇪</div><div class="od-name">Bruxelles</div><div class="od-time">25–35 min depuis BRU</div></div>
+        </a>
+        <a href="ville-amsterdam.html" class="od-card reveal" style="transition-delay:.1s">
+            <div class="od-top"></div>
+            <img src="images/amsterdam-city-canal-boats-night-800x450.jpg" alt="Amsterdam">
+            <div class="od-info"><div class="od-flag">🇳🇱</div><div class="od-name">Amsterdam</div><div class="od-time">2h 15min–2h 45min</div></div>
+        </a>
+        <a href="ville-luxembourg.html" class="od-card reveal" style="transition-delay:.2s">
+            <div class="od-top"></div>
+            <img src="images/luxembourg%20city%20panorama.jpg" alt="Luxembourg">
+            <div class="od-info"><div class="od-flag">🇱🇺</div><div class="od-name">Luxembourg</div><div class="od-time">2h 30min–2h 45min</div></div>
+        </a>
+        <a href="ville-gand.html" class="od-card reveal" style="transition-delay:.3s">
+            <div class="od-top"></div>
+            <img src="images/gand-centre-eclaire-de-nuit.jpg" alt="Gand">
+            <div class="od-info"><div class="od-flag">🇧🇪</div><div class="od-name">Gand</div><div class="od-time">50–65 min depuis BRU</div></div>
+        </a>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2 data-i18n="dest.par.cta.h2">Réservez votre transfert <span>vers Paris</span></h2>
+    <p data-i18n="dest.cta.sub.int">Tarif fixe, ponctualité garantie, Mercedes S-Class. Disponible 24h/24 depuis BRU.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange" data-i18n="dest.cta.btn1">Réserver maintenant →</a>
+        <a href="service-aeroport.html" class="btn-ghost" data-i18n="dest.cta.btn2">Voir toutes les destinations</a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Destinations</div><ul class="flinks"><li><a href="ville-bruxelles.html">Bruxelles</a></li><li><a href="ville-anvers.html">Anvers</a></li><li><a href="ville-gand.html">Gand</a></li><li><a href="ville-bruges.html">Bruges</a></li><li><a href="ville-amsterdam.html">Amsterdam</a></li><li><a href="ville-paris.html">Paris</a></li><li><a href="ville-luxembourg.html">Luxembourg</a></li><li><a href="ville-maastricht.html">Maastricht</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:info@belgiumairport.be">info@belgiumairport.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

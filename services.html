@@ -1,0 +1,517 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Black Limousine — Services</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .services-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 2px; }
+        .svc { position: relative; height: 420px; overflow: hidden; cursor: pointer; display:block; }
+        .svc.on { transition-delay: 0s !important; }
+        .svc img { width:100%; height:100%; object-fit:cover; filter:brightness(.52); transition: transform .5s ease, filter .5s ease; }
+        .svc:hover img { transform: scale(1.07); filter: brightness(.3); }
+        .svc-overlay { position:absolute; inset:0; background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.05) 55%); z-index:1; }
+        .svc-top { position:absolute; top:0; left:0; right:0; height:3px; background:var(--orange); transform:scaleX(0); transform-origin:left; transition:transform .3s ease; z-index:3; }
+        .svc:hover .svc-top { transform: scaleX(1); }
+        .svc-body { position:absolute; bottom:0; left:0; right:0; padding:28px 30px 32px; z-index:2; }
+        .svc-num { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.2em; color:var(--orange); margin-bottom:8px; }
+        .svc-name { font-family:var(--font-h); font-size:1.15rem; font-weight:800; text-transform:uppercase; letter-spacing:.04em; color:var(--white); margin-bottom:8px; }
+        .svc-desc { font-size:.82rem; color:rgba(255,255,255,.6); line-height:1.65; opacity:0; transition: opacity .3s ease; }
+        .svc:hover .svc-desc { opacity:1; }
+        .svc-arrow { display:inline-flex; align-items:center; gap:6px; margin-top:14px; font-family:var(--font-h); font-size:.65rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:var(--orange); opacity:0; transform:translateX(-8px); transition: opacity .25s ease, transform .25s ease; }
+        .svc:hover .svc-arrow { opacity:1; transform:translateX(0); }
+
+        .process { background: var(--dark); padding: 100px 64px; }
+        .process-steps { display: grid; grid-template-columns: repeat(4,1fr); gap: 0; margin-top: 60px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+        .step { padding: 36px 28px; position: relative; border-right: 1px solid var(--border); }
+        .step:last-child { border-right: none; }
+        .step-num { font-family:var(--font-h); font-size: 3rem; font-weight:900; color: rgba(232,97,26,.15); line-height:1; margin-bottom:16px; }
+        .step-title { font-family:var(--font-h); font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:10px; }
+        .step-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+        .step-line { position:absolute; top:50px; right:-1px; width:2px; height:30px; background:var(--orange); }
+        .step:last-child .step-line { display:none; }
+
+        .pricing-section { background:var(--black); padding: 100px 64px; }
+        .pricing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .price-card { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition: border-top-color .2s ease; }
+        .price-card:hover, .price-card.featured { border-top-color: var(--orange); }
+        .price-badge { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; display:block; }
+        .price-title { font-family:var(--font-h); font-size:1.1rem; font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:6px; }
+        .price-sub { font-size:.8rem; color:var(--grey); margin-bottom:24px; }
+        .price-features { list-style:none; display:flex; flex-direction:column; gap:10px; margin-bottom:30px; }
+        .price-features li { font-size:.82rem; color:rgba(255,255,255,.7); display:flex; align-items:center; gap:10px; }
+        .price-features li::before { content:'✓'; color:var(--orange); font-weight:700; font-size:.9rem; flex-shrink:0; }
+
+        /* ── Vehicle Showcase ── */
+        .vehicle-showcase { background:var(--black); padding:80px 0 60px; }
+        .vshowcase-top { text-align:center; padding:0 64px; }
+        .vtabs { display:flex; justify-content:center; gap:0; border-bottom:2px solid var(--border); margin-top:40px; }
+        .vtab { font-family:var(--font-h); font-size:.9rem; font-weight:900; text-transform:uppercase; letter-spacing:.15em; padding:22px 64px; background:transparent; border:none; border-bottom:3px solid transparent; margin-bottom:-2px; cursor:pointer; color:var(--grey); transition:color .25s,border-color .25s; }
+        .vtab.active { color:var(--orange); border-bottom-color:var(--orange); }
+        .vtab:hover:not(.active) { color:var(--white); }
+        .vpanel { display:none; }
+        .vpanel.active { display:block; }
+
+        /* Split-screen card */
+        .vcard { display:grid; grid-template-columns:55% 45%; min-height:640px; width:100%; gap:12px; padding:20px 20px 20px 20px; background:var(--black); }
+        .vcard-img { background:#242424; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:20px; }
+        .vcard-img img { width:100%; height:100%; object-fit:contain; display:block; }
+        .vcard-content { background:var(--dark); padding:64px 56px; display:flex; flex-direction:column; justify-content:center; border-left:1px solid var(--border); border-radius:20px; }
+        .vcard-num { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.24em; text-transform:uppercase; color:var(--orange); margin-bottom:16px; }
+        .vcard-title { font-family:var(--font-h); font-size:clamp(2rem,3.2vw,2.8rem); font-weight:900; text-transform:uppercase; color:var(--white); line-height:1.0; margin-bottom:8px; }
+        .vcard-title span { color:var(--orange); }
+        .vcard-cat { font-size:.84rem; color:var(--grey); margin-bottom:32px; }
+        .vcard-specs { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:30px; }
+        .vspec { padding:14px 16px; background:var(--card); border-left:3px solid var(--orange); }
+        .vspec-l { font-family:var(--font-h); font-size:.57rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--grey); margin-bottom:4px; }
+        .vspec-v { font-family:var(--font-h); font-size:.92rem; font-weight:700; color:var(--white); }
+        .vcard-feats { display:flex; flex-direction:column; gap:10px; margin-bottom:28px; }
+        .vfeat { display:flex; align-items:center; gap:10px; font-size:.82rem; color:rgba(255,255,255,.75); }
+        .vfeat::before { content:'✓'; color:var(--orange); font-weight:700; font-size:.9rem; flex-shrink:0; }
+        .vcard-desc { font-size:.84rem; color:var(--grey); line-height:1.8; margin-bottom:32px; }
+        .vcard-cta { display:flex; align-items:center; justify-content:center; gap:10px; font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.14em; text-transform:uppercase; color:var(--white); background:var(--orange); padding:18px 24px; text-decoration:none; transition:background .25s; }
+        .vcard-cta:hover { background:#c95710; }
+
+        /* Animations */
+        .vpanel.active .vcard-img img { animation:imgIn .8s cubic-bezier(.25,.46,.45,.94) forwards; }
+        @keyframes imgIn { from { transform:scale(1.04); opacity:0; } to { transform:scale(1); opacity:1; } }
+        .vpanel.active .vcard-content { animation:contentIn .55s ease .1s both; }
+        @keyframes contentIn { from { opacity:0; transform:translateX(24px); } to { opacity:1; transform:translateX(0); } }
+
+        /* Navigation */
+        .vnav { display:flex; align-items:center; justify-content:space-between; margin-top:24px; padding:0 64px; }
+        .vdots { display:flex; gap:8px; align-items:center; }
+        .vdot { width:8px; height:8px; border-radius:50%; background:var(--border); border:none; padding:0; cursor:pointer; transition:background .2s ease, width .2s ease, border-radius .2s ease; }
+        .vdot.active { background:var(--orange); width:26px; border-radius:4px; }
+        .varrows { display:flex; gap:10px; }
+        .varrow { width:46px; height:46px; border-radius:50%; background:var(--card); border:1px solid var(--border); color:var(--white); font-size:1.1rem; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background .2s ease, border-color .2s ease; }
+        .varrow:hover { background:var(--orange); border-color:var(--orange); }
+
+        @media (max-width: 768px) {
+            /* Services grid section (inline style override) */
+            .services-grid { grid-template-columns: 1fr !important; }
+            .svc { height: 260px; }
+            /* Process */
+            .process { padding: 56px 24px !important; }
+            .process-steps { grid-template-columns: 1fr 1fr; margin-top: 40px; }
+            .step { padding: 24px 18px; }
+            /* Pricing */
+            .pricing-section { padding: 56px 24px !important; }
+            .pricing-grid { grid-template-columns: 1fr; }
+            /* Vehicle showcase */
+            .vehicle-showcase { padding: 56px 0 36px; }
+            .vshowcase-top { padding: 0 24px; }
+            .vtabs { overflow-x: auto; justify-content: flex-start; padding: 0 24px; }
+            .vtab { padding: 16px 28px; font-size: .75rem; letter-spacing: .08em; white-space: nowrap; flex-shrink: 0; }
+            .vcard { grid-template-columns: 1fr; padding: 12px; gap: 8px; }
+            .vcard-img { min-height: 240px; border-radius: 16px; }
+            .vcard-img img { object-fit: contain; }
+            .vcard-content { padding: 28px 20px; border-left: none; border-top: 1px solid var(--border); border-radius: 16px; }
+            .vcard-title { font-size: clamp(1.6rem, 6vw, 2.2rem); }
+            .vcard-specs { grid-template-columns: 1fr 1fr; gap: 8px; }
+            .vnav { padding: 0 20px; }
+            /* Section inline paddings */
+            section[style*="padding:100px 64px"] { padding: 56px 24px !important; }
+        }
+        @media (max-width: 480px) {
+            .process-steps { grid-template-columns: 1fr; }
+            .vcard-specs { grid-template-columns: 1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item active"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero" style="background-image:url('images/WhatsAppmage%202026-04-11%20at%2017.31.42.jpeg')">
+    <div class="page-hero-content">
+        <div class="page-hero-label" data-i18n="svc.pg.hero.label">02 — Nos prestations</div>
+        <h1 data-i18n="svc.pg.h1">Nos <span>Services</span></h1>
+        <p class="page-hero-sub" data-i18n="sec.services.sub">Du transfert aéroport aux délégations diplomatiques, nous couvrons tous vos besoins.</p>
+    </div>
+</div>
+
+<!-- SERVICES GRID -->
+<section style="background:var(--black); padding:100px 64px;">
+    <div style="text-align:center; margin-bottom:64px;">
+        <div class="section-label" style="justify-content:center" data-i18n="svc.pg.grid.label">Prestations complètes</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="svc.pg.grid.h2">Tous nos <span>services</span></h2>
+    </div>
+    <div class="services-grid">
+        <a href="service-aeroport.html" class="svc reveal" style="text-decoration:none">
+            <img src="images/c9RN07aPkH2dzOFf.webp" alt="Aéroport">
+            <div class="svc-overlay"></div><div class="svc-top"></div>
+            <div class="svc-body">
+                <div class="svc-num">01</div>
+                <h3 class="svc-name" data-i18n="svc.01.name">Transferts Aéroport</h3>
+                <p class="svc-desc" data-i18n="svc.pg.01.desc">Suivi en temps réel des vols, accueil avec panneau nominatif. 45 minutes d'attente gratuites incluses. Tous les aéroports belges couverts.</p>
+                <span class="svc-arrow">Voir détails →</span>
+            </div>
+        </a>
+        <a href="service-corporate.html" class="svc reveal" style="transition-delay:.1s;text-decoration:none">
+            <img src="images/d2OC2kTjUUAEUgsM.webp" alt="Corporate">
+            <div class="svc-overlay"></div><div class="svc-top"></div>
+            <div class="svc-body">
+                <div class="svc-num">02</div>
+                <h3 class="svc-name" data-i18n="svc.03.name">Transferts Corporate</h3>
+                <p class="svc-desc" data-i18n="svc.pg.02.desc">Solutions sur mesure pour entreprises. Facturation mensuelle, contrats dédiés et priorité de réservation pour vos équipes.</p>
+                <span class="svc-arrow">Voir détails →</span>
+            </div>
+        </a>
+        <a href="service-hotels.html" class="svc reveal" style="transition-delay:.2s;text-decoration:none">
+            <img src="images/xjUY9Nks43AnJHJz.webp" alt="Hôtels">
+            <div class="svc-overlay"></div><div class="svc-top"></div>
+            <div class="svc-body">
+                <div class="svc-num">03</div>
+                <h3 class="svc-name" data-i18n="svc.04.name">Hôtels de Prestige</h3>
+                <p class="svc-desc" data-i18n="svc.pg.03.desc">Partenaire des plus grands hôtels bruxellois. Accueil raffiné de votre clientèle avec ponctualité et discrétion absolue.</p>
+                <span class="svc-arrow">Voir détails →</span>
+            </div>
+        </a>
+        <a href="service-diplomatique.html" class="svc reveal" style="transition-delay:.3s;text-decoration:none">
+            <img src="images/imageVoiture.jpeg" alt="Diplomatique">
+            <div class="svc-overlay"></div><div class="svc-top"></div>
+            <div class="svc-body">
+                <div class="svc-num">04</div>
+                <h3 class="svc-name" data-i18n="svc.02.name">Délégations Diplomatiques</h3>
+                <p class="svc-desc" data-i18n="svc.pg.04.desc">Protocole officiel, véhicules banalisés ou identifiés, coordination multi-véhicules pour ambassades et institutions européennes.</p>
+                <span class="svc-arrow">Voir détails →</span>
+            </div>
+        </a>
+        <a href="service-heure.html" class="svc reveal" style="transition-delay:.4s;text-decoration:none">
+            <img src="images/24-hour-chauffeur-service-1.webp" alt="Service Heure">
+            <div class="svc-overlay"></div><div class="svc-top"></div>
+            <div class="svc-body">
+                <div class="svc-num">05</div>
+                <h3 class="svc-name" data-i18n="svc.05.name">Service à l'Heure</h3>
+                <p class="svc-desc" data-i18n="svc.pg.05.desc">Votre chauffeur attitré à la journée ou à l'heure. Idéal pour vos rendez-vous multiples ou vos déplacements en ville.</p>
+                <span class="svc-arrow">Voir détails →</span>
+            </div>
+        </a>
+        <a href="service-evenements.html" class="svc reveal" style="transition-delay:.5s;text-decoration:none">
+            <img src="images/3SYQnetAOx9me0cj.webp" alt="Événements">
+            <div class="svc-overlay"></div><div class="svc-top"></div>
+            <div class="svc-body">
+                <div class="svc-num">06</div>
+                <h3 class="svc-name" data-i18n="svc.06.name">Événements & Groupes</h3>
+                <p class="svc-desc" data-i18n="svc.pg.06.desc">Coordination logistique complète pour séminaires, conférences, mariages et événements d'entreprise avec flotte dédiée.</p>
+                <span class="svc-arrow">Voir détails →</span>
+            </div>
+        </a>
+    </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="process.label">Comment ça marche</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="process.h2">Réservation en <span>3 étapes</span></h2>
+    </div>
+    <div class="process-steps">
+        <div class="step reveal">
+            <div class="step-num">01</div>
+            <div class="step-title" data-i18n="process.step1.title">Contactez-nous</div>
+            <p class="step-desc" data-i18n="process.step1.desc">Par téléphone, WhatsApp ou formulaire en ligne — réponse garantie en moins de 30 minutes.</p>
+            <div class="step-line"></div>
+        </div>
+        <div class="step reveal" style="transition-delay:.1s">
+            <div class="step-num">02</div>
+            <div class="step-title" data-i18n="process.step2.title">Confirmation</div>
+            <p class="step-desc" data-i18n="process.step2.desc">Nous confirmons votre réservation avec le tarif fixe, le nom du chauffeur et le numéro de véhicule.</p>
+            <div class="step-line"></div>
+        </div>
+        <div class="step reveal" style="transition-delay:.2s">
+            <div class="step-num">03</div>
+            <div class="step-title" data-i18n="process.step3.title">Prise en charge</div>
+            <p class="step-desc" data-i18n="process.step3.desc">Votre chauffeur vous attend à l'heure convenue avec votre panneau nominatif, prêt à partir.</p>
+            <div class="step-line"></div>
+        </div>
+        <div class="step reveal" style="transition-delay:.3s">
+            <div class="step-num">04</div>
+            <div class="step-title" data-i18n="process.step4.title">Voyage & Paiement</div>
+            <p class="step-desc" data-i18n="process.step4.desc">Voyage confortable jusqu'à destination. Paiement par carte, espèces ou facture mensuelle.</p>
+        </div>
+    </div>
+</section>
+
+<!-- VEHICLE SHOWCASE -->
+<section class="vehicle-showcase">
+    <div class="vshowcase-top">
+        <div class="section-label" style="justify-content:center" data-i18n="fleet.showcase.label">Notre flotte</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="fleet.showcase.h2">Choisissez votre <span>véhicule</span></h2>
+        <p class="section-sub" style="text-align:center; margin:14px auto 0" data-i18n="fleet.showcase.sub">Quatre classes d'exception, un seul standard d'excellence.</p>
+    </div>
+    <div class="vtabs">
+        <button class="vtab active" onclick="switchVehicle(0)">E-CLASS</button>
+        <button class="vtab" onclick="switchVehicle(1)">S-CLASS</button>
+        <button class="vtab" onclick="switchVehicle(2)">V-CLASS</button>
+    </div>
+    <div class="vpanels">
+
+        <!-- Panel 0 — E-Class -->
+        <div class="vpanel active" id="vp-0">
+            <div class="vcard">
+                <div class="vcard-img">
+                    <img src="images/CLASSE.png" alt="Mercedes E-Class">
+                </div>
+                <div class="vcard-content">
+                    <div class="vcard-num" data-i18n="fleet.e.num">Modèle 01 / 04</div>
+                    <div class="vcard-title" data-i18n="fleet.e.name">Mercedes-Benz <span>E-Class</span></div>
+                    <div class="vcard-cat" data-i18n="fleet.e.cat">Berline de Prestige · Business Class</div>
+                    <div class="vcard-specs">
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.pax">Passagers</div>
+                            <div class="vspec-v" data-i18n="fleet.e.specs.pax">Jusqu'à 3</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.bag">Bagages</div>
+                            <div class="vspec-v" data-i18n="fleet.e.specs.bag">2 valises</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.cat">Catégorie</div>
+                            <div class="vspec-v" data-i18n="fleet.e.badge">Business</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.avail">Disponibilité</div>
+                            <div class="vspec-v" data-i18n="fleet.avail.val">24h / 7j</div>
+                        </div>
+                    </div>
+                    <div class="vcard-feats">
+                        <div class="vfeat" data-i18n="fleet.e.f1">Intérieur cuir premium</div>
+                        <div class="vfeat" data-i18n="fleet.e.f2">Climatisation bi-zone</div>
+                        <div class="vfeat" data-i18n="fleet.e.f3">Connectivité Bluetooth & USB</div>
+                    </div>
+                    <p class="vcard-desc" data-i18n="fleet.e.desc">La Mercedes E-Class allie élégance et performance pour vos transferts professionnels quotidiens.</p>
+                    <a href="contact.html" class="vcard-cta" data-i18n="fleet.btn.reserve">Réserver ce véhicule →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel 1 — S-Class -->
+        <div class="vpanel" id="vp-1">
+            <div class="vcard">
+                <div class="vcard-img">
+                    <img src="images/classeS (2).png" alt="Mercedes S-Class">
+                </div>
+                <div class="vcard-content">
+                    <div class="vcard-num" data-i18n="fleet.s.num">Modèle 02 / 04</div>
+                    <div class="vcard-title" data-i18n="fleet.s.name">Mercedes-Benz <span>S-Class</span></div>
+                    <div class="vcard-cat" data-i18n="fleet.s.cat">Limousine Executive · First Class</div>
+                    <div class="vcard-specs">
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.pax">Passagers</div>
+                            <div class="vspec-v" data-i18n="fleet.s.specs.pax">Jusqu'à 3</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.bag">Bagages</div>
+                            <div class="vspec-v" data-i18n="fleet.s.specs.bag">3 valises</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.cat">Catégorie</div>
+                            <div class="vspec-v" data-i18n="fleet.s.badge">First Class</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.avail">Disponibilité</div>
+                            <div class="vspec-v" data-i18n="fleet.avail.val">24h / 7j</div>
+                        </div>
+                    </div>
+                    <div class="vcard-feats">
+                        <div class="vfeat" data-i18n="fleet.s.f1">Sièges massants & ventilés</div>
+                        <div class="vfeat" data-i18n="fleet.s.f2">Système audio Burmester® 4D</div>
+                        <div class="vfeat" data-i18n="fleet.s.f3">Isolation phonique renforcée</div>
+                    </div>
+                    <p class="vcard-desc" data-i18n="fleet.s.desc">L'ultime expression du luxe automobile. La S-Class offre une expérience sensorielle inégalée.</p>
+                    <a href="contact.html" class="vcard-cta" data-i18n="fleet.btn.reserve">Réserver ce véhicule →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel 2 — V-Class -->
+        <div class="vpanel" id="vp-2">
+            <div class="vcard">
+                <div class="vcard-img">
+                    <img src="images/classeV (2).png" alt="Mercedes V-Class">
+                </div>
+                <div class="vcard-content">
+                    <div class="vcard-num" data-i18n="fleet.v.num">Modèle 03 / 04</div>
+                    <div class="vcard-title" data-i18n="fleet.v.name">Mercedes-Benz <span>V-Class</span></div>
+                    <div class="vcard-cat" data-i18n="fleet.v.cat">Minivan VIP · Groupes & Délégations</div>
+                    <div class="vcard-specs">
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.pax">Passagers</div>
+                            <div class="vspec-v" data-i18n="fleet.v.specs.pax">Jusqu'à 7</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.bag">Bagages</div>
+                            <div class="vspec-v" data-i18n="fleet.v.specs.bag">7 valises</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.cat">Catégorie</div>
+                            <div class="vspec-v" data-i18n="fleet.v.badge">VIP Group</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.avail">Disponibilité</div>
+                            <div class="vspec-v" data-i18n="fleet.avail.val">24h / 7j</div>
+                        </div>
+                    </div>
+                    <div class="vcard-feats">
+                        <div class="vfeat" data-i18n="fleet.v.f1">Configuration salon face-à-face</div>
+                        <div class="vfeat" data-i18n="fleet.v.f2">Cloison de séparation disponible</div>
+                        <div class="vfeat" data-i18n="fleet.v.f3">Wi-Fi intégré</div>
+                    </div>
+                    <p class="vcard-desc" data-i18n="fleet.v.desc">Véritable salon roulant configuré en face-à-face, la V-Class transforme chaque trajet en espace de travail ou de réunion mobile.</p>
+                    <a href="contact.html" class="vcard-cta" data-i18n="fleet.btn.reserve">Réserver ce véhicule →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Panel 3 — Sprinter -->
+        <div class="vpanel" id="vp-3">
+            <div class="vcard">
+                <div class="vcard-img">
+                    <img src="images/minicoachMercedesSSPRINTER16PASSAGER.png" alt="Mercedes Sprinter Mini Coach">
+                </div>
+                <div class="vcard-content">
+                    <div class="vcard-num" data-i18n="fleet.sp.num">Modèle 04 / 04</div>
+                    <div class="vcard-title" data-i18n="fleet.sp.name">Mercedes-Benz <span>Sprinter</span></div>
+                    <div class="vcard-cat" data-i18n="fleet.sp.cat">Mini Coach · Groupes & Événements</div>
+                    <div class="vcard-specs">
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.pax">Passagers</div>
+                            <div class="vspec-v" data-i18n="fleet.sp.specs.pax">Jusqu'à 16</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.bag">Bagages</div>
+                            <div class="vspec-v" data-i18n="fleet.sp.specs.bag">16 valises</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.sp.specs.cap.l">Capacité</div>
+                            <div class="vspec-v" data-i18n="fleet.sp.specs.cap.v">Grands groupes</div>
+                        </div>
+                        <div class="vspec">
+                            <div class="vspec-l" data-i18n="fleet.spec.avail">Disponibilité</div>
+                            <div class="vspec-v" data-i18n="fleet.avail.val">24h / 7j</div>
+                        </div>
+                    </div>
+                    <div class="vcard-feats">
+                        <div class="vfeat" data-i18n="fleet.sp.f1">Climatisation multi-zones</div>
+                        <div class="vfeat" data-i18n="fleet.sp.f2">Sièges individuels confortables</div>
+                        <div class="vfeat" data-i18n="fleet.sp.f3">Grand coffre à bagages</div>
+                    </div>
+                    <p class="vcard-desc" data-i18n="fleet.sp.desc">Le Mercedes Sprinter Mini Coach est la solution idéale pour vos déplacements en groupe. 16 places assises et 16 espaces bagage.</p>
+                    <a href="contact.html" class="vcard-cta" data-i18n="fleet.btn.reserve">Réserver ce véhicule →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="vnav">
+        <div class="vdots">
+            <button class="vdot active" onclick="switchVehicle(0)"></button>
+            <button class="vdot" onclick="switchVehicle(1)"></button>
+            <button class="vdot" onclick="switchVehicle(2)"></button>
+            <button class="vdot" onclick="switchVehicle(3)"></button>
+        </div>
+        <div class="varrows">
+            <button class="varrow vprev" onclick="prevVehicle()">←</button>
+            <button class="varrow vnext" onclick="nextVehicle()">→</button>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner">
+    <h2 data-i18n="svc.cta.h2">Prêt pour votre prochain <span>transfert ?</span></h2>
+    <p data-i18n="svc.cta.p">Contactez-nous maintenant pour un devis personnalisé et sans engagement.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange" data-i18n="nav.book">Réserver →</a>
+        <a href="flotte.html" class="btn-ghost" data-i18n="cta.btn.fleet">Voir la flotte</a>
+    </div>
+</div>
+
+<!-- ══ PARTNERS STRIP ══ -->
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center" data-i18n="partners.label">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="partners.sub">Nous sommes fiers d'être membres des plus grands réseaux de transport au monde, garantissant les normes les plus élevées de sécurité, d'éthique et d'excellence professionnelle.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="Black Limousine" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag" data-i18n="footer.tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t" data-i18n="footer.col.pages">Pages</div><ul class="flinks"><li><a href="index.html" data-i18n="drop.accueil">Accueil</a></li><li><a href="services.html" data-i18n="drop.services">Services</a></li><li><a href="flotte.html" data-i18n="drop.flotte">Flotte</a></li><li><a href="a-propos.html" data-i18n="drop.apropos">À propos</a></li><li><a href="contact.html" data-i18n="drop.contact">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t" data-i18n="footer.col.services">Services</div><ul class="flinks"><li><a href="service-aeroport.html" data-i18n="footer.link.airport">Aéroport</a></li><li><a href="service-corporate.html" data-i18n="footer.link.corp">Corporate</a></li><li><a href="service-diplomatique.html" data-i18n="footer.link.diplo">Diplomatique</a></li><li><a href="service-evenements.html" data-i18n="footer.link.events">Événements</a></li><li><a href="service-heure.html">À l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t" data-i18n="footer.col.contact">Contact</div><ul class="flinks"><li><a href="https://wa.me/32485964008?text=Bonjour %F0%9F%91%8B Je souhaite r%C3%A9server un transfert avec Black Limousine. Pouvez-vous me contacter %3F Merci.">WhatsApp</a></li><li><a href="mailto:info@blacklimousine.be">info@blacklimousine.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — TVA BE 0791.634.024</p>
+        <div class="footer-leg"><a href="#" data-i18n="footer.mentions">Mentions légales</a><a href="#" data-i18n="footer.privacy">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    document.getElementById('nav').addEventListener('scroll', () => {});
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+    let curV = 0;
+    function switchVehicle(idx) {
+        curV = idx;
+        document.querySelectorAll('.vpanel').forEach((p, i) => p.classList.toggle('active', i === idx));
+        document.querySelectorAll('.vtab').forEach((t, i) => t.classList.toggle('active', i === idx));
+        document.querySelectorAll('.vdot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    }
+    function prevVehicle() { switchVehicle((curV + 3) % 4); }
+    function nextVehicle() { switchVehicle((curV + 1) % 4); }
+</script>
+<script src="translations.js"></script>
+</body>
+</html>

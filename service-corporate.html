@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferts Corporate & Entreprises — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .detail-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .detail-lead { font-size:.92rem; color:var(--grey); line-height:1.9; margin-bottom:16px; }
+        .detail-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:40px; }
+        .detail-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .detail-stat-n { font-family:var(--font-h); font-size:2.2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .detail-stat-l { font-size:.76rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+        .detail-visual { background:#1a1a1a; min-height:460px; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:8px; position:relative; }
+        .detail-visual-badge { position:absolute; top:24px; left:24px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.6rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; padding:8px 18px; }
+        .detail-visual img { width:100%; height:460px; object-fit:cover; opacity:.8; }
+
+        .detail-features { background:var(--black); padding:100px 64px; }
+        .feats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .feat-card { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition:border-color .3s; }
+        .feat-card:hover { border-top-color:var(--orange); }
+        .feat-icon { font-size:1.8rem; margin-bottom:16px; }
+        .feat-title { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:10px; }
+        .feat-desc { font-size:.82rem; color:var(--grey); line-height:1.75; }
+
+        .detail-included { background:var(--dark); padding:100px 64px; }
+        .included-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.87rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; font-family:var(--font-h); flex-shrink:0; }
+
+        .account-section { background:var(--black); padding:100px 64px; }
+        .account-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; margin-top:56px; }
+        .account-steps { display:flex; flex-direction:column; gap:24px; }
+        .astep { display:flex; gap:20px; align-items:flex-start; }
+        .astep-num { width:44px; height:44px; flex-shrink:0; background:var(--orange); font-family:var(--font-h); font-size:.82rem; font-weight:900; color:#fff; display:flex; align-items:center; justify-content:center; }
+        .astep-title { font-family:var(--font-h); font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:6px; }
+        .astep-desc { font-size:.82rem; color:var(--grey); line-height:1.7; }
+        .account-box { background:var(--card); padding:48px 40px; border-top:3px solid var(--orange); }
+        .account-box-title { font-family:var(--font-h); font-size:1rem; font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:16px; }
+        .account-box p { font-size:.86rem; color:var(--grey); line-height:1.8; margin-bottom:20px; }
+
+        .detail-faq { background:var(--dark); padding:100px 64px; }
+        .faq-wrap { max-width:900px; margin:56px auto 0; display:flex; flex-direction:column; gap:2px; }
+        .faq-item { background:var(--card); border-left:3px solid transparent; transition:border-color .3s; }
+        .faq-item.open { border-left-color:var(--orange); }
+        .faq-q { display:flex; align-items:center; justify-content:space-between; padding:22px 28px; cursor:pointer; font-family:var(--font-h); font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--white); gap:16px; user-select:none; }
+        .faq-plus { color:var(--orange); font-size:1.4rem; flex-shrink:0; transition:transform .3s; }
+        .faq-item.open .faq-plus { transform:rotate(45deg); }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+        .faq-item.open .faq-a { max-height:500px; }
+        .faq-a p { padding:0 28px 22px; font-size:.86rem; color:var(--grey); line-height:1.8; }
+
+        @media (max-width:768px) {
+            .detail-intro,.detail-features,.detail-included,.account-section,.detail-faq { padding:56px 24px; }
+            .detail-intro,.account-grid,.included-cols { grid-template-columns:1fr; gap:40px; }
+            .feats-grid { grid-template-columns:1fr; }
+            .detail-visual { min-height:240px; } .detail-visual img { height:240px; }
+            .faq-q { font-size:.75rem; padding:18px 20px; } .faq-a p { padding:0 20px 18px; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item active"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<div class="page-hero" style="background-image:url('images/RY2Kqx6Ns0JeBLfF.webp')">
+    <div class="page-hero-content">
+        <div class="page-hero-label">02 — Services · 02</div>
+        <h1 data-i18n="sc.h1">Transferts <span>Corporate</span></h1>
+        <p class="page-hero-sub" data-i18n="sc.sub">Solutions de mobilité complètes pour entreprises, cadres dirigeants et équipes — avec compte dédié, facturation centralisée et flotte premium.</p>
+    </div>
+</div>
+
+<section class="detail-intro">
+    <div class="reveal-l">
+        <div class="section-label" data-i18n="sc.intro.lbl">Mobilité d'entreprise</div>
+        <h2 class="section-h2" data-i18n="sc.intro.h2">La mobilité de vos <span>équipes, simplifiée.</span></h2>
+        <p class="detail-lead" data-i18n="sc.intro.p1">Black Limousine est le partenaire de mobilité de choix pour les entreprises belges et internationales implantées à Bruxelles. Nos solutions corporate couvrent tous les besoins de déplacement professionnel : transferts aéroport pour cadres dirigeants, navettes d'équipes, voyages multi-villes et gestion de flotte dédiée.</p>
+        <p class="detail-lead" data-i18n="sc.intro.p2">Avec un compte corporate, votre entreprise bénéficie d'une plateforme de réservation centralisée, d'une facturation mensuelle automatisée, d'un gestionnaire de compte dédié et d'un suivi en temps réel de chaque mission. Vos collaborateurs voyagent dans le confort, vous gérez tout depuis un tableau de bord unique.</p>
+        <div class="detail-stats">
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sc.stat1.n">5 000+</div><div class="detail-stat-l" data-i18n="sc.stat1.l">Clients corporate actifs</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sc.stat2.n">24/7</div><div class="detail-stat-l" data-i18n="sc.stat2.l">Support dédié</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sc.stat3.n">0€</div><div class="detail-stat-l" data-i18n="sc.stat3.l">Frais d'ouverture de compte</div></div>
+        </div>
+    </div>
+    <div class="detail-visual reveal-r">
+        <div class="detail-visual-badge">Corporate Account</div>
+        <img src="images/content.webp" alt="Transferts Corporate Bruxelles">
+    </div>
+</section>
+
+<section class="detail-features">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sc.feats.lbl">Avantages corporate</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sc.feats.h2">Conçu pour <span>les entreprises</span></h2>
+    </div>
+    <div class="feats-grid">
+        <div class="feat-card reveal">
+            <div class="feat-icon">📊</div>
+            <div class="feat-title" data-i18n="sc.f1.t">Tableau de bord centralisé</div>
+            <p class="feat-desc" data-i18n="sc.f1.d">Gérez toutes les réservations de votre entreprise depuis une interface unique. Ajoutez des collaborateurs, suivez les missions en temps réel, consultez l'historique complet et exportez les rapports comptables.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.1s">
+            <div class="feat-icon">🧾</div>
+            <div class="feat-title" data-i18n="sc.f2.t">Facturation mensuelle automatisée</div>
+            <p class="feat-desc" data-i18n="sc.f2.d">Recevez une facture mensuelle consolidée pour tous les déplacements de votre entreprise. Paiement par virement bancaire, carte ou prélèvement automatique. Intégration comptable disponible.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.2s">
+            <div class="feat-icon">👔</div>
+            <div class="feat-title" data-i18n="sc.f3.t">Gestionnaire de compte dédié</div>
+            <p class="feat-desc" data-i18n="sc.f3.d">Un account manager vous est assigné personnellement. Il connaît vos préférences, gère les situations d'urgence, négocie les tarifs préférentiels et vous accompagne dans l'optimisation de votre budget mobilité.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.3s">
+            <div class="feat-icon">⚡</div>
+            <div class="feat-title" data-i18n="sc.f4.t">Modifications last-minute</div>
+            <p class="feat-desc" data-i18n="sc.f4.d">Le monde des affaires ne s'arrête jamais. Nos équipes gèrent les changements d'horaire, d'itinéraire ou de véhicule jusqu'à quelques minutes avant le départ. Flexibilité totale sans pénalité pour vos collaborateurs.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.4s">
+            <div class="feat-icon">🔒</div>
+            <div class="feat-title">Discrétion & confidentialité</div>
+            <p class="feat-desc" data-i18n="sc.f5.d">Tous nos chauffeurs corporate signent un accord de confidentialité. Aucune information sur vos déplacements, vos réunions ou vos destinations n'est divulguée. Vos affaires restent vos affaires.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.5s">
+            <div class="feat-icon">📍</div>
+            <div class="feat-title" data-i18n="sc.f6.t">Suivi GPS en temps réel</div>
+            <p class="feat-desc" data-i18n="sc.f6.d">Votre équipe RH ou vos assistants peuvent suivre chaque mission en temps réel. Recevez des notifications à chaque étape clé : chauffeur en route, prise en charge, arrivée à destination.</p>
+        </div>
+    </div>
+</section>
+
+<section class="detail-included">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sc.inc.lbl">Offre complète</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sc.inc.h2">Ce que comprend <span>votre compte corporate</span></h2>
+    </div>
+    <div class="included-cols">
+        <div class="reveal-l">
+            <div class="inc-title" data-i18n="sc.inc.col1">Services inclus</div>
+            <ul class="inc-list" data-i18n="sc.inc.l1">
+                <li>Transferts aéroport illimités (BRU, CRL, LGG, ANR)</li>
+                <li>Navettes gare et centre-ville</li>
+                <li>Mise à disposition de chauffeur à l'heure</li>
+                <li>Coordination multi-véhicules pour groupes</li>
+                <li>Trajets cross-border (Amsterdam, Paris, Luxembourg)</li>
+                <li>Chauffeurs anglophones garantis</li>
+                <li>Véhicule premium Mercedes avec Wi-Fi</li>
+                <li>Accueil nominatif aéroport inclus</li>
+                <li>Tarif fixe sans surprise pour tous les trajets</li>
+                <li>Assistance 24h/24 dédiée aux clients corporate</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title" data-i18n="sc.inc.col2">Gestion & reporting</div>
+            <ul class="inc-list" data-i18n="sc.inc.l2">
+                <li>Tableau de bord entreprise en ligne</li>
+                <li>Facturation mensuelle consolidée</li>
+                <li>Codes de centre de coût par département</li>
+                <li>Export comptable (PDF, Excel, CSV)</li>
+                <li>Historique complet des missions sur 3 ans</li>
+                <li>Profils collaborateurs avec préférences enregistrées</li>
+                <li>Notifications automatiques pour les voyageurs</li>
+                <li>Rapport mensuel de consommation CO₂</li>
+                <li>API d'intégration avec vos outils internes (sur demande)</li>
+                <li>Gestionnaire de compte dédié avec ligne directe</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="account-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sc.acc.lbl">Ouvrir un compte</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sc.acc.h2">Démarrez en <span>48 heures</span></h2>
+    </div>
+    <div class="account-grid">
+        <div class="account-steps">
+            <div class="astep reveal">
+                <div class="astep-num">01</div>
+                <div><div class="astep-title" data-i18n="sc.a1.t">Contactez notre équipe corporate</div><p class="astep-desc">Appelez le +32 2 615 23 00 ou envoyez-nous un email à info@airport-transfers.be. Un account manager vous recontacte sous 2 heures ouvrables pour comprendre vos besoins spécifiques.</p></div>
+            </div>
+            <div class="astep reveal" style="transition-delay:.1s">
+                <div class="astep-num">02</div>
+                <div><div class="astep-title" data-i18n="sc.a2.t">Proposition tarifaire personnalisée</div><p class="astep-desc">Sur la base de votre volume mensuel estimé, nous vous soumettons une grille tarifaire préférentielle et les conditions de votre contrat. Aucune obligation, aucun minimum de commande.</p></div>
+            </div>
+            <div class="astep reveal" style="transition-delay:.2s">
+                <div class="astep-num">03</div>
+                <div><div class="astep-title" data-i18n="sc.a3.t">Activation du compte</div><p class="astep-desc">Votre compte est créé, vos collaborateurs invités sur la plateforme, vos préférences enregistrées. Accès immédiat au tableau de bord et aux réservations en ligne.</p></div>
+            </div>
+            <div class="astep reveal" style="transition-delay:.3s">
+                <div class="astep-num">04</div>
+                <div><div class="astep-title">Premier transfert & suivi</div><p class="astep-desc">Vos équipes réservent directement, les missions sont exécutées, le tout est consolidé sur votre facture mensuelle. Votre gestionnaire reste disponible à tout moment.</p></div>
+            </div>
+        </div>
+        <div class="account-box reveal-r">
+            <div class="account-box-title" data-i18n="sc.box.t">Pourquoi les entreprises nous font confiance</div>
+            <p>Depuis 2013, nous gérons les déplacements de centaines d'entreprises belges et internationales, des PME aux multinationales du CAC 40. Nos clients Corporate incluent des cabinets d'avocats, des banques, des agences de communication, des institutions européennes et des ambassades.</p>
+            <p>Notre promesse : <strong style="color:var(--white)">zéro no-show, zéro retard imputable à nos équipes, 100% de satisfaction ou remboursement.</strong></p>
+            <a href="contact.html" class="btn-orange" style="margin-top:8px; display:inline-flex" data-i18n="sc.box.btn">Ouvrir un compte corporate →</a>
+        </div>
+    </div>
+</section>
+
+<section class="detail-faq">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sc.faq.lbl">Questions fréquentes</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sc.faq.h2">Corporate — <span>FAQ</span></h2>
+    </div>
+    <div class="faq-wrap">
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sc.faq.1.q">Y a-t-il un volume minimum pour ouvrir un compte corporate ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sc.faq.1.a">Non. Il n'y a aucun minimum de trajets ou de volume mensuel requis pour ouvrir un compte corporate. Que votre entreprise effectue 5 transferts par mois ou 500, vous bénéficiez des mêmes avantages : facturation centralisée, gestionnaire dédié et tarifs préférentiels selon le volume.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sc.faq.2.q">Nos collaborateurs peuvent-ils réserver eux-mêmes depuis le tableau de bord ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sc.faq.2.a">Oui. Vous pouvez inviter autant de collaborateurs que vous souhaitez sur votre compte. Chacun peut réserver ses propres transferts avec les droits que vous lui accordez. Les managers peuvent voir et valider toutes les réservations. Vous pouvez aussi configurer des workflows de validation si nécessaire.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sc.faq.3.q">Sous quel délai reçoit-on la facture mensuelle ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sc.faq.3.a">Les factures sont émises entre le 1er et le 5 de chaque mois pour toutes les missions réalisées le mois précédent. Elles sont envoyées par email au format PDF et intègrent le détail de chaque trajet : date, heure, collaborateur, trajet, montant. Le paiement est exigible sous 30 jours.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sc.faq.4.q">Puis-je assigner des codes de projet ou de centre de coût ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sc.faq.4.a">Absolument. Notre plateforme corporate permet d'associer chaque réservation à un code projet, un code client, un centre de coût ou un département. Ces informations apparaissent sur votre facture mensuelle, ce qui facilite l'imputation comptable et le reporting interne.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sc.faq.5.q">Les véhicules sont-ils disponibles pour des réservations last-minute ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sc.faq.5.a">Oui, dans la mesure de nos disponibilités. Nous acceptons les réservations jusqu'à 2 heures avant le départ pour nos clients corporate. Pour les trajets critiques (Vol en 3 heures, réunion en urgence), contactez directement votre gestionnaire de compte ou appelez le +32 2 615 23 00 pour une prise en charge prioritaire.</p></div>
+        </div>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2 data-i18n="sc.cta.h2">Optimisez la mobilité de <span>votre entreprise</span></h2>
+    <p data-i18n="sc.cta.p">Ouvrez votre compte corporate gratuitement et bénéficiez de tarifs préférentiels dès le premier trajet.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange" data-i18n="sc.cta.btn1">Ouvrir un compte corporate →</a>
+        <a href="service-aeroport.html" class="btn-ghost" data-i18n="sc.cta.btn2">Voir les services aéroport</a>
+    </div>
+</div>
+
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="shared.partners.sub">Membres des plus grands réseaux de transport premium au monde.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="Black Limousine" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013. TVA BE 0791.634.024</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Services</div><ul class="flinks"><li><a href="service-aeroport.html">Transferts Aéroport</a></li><li><a href="service-corporate.html">Corporate</a></li><li><a href="service-diplomatique.html">Diplomatique</a></li><li><a href="service-evenements.html">Événements</a></li><li><a href="service-heure.html">Service à l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:info@airport-transfers.be">info@airport-transfers.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+            item.classList.toggle('open');
+        });
+    });
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

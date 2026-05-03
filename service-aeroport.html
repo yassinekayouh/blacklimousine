@@ -1,0 +1,386 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferts Aéroport Bruxelles — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .detail-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .detail-lead { font-size:.92rem; color:var(--grey); line-height:1.9; margin-bottom:16px; }
+        .detail-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:40px; }
+        .detail-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .detail-stat-n { font-family:var(--font-h); font-size:2.2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .detail-stat-l { font-size:.76rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+        .detail-visual { background:#1a1a1a; min-height:460px; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:8px; position:relative; }
+        .detail-visual-badge { position:absolute; top:24px; left:24px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.6rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; padding:8px 18px; }
+        .detail-visual img { width:100%; height:460px; object-fit:cover; opacity:.8; }
+
+        .detail-features { background:var(--black); padding:100px 64px; }
+        .feats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .feat-card { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition:border-color .3s; }
+        .feat-card:hover { border-top-color:var(--orange); }
+        .feat-icon { font-size:1.8rem; margin-bottom:16px; }
+        .feat-title { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:10px; }
+        .feat-desc { font-size:.82rem; color:var(--grey); line-height:1.75; }
+
+        .detail-included { background:var(--dark); padding:100px 64px; }
+        .included-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.87rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; font-family:var(--font-h); flex-shrink:0; }
+
+        .detail-process { background:var(--black); padding:100px 64px; }
+        .process-row { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:56px; }
+        .pstep { padding:36px 28px; border-right:1px solid var(--border); position:relative; }
+        .pstep:last-child { border-right:none; }
+        .pstep-n { font-family:var(--font-h); font-size:3rem; font-weight:900; color:rgba(232,97,26,.15); line-height:1; margin-bottom:16px; }
+        .pstep-title { font-family:var(--font-h); font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:10px; }
+        .pstep-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+        .pstep-line { position:absolute; top:50px; right:-1px; width:2px; height:30px; background:var(--orange); }
+        .pstep:last-child .pstep-line { display:none; }
+
+        .detail-destinations { background:var(--dark); padding:100px 64px; }
+        .dest-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .dest-card { padding:32px 24px; background:var(--card); text-align:center; border-bottom:3px solid var(--border); transition:border-bottom-color .12s, background .12s; cursor:pointer; display:block; text-decoration:none; }
+        .dest-card.on { transition-delay:0s !important; }
+        .dest-card:hover { border-bottom-color:var(--orange); background:rgba(232,97,26,.04); }
+        .dest-flag { font-size:1.6rem; margin-bottom:10px; }
+        .dest-city { font-family:var(--font-h); font-size:.88rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:4px; }
+        .dest-time { font-size:.76rem; color:var(--grey); }
+
+        .detail-faq { background:var(--black); padding:100px 64px; }
+        .faq-wrap { max-width:900px; margin:56px auto 0; display:flex; flex-direction:column; gap:2px; }
+        .faq-item { background:var(--card); border-left:3px solid transparent; transition:border-color .3s; }
+        .faq-item.open { border-left-color:var(--orange); }
+        .faq-q { display:flex; align-items:center; justify-content:space-between; padding:22px 28px; cursor:pointer; font-family:var(--font-h); font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--white); gap:16px; user-select:none; }
+        .faq-plus { color:var(--orange); font-size:1.4rem; flex-shrink:0; transition:transform .3s; }
+        .faq-item.open .faq-plus { transform:rotate(45deg); }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+        .faq-item.open .faq-a { max-height:500px; }
+        .faq-a p { padding:0 28px 22px; font-size:.86rem; color:var(--grey); line-height:1.8; }
+
+        @media (max-width:768px) {
+            .detail-intro { grid-template-columns:1fr; padding:56px 24px; gap:40px; }
+            .detail-features { padding:56px 24px; }
+            .feats-grid { grid-template-columns:1fr; }
+            .detail-included { padding:56px 24px; }
+            .included-cols { grid-template-columns:1fr; gap:32px; }
+            .detail-process { padding:56px 24px; }
+            .process-row { grid-template-columns:1fr 1fr; }
+            .detail-destinations { padding:56px 24px; }
+            .dest-grid { grid-template-columns:1fr 1fr; }
+            .detail-faq { padding:56px 24px; }
+            .faq-q { font-size:.75rem; padding:18px 20px; }
+            .faq-a p { padding:0 20px 18px; }
+            .detail-stats { grid-template-columns:1fr 1fr 1fr; }
+            .detail-visual { min-height:260px; }
+            .detail-visual img { height:260px; }
+        }
+        @media (max-width:480px) {
+            .process-row { grid-template-columns:1fr; }
+            .dest-grid { grid-template-columns:1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item active"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero" style="background-image:url('images/2zs9zdi7IW1YnDfM.webp')">
+    <div class="page-hero-content">
+        <div class="page-hero-label">02 — Services · 01</div>
+        <h1 data-i18n="sa.h1">Transferts <span>Aéroport</span></h1>
+        <p class="page-hero-sub" data-i18n="sa.sub">Service de transfert privé entre tous les aéroports belges et votre destination — ponctuel, confortable, au tarif fixe.</p>
+    </div>
+</div>
+
+<!-- INTRO -->
+<section class="detail-intro">
+    <div class="reveal-l">
+        <div class="section-label" data-i18n="sa.intro.lbl">Notre engagement</div>
+        <h2 class="section-h2" data-i18n="sa.intro.h2">Votre vol atterrit, <span>nous sommes là.</span></h2>
+        <p class="detail-lead" data-i18n="sa.intro.p1">Depuis 2013, Black Limousine assure les transferts privés au départ et à l'arrivée de l'Aéroport de Bruxelles-Zaventem (BRU) et de l'Aéroport de Charleroi (CRL). Notre système de suivi de vol en temps réel ajuste automatiquement l'heure de prise en charge en cas de retard ou d'avance, sans frais supplémentaire.</p>
+        <p class="detail-lead" data-i18n="sa.intro.p2">Votre chauffeur vous attend dans le hall des arrivées avec un panneau nominatif, prend en charge vos bagages et vous conduit à destination dans un véhicule Mercedes climatisé. Le tarif est fixé à l'avance — aucune surprise, aucun compteur.</p>
+        <div class="detail-stats">
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sa.stat1.n">45'</div><div class="detail-stat-l" data-i18n="sa.stat1.l">Attente gratuite incluse</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sa.stat2.n">24/7</div><div class="detail-stat-l" data-i18n="sa.stat2.l">Disponibilité permanente</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sa.stat3.n">2013</div><div class="detail-stat-l" data-i18n="sa.stat3.l">Actifs depuis</div></div>
+        </div>
+    </div>
+    <div class="detail-visual reveal-r">
+        <div class="detail-visual-badge">Brussels Airport · BRU</div>
+        <img src="images/charleroi-airport-1.webp" alt="Transfert Aéroport Bruxelles">
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="detail-features">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sa.feats.lbl">Pourquoi nous choisir</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sa.feats.h2">Un service <span>sans compromis</span></h2>
+    </div>
+    <div class="feats-grid">
+        <div class="feat-card reveal">
+            <div class="feat-icon">✈️</div>
+            <div class="feat-title" data-i18n="sa.f1.t">Suivi de vol en temps réel</div>
+            <p class="feat-desc" data-i18n="sa.f1.d">Notre système surveille votre vol en permanence. En cas de retard, d'avance ou de changement de porte, votre chauffeur adapte automatiquement son heure d'arrivée. Vous n'avez rien à faire.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.1s">
+            <div class="feat-icon">🪧</div>
+            <div class="feat-title" data-i18n="sa.f2.t">Accueil nominatif</div>
+            <p class="feat-desc" data-i18n="sa.f2.d">Votre chauffeur vous attend dans le hall des arrivées avec un panneau à votre nom, en tenue professionnelle. Un accueil discret et élégant, digne des standards hôteliers les plus exigeants.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.2s">
+            <div class="feat-icon">💳</div>
+            <div class="feat-title" data-i18n="sa.f3.t">Tarif fixe, zéro surprise</div>
+            <p class="feat-desc" data-i18n="sa.f3.d">Le prix est confirmé lors de la réservation et ne varie jamais. Ni embouteillages, ni heure de nuit, ni supplément bagage ne modifient le tarif convenu. Parking et taxes d'aéroport inclus.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.3s">
+            <div class="feat-icon">🧳</div>
+            <div class="feat-title" data-i18n="sa.f4.t">Assistance bagages</div>
+            <p class="feat-desc" data-i18n="sa.f4.d">Votre chauffeur vous aide avec vos bagages depuis le tapis roulant jusqu'au véhicule, et à l'arrivée jusqu'à votre porte si nécessaire. Une attention qui fait toute la différence après un long voyage.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.4s">
+            <div class="feat-icon">👶</div>
+            <div class="feat-title" data-i18n="sa.f5.t">Sièges bébé disponibles</div>
+            <p class="feat-desc" data-i18n="sa.f5.d">Voyagez en famille en toute sérénité. Des sièges enfant homologués sont disponibles sur demande lors de la réservation, sans supplément. Tous types de sièges (cosy, siège auto, rehausseur).</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.5s">
+            <div class="feat-icon">🌐</div>
+            <div class="feat-title" data-i18n="sa.f6.t">Chauffeurs multilingues</div>
+            <p class="feat-desc" data-i18n="sa.f6.d">Tous nos chauffeurs parlent anglais couramment. La grande majorité maîtrise également le français, le néerlandais et d'autres langues européennes. Idéal pour une clientèle internationale exigeante.</p>
+        </div>
+    </div>
+</section>
+
+<!-- INCLUDED -->
+<section class="detail-included">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sa.inc.lbl">Tout est inclus</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sa.inc.h2">Ce que comprend <span>votre transfert</span></h2>
+    </div>
+    <div class="included-cols">
+        <div class="reveal-l">
+            <div class="inc-title" data-i18n="sa.inc.col1">Inclus dans chaque réservation</div>
+            <ul class="inc-list" data-i18n="sa.inc.l1">
+                <li>Suivi de vol en temps réel avec ajustement automatique</li>
+                <li>45 à 60 minutes d'attente gratuite à l'aéroport</li>
+                <li>Accueil nominatif dans le hall des arrivées</li>
+                <li>Assistance bagages complète</li>
+                <li>Véhicule Mercedes climatisé, propre et confortable</li>
+                <li>Taxes d'aéroport, parking et péages inclus</li>
+                <li>Eau minérale offerte à bord</li>
+                <li>Chargeur de téléphone disponible</li>
+                <li>Assurance passagers complète</li>
+                <li>Confirmation instantanée par email et SMS</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title" data-i18n="sa.inc.col2">Options disponibles sur demande</div>
+            <ul class="inc-list" data-i18n="sa.inc.l2">
+                <li>Siège bébé / siège enfant / rehausseur (gratuit)</li>
+                <li>Wi-Fi embarqué (selon véhicule)</li>
+                <li>Journaux et magazines électroniques</li>
+                <li>Transfert multi-arrêts (supplément applicable)</li>
+                <li>Coordination de flotte pour groupes</li>
+                <li>Service de bienvenue avec champagne (sur demande)</li>
+                <li>Trajet retour planifié simultanément</li>
+                <li>Facturation entreprise centralisée</li>
+                <li>Service de délégation avec coordination multi-véhicules</li>
+                <li>Traduction et assistance linguistique</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- PROCESS -->
+<section class="detail-process">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sa.proc.lbl">Comment ça marche</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sa.proc.h2">En <span>4 étapes simples</span></h2>
+    </div>
+    <div class="process-row">
+        <div class="pstep reveal">
+            <div class="pstep-n">01</div>
+            <div class="pstep-title" data-i18n="sa.p1.t">Réservation en ligne</div>
+            <p class="pstep-desc" data-i18n="sa.p1.d">Remplissez notre formulaire en moins de 2 minutes : adresse de prise en charge, destination, date, heure, numéro de vol, nombre de passagers et bagages. Devis instantané et confirmation immédiate.</p>
+            <div class="pstep-line"></div>
+        </div>
+        <div class="pstep reveal" style="transition-delay:.1s">
+            <div class="pstep-n">02</div>
+            <div class="pstep-title" data-i18n="sa.p2.t">Confirmation garantie</div>
+            <p class="pstep-desc" data-i18n="sa.p2.d">Vous recevez par email et SMS le nom de votre chauffeur, son numéro de téléphone, la plaque d'immatriculation du véhicule et un récapitulatif complet de votre réservation.</p>
+            <div class="pstep-line"></div>
+        </div>
+        <div class="pstep reveal" style="transition-delay:.2s">
+            <div class="pstep-n">03</div>
+            <div class="pstep-title" data-i18n="sa.p3.t">Suivi automatique</div>
+            <p class="pstep-desc" data-i18n="sa.p3.d">La nuit de votre vol, notre système surveille votre numéro de vol en temps réel. Si votre vol est retardé ou avancé, votre chauffeur ajuste son heure d'arrivée sans que vous n'ayez à intervenir.</p>
+            <div class="pstep-line"></div>
+        </div>
+        <div class="pstep reveal" style="transition-delay:.3s">
+            <div class="pstep-n">04</div>
+            <div class="pstep-title" data-i18n="sa.p4.t">Prise en charge & départ</div>
+            <p class="pstep-desc" data-i18n="sa.p4.d">Votre chauffeur vous attend dans le hall des arrivées avec votre panneau nominatif. Il prend en charge vos bagages, vous conduit à votre véhicule et vous amène à destination confortablement.</p>
+        </div>
+    </div>
+</section>
+
+<!-- DESTINATIONS -->
+<section class="detail-destinations">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sa.dest.lbl">Couverture géographique</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sa.dest.h2">Toutes vos <span>destinations</span></h2>
+        <p class="section-sub" style="text-align:center; margin:14px auto 0; max-width:560px" data-i18n="sa.dest.sub">Depuis Brussels Airport (BRU) et Charleroi (CRL), nous desservons toutes les grandes villes belges et européennes.</p>
+    </div>
+    <div class="dest-grid">
+        <a href="ville-bruxelles.html" class="dest-card reveal"><div class="dest-flag">🇧🇪</div><div class="dest-city">Bruxelles</div><div class="dest-time">25–35 min depuis BRU</div></a>
+        <a href="ville-anvers.html" class="dest-card reveal" style="transition-delay:.1s"><div class="dest-flag">🇧🇪</div><div class="dest-city">Anvers</div><div class="dest-time">45–60 min depuis BRU</div></a>
+        <a href="ville-gand.html" class="dest-card reveal" style="transition-delay:.2s"><div class="dest-flag">🇧🇪</div><div class="dest-city">Gand</div><div class="dest-time">50–65 min depuis BRU</div></a>
+        <a href="ville-bruges.html" class="dest-card reveal" style="transition-delay:.3s"><div class="dest-flag">🇧🇪</div><div class="dest-city">Bruges</div><div class="dest-time">1h 15min–1h 45min</div></a>
+        <a href="ville-amsterdam.html" class="dest-card reveal" style="transition-delay:.4s"><div class="dest-flag">🇳🇱</div><div class="dest-city">Amsterdam</div><div class="dest-time">2h 15min–2h 45min</div></a>
+        <a href="ville-paris.html" class="dest-card reveal" style="transition-delay:.5s"><div class="dest-flag">🇫🇷</div><div class="dest-city">Paris</div><div class="dest-time">3h 15min–4h</div></a>
+        <a href="ville-luxembourg.html" class="dest-card reveal" style="transition-delay:.6s"><div class="dest-flag">🇱🇺</div><div class="dest-city">Luxembourg</div><div class="dest-time">2h 30min–2h 45min</div></a>
+        <a href="ville-maastricht.html" class="dest-card reveal" style="transition-delay:.7s"><div class="dest-flag">🇳🇱</div><div class="dest-city">Maastricht</div><div class="dest-time">1h 15min–1h 30min</div></a>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="detail-faq">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sa.faq.lbl">Questions fréquentes</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sa.faq.h2">Tout ce que vous <span>devez savoir</span></h2>
+    </div>
+    <div class="faq-wrap">
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sa.faq.1.q">Que se passe-t-il si mon vol est retardé ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sa.faq.1.a">Notre système suit votre vol en temps réel 24h/24. En cas de retard, votre chauffeur est automatiquement informé et ajuste son heure d'arrivée sans frais supplémentaires. Vous n'avez aucune démarche à effectuer. Le temps d'attente gratuit (45 à 60 minutes) est compté à partir de l'atterrissage réel, pas de l'heure prévue.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sa.faq.2.q">Où retrouver mon chauffeur à l'aéroport de Bruxelles ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sa.faq.2.a">Votre chauffeur vous attend dans le hall des arrivées de l'aéroport de Bruxelles-Zaventem (Terminal unique), avec un panneau à votre nom. Pour Charleroi, il vous attend à la sortie du terminal arrivées. Vous recevrez le numéro de téléphone de votre chauffeur dans votre confirmation afin de pouvoir le contacter directement si nécessaire.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sa.faq.3.q">Les tarifs sont-ils fixes ou variable selon le trafic ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sa.faq.3.a">Tous nos tarifs sont 100% fixes et définis à la réservation. Aucun compteur kilométrique, aucun supplément heure de pointe, aucune majoration pour retard de vol. Le prix que vous voyez lors de la réservation est exactement ce que vous payez, parking et taxes d'aéroport inclus.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sa.faq.4.q">Combien de bagages puis-je emporter ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sa.faq.4.a">Cela dépend du véhicule choisi. La Mercedes E-Class accepte 2 valises + bagages à main. La Mercedes S-Class accepte 3 valises + bagages à main. La Mercedes V-Class accepte jusqu'à 7 valises. Si vous avez des bagages volumineux (ski, équipement sportif, poussette), mentionnez-le lors de la réservation afin que nous assignions le véhicule adapté.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sa.faq.5.q">Puis-je réserver un siège bébé ou enfant ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sa.faq.5.a">Oui, absolument. Indiquez lors de la réservation l'âge et le poids de l'enfant (cosy, siège auto ou rehausseur). Le siège approprié sera installé dans le véhicule sans frais supplémentaires. Nous vous recommandons de mentionner cela au moment de la réservation pour garantir sa disponibilité.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sa.faq.6.q">Le service est-il disponible la nuit et les jours fériés ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sa.faq.6.a">Oui. Notre service fonctionne 24h/24, 7j/7, 365 jours par an, y compris les nuits, week-ends et jours fériés. Le tarif reste identique quelle que soit l'heure — pas de majoration nocturne. Nous couvrons tous les vols, y compris les arrivées à 3h du matin.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sa.faq.7.q">Comment payer mon transfert ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sa.faq.7.a">Vous pouvez payer en ligne lors de la réservation par carte bancaire (Mastercard, Visa, American Express) ou via PayPal. Pour les entreprises, la facturation mensuelle centralisée est disponible. Le paiement en espèces dans le véhicule est possible dans certains cas — contactez-nous pour confirmer.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sa.faq.8.q">Puis-je annuler ou modifier ma réservation ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sa.faq.8.a">Oui. Les annulations sont gratuites jusqu'à 24 heures avant le départ. Des frais s'appliquent pour les annulations tardives. Les modifications (heure, destination, nombre de passagers) sont acceptées sous réserve de disponibilité — contactez-nous dès que possible par WhatsApp (+32 485 96 40 08) ou email.</p></div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA -->
+<div class="cta-banner">
+    <h2 data-i18n="sa.cta.h2">Prêt pour votre prochain <span>vol ?</span></h2>
+    <p data-i18n="sa.cta.p">Réservez votre transfert aéroport dès maintenant. Confirmation instantanée, chauffeur professionnel, tarif garanti.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange" data-i18n="sa.cta.btn1">Réserver mon transfert →</a>
+        <a href="flotte.html" class="btn-ghost" data-i18n="sa.cta.btn2">Voir nos véhicules</a>
+    </div>
+</div>
+
+<!-- PARTNERS -->
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="shared.partners.sub">Membres des plus grands réseaux de transport premium au monde.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="Black Limousine" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013. TVA BE 0791.634.024</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Services</div><ul class="flinks"><li><a href="service-aeroport.html">Transferts Aéroport</a></li><li><a href="service-corporate.html">Corporate</a></li><li><a href="service-diplomatique.html">Diplomatique</a></li><li><a href="service-evenements.html">Événements</a></li><li><a href="service-heure.html">Service à l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:info@airport-transfers.be">info@airport-transfers.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+            item.classList.toggle('open');
+        });
+    });
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

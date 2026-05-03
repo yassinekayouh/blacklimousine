@@ -1,0 +1,316 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferts Diplomatiques & Ambassades — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .detail-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .detail-lead { font-size:.92rem; color:var(--grey); line-height:1.9; margin-bottom:16px; }
+        .detail-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:40px; }
+        .detail-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .detail-stat-n { font-family:var(--font-h); font-size:2.2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .detail-stat-l { font-size:.76rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+        .detail-visual { background:#1a1a1a; min-height:460px; overflow:hidden; border-radius:8px; position:relative; }
+        .detail-visual-badge { position:absolute; top:24px; left:24px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.6rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; padding:8px 18px; z-index:2; }
+        .detail-visual img { width:100%; height:460px; object-fit:cover; opacity:.7; }
+
+        .detail-features { background:var(--black); padding:100px 64px; }
+        .feats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .feat-card { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition:border-color .3s; }
+        .feat-card:hover { border-top-color:var(--orange); }
+        .feat-icon { font-size:1.8rem; margin-bottom:16px; }
+        .feat-title { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:10px; }
+        .feat-desc { font-size:.82rem; color:var(--grey); line-height:1.75; }
+
+        .institutions { background:var(--dark); padding:100px 64px; }
+        .inst-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .inst-card { padding:40px 32px; background:var(--card); }
+        .inst-flag { font-size:2rem; margin-bottom:14px; }
+        .inst-name { font-family:var(--font-h); font-size:.88rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:8px; }
+        .inst-addr { font-size:.78rem; color:var(--orange); margin-bottom:10px; }
+        .inst-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+
+        .detail-included { background:var(--black); padding:100px 64px; }
+        .included-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.87rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; font-family:var(--font-h); flex-shrink:0; }
+
+        .detail-faq { background:var(--dark); padding:100px 64px; }
+        .faq-wrap { max-width:900px; margin:56px auto 0; display:flex; flex-direction:column; gap:2px; }
+        .faq-item { background:var(--card); border-left:3px solid transparent; transition:border-color .3s; }
+        .faq-item.open { border-left-color:var(--orange); }
+        .faq-q { display:flex; align-items:center; justify-content:space-between; padding:22px 28px; cursor:pointer; font-family:var(--font-h); font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--white); gap:16px; user-select:none; }
+        .faq-plus { color:var(--orange); font-size:1.4rem; flex-shrink:0; transition:transform .3s; }
+        .faq-item.open .faq-plus { transform:rotate(45deg); }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+        .faq-item.open .faq-a { max-height:500px; }
+        .faq-a p { padding:0 28px 22px; font-size:.86rem; color:var(--grey); line-height:1.8; }
+
+        @media (max-width:768px) {
+            .detail-intro,.detail-features,.institutions,.detail-included,.detail-faq { padding:56px 24px; }
+            .detail-intro,.included-cols { grid-template-columns:1fr; gap:40px; }
+            .feats-grid,.inst-grid { grid-template-columns:1fr; }
+            .detail-visual { min-height:240px; } .detail-visual img { height:240px; }
+            .faq-q { font-size:.75rem; padding:18px 20px; } .faq-a p { padding:0 20px 18px; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item active"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<div class="page-hero" style="background-image:url('images/UfZXUkIW1eHq1ckA.webp')">
+    <div class="page-hero-content">
+        <div class="page-hero-label">02 — Services · 04</div>
+        <h1 data-i18n="sd.h1">Délégations <span>Diplomatiques</span></h1>
+        <p class="page-hero-sub" data-i18n="sd.sub">Transport sécurisé et discret pour missions diplomatiques, ambassades, institutions européennes et délégations officielles à Bruxelles.</p>
+    </div>
+</div>
+
+<section class="detail-intro">
+    <div class="reveal-l">
+        <div class="section-label">Protocole & Discrétion</div>
+        <h2 class="section-h2" data-i18n="sd.intro.h2">Le transport diplomatique, <span>notre spécialité.</span></h2>
+        <p class="detail-lead" data-i18n="sd.intro.p1">Bruxelles est la capitale de l'Union européenne, le siège de l'OTAN et l'hôte de plus de 180 ambassades. Black Limousine est le partenaire de confiance des missions diplomatiques, organisations internationales et délégations officielles pour leurs déplacements dans la capitale belge et au-delà.</p>
+        <p class="detail-lead" data-i18n="sd.intro.p2">Nos chauffeurs sont sélectionnés pour leur discrétion absolue, leur parfaite connaissance des protocoles diplomatiques et des procédures de sécurité des institutions de l'UE. Chaque mission est planifiée avec rigueur, les imprévus sont gérés avec sang-froid et votre sécurité est notre priorité absolue.</p>
+        <div class="detail-stats">
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sd.stat1.n">180+</div><div class="detail-stat-l" data-i18n="sd.stat1.l">Ambassades à Bruxelles</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sd.stat2.n">50</div><div class="detail-stat-l" data-i18n="sd.stat2.l">Véhicules disponibles</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sd.stat3.n">24/7</div><div class="detail-stat-l" data-i18n="sd.stat3.l">Disponibilité permanente</div></div>
+        </div>
+    </div>
+    <div class="detail-visual reveal-r">
+        <div class="detail-visual-badge">Diplomatic Transfer</div>
+        <img src="images/nato-headquarters-1.webp" alt="Transport Diplomatique Bruxelles">
+    </div>
+</section>
+
+<section class="detail-features">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sd.feats.lbl">Notre expertise diplomatique</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sd.feats.h2">Protocole, sécurité, <span>discrétion.</span></h2>
+    </div>
+    <div class="feats-grid">
+        <div class="feat-card reveal">
+            <div class="feat-icon">🛡️</div>
+            <div class="feat-title" data-i18n="sd.f1.t">Chauffeurs accrédités</div>
+            <p class="feat-desc" data-i18n="sd.f1.d">Tous nos chauffeurs diplomatiques possèdent un casier judiciaire vierge, ont subi une vérification approfondie de leurs antécédents et disposent, pour la plupart, d'habilitations de sécurité leur permettant d'accéder aux zones sécurisées des institutions européennes.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.1s">
+            <div class="feat-icon">🏛️</div>
+            <div class="feat-title" data-i18n="sd.f2.t">Maîtrise des institutions EU</div>
+            <p class="feat-desc" data-i18n="sd.f2.d">Nos équipes connaissent parfaitement les procédures d'accès et de sécurité de la Commission européenne, du Conseil de l'UE, du Parlement européen, de l'OTAN et de toutes les principales institutions bruxelloises. Aucune perte de temps aux postes de contrôle.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.2s">
+            <div class="feat-icon">🤫</div>
+            <div class="feat-title" data-i18n="sd.f3.t">Confidentialité absolue</div>
+            <p class="feat-desc" data-i18n="sd.f3.d">Tous les chauffeurs et membres de notre équipe signent un accord de confidentialité strict. Aucune information concernant vos déplacements, vos interlocuteurs ou vos itinéraires n'est divulguée, enregistrée dans des systèmes tiers ou partagée avec des parties externes.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.3s">
+            <div class="feat-icon">🌍</div>
+            <div class="feat-title" data-i18n="sd.f4.t">Voyages transfrontaliers</div>
+            <p class="feat-desc" data-i18n="sd.f4.d">Nous organisons les déplacements de délégations entre Bruxelles et les autres capitales européennes — Luxembourg, La Haye, Berlin, Paris, Londres via Eurostar. Coordination avec les services de sécurité locaux et respect des protocoles diplomatiques internationaux.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.4s">
+            <div class="feat-icon">📋</div>
+            <div class="feat-title">Visites d'État & délégations</div>
+            <p class="feat-desc" data-i18n="sd.f5.d">Coordination complète pour les visites d'État et délégations officielles multi-jours : planification de l'ensemble du programme de transport, coordination avec les services de sécurité de l'ambassade, véhicules d'escorte disponibles si nécessaire.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.5s">
+            <div class="feat-icon">⚡</div>
+            <div class="feat-title" data-i18n="sd.f6.t">Réactivité prioritaire</div>
+            <p class="feat-desc" data-i18n="sd.f6.d">Les missions diplomatiques n'obéissent pas à des horaires fixes. Notre équipe est joignable 24h/24 pour des réservations de dernière minute, des changements de programme urgents ou des situations nécessitant une intervention immédiate.</p>
+        </div>
+    </div>
+</section>
+
+<section class="institutions">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sd.inst.lbl">Institutions desservies</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sd.inst.h2">Nous connaissons <span>chaque institution</span></h2>
+    </div>
+    <div class="inst-grid">
+        <div class="inst-card reveal">
+            <div class="inst-flag">🇪🇺</div>
+            <div class="inst-name" data-i18n="sd.inst1.n">Commission Européenne</div>
+            <div class="inst-addr">Rue de la Loi 200, 1049 Bruxelles</div>
+            <p class="inst-desc">Procédures d'accès au Berlaymont et bâtiments annexes. Coordination avec le protocole de la Commission. Accueil prioritaire à BRU pour commissaires et délégations.</p>
+        </div>
+        <div class="inst-card reveal" style="transition-delay:.1s">
+            <div class="inst-flag">🇪🇺</div>
+            <div class="inst-name" data-i18n="sd.inst2.n">Conseil de l'Union Européenne</div>
+            <div class="inst-addr">Rue de la Loi 175, 1048 Bruxelles</div>
+            <p class="inst-desc">Connaissance des procédures d'accès au Bâtiment Europa (Justus Lipsius). Transport des présidences tournantes et délégations des États membres.</p>
+        </div>
+        <div class="inst-card reveal" style="transition-delay:.2s">
+            <div class="inst-flag">🪖</div>
+            <div class="inst-name" data-i18n="sd.inst3.n">OTAN — NATO HQ</div>
+            <div class="inst-addr">Boulevard Léopold III, 1110 Bruxelles</div>
+            <p class="inst-desc">Accréditation pour l'accès au siège de l'OTAN. Transport du personnel civil et militaire, délégations nationales et hauts responsables alliés.</p>
+        </div>
+    </div>
+</section>
+
+<section class="detail-included">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sd.inc.lbl">Service complet</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sd.inc.h2">Tout ce que comprend <span>notre service diplomatique</span></h2>
+    </div>
+    <div class="included-cols">
+        <div class="reveal-l">
+            <div class="inc-title" data-i18n="sd.inc.col1">Services inclus</div>
+            <ul class="inc-list" data-i18n="sd.inc.l1">
+                <li>Chauffeurs avec habilitation de sécurité vérifiée</li>
+                <li>Accueil prioritaire à Bruxelles-Zaventem (Terminal diplomatique)</li>
+                <li>Véhicules banalisés ou identifiés selon votre protocole</li>
+                <li>Coordination avec la sécurité de l'ambassade</li>
+                <li>Mercedes S-Class pour chefs de délégation</li>
+                <li>Mercedes V-Class pour délégations de groupe</li>
+                <li>Mercedes Sprinter (16 pax) pour grandes délégations</li>
+                <li>Coordination multi-véhicules pour délégations importantes</li>
+                <li>Disponibilité 24h/24, 7j/7</li>
+                <li>Suivi GPS en temps réel des convois</li>
+                <li>Accord de confidentialité signé par chaque chauffeur</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title" data-i18n="sd.inc.col2">Expertise supplémentaire</div>
+            <ul class="inc-list" data-i18n="sd.inc.l2">
+                <li>Planification de programmes multi-jours complexes</li>
+                <li>Transferts vers toutes les capitales européennes</li>
+                <li>Navettes inter-institutions bruxelloises</li>
+                <li>Transport d'équipes de sécurité rapprochée</li>
+                <li>Véhicules d'escorte sur demande</li>
+                <li>Interprétation et assistance linguistique (sur demande)</li>
+                <li>Facturation directe à l'ambassade ou institution</li>
+                <li>Rapport de mission détaillé après chaque opération</li>
+                <li>Point de contact dédié pour chaque ambassade cliente</li>
+                <li>Discrétion sur l'identité des passagers garantie</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="detail-faq">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sd.faq.lbl">Questions fréquentes</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sd.faq.h2">Diplomatique — <span>FAQ</span></h2>
+    </div>
+    <div class="faq-wrap">
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sd.faq.1.q">Vos chauffeurs peuvent-ils entrer dans les zones sécurisées de l'UE et de l'OTAN ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sd.faq.1.a">Oui. Nos chauffeurs diplomatiques ont subi les procédures de vérification nécessaires pour accéder aux zones sécurisées des principales institutions bruxelloises, y compris la Commission européenne, le Conseil de l'UE et le siège de l'OTAN. Pour les accréditations spécifiques requises par certaines missions, nous coordonnons à l'avance avec votre service de sécurité.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sd.faq.2.q">Proposez-vous des véhicules banalisés pour des missions discrètes ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sd.faq.2.a">Oui. Selon la nature de la mission, nous pouvons mettre à disposition des véhicules entièrement banalisés (sans aucun logo ou marquage), des berlines de représentation classiques ou des véhicules avec chauffeur en tenue civile plutôt qu'en uniforme. Nous nous adaptons entièrement au niveau de visibilité souhaité par votre service de protocole.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sd.faq.3.q">Comment gérez-vous les changements de programme de dernière minute ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sd.faq.3.a">Nous comprenons que les agendas diplomatiques peuvent changer à tout moment. Votre gestionnaire de missions est joignable 24h/24 via un numéro d'urgence dédié. Nos chauffeurs sont formés à adapter leur planning immédiatement et à rester en attente flexible sans contrainte de temps lorsque la situation l'exige.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sd.faq.4.q">Pouvez-vous gérer des délégations de plusieurs dizaines de personnes ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sd.faq.4.a">Absolument. Nous gérons régulièrement des délégations officielles de 20 à 100 personnes avec une flotte mixte : Mercedes S-Class pour les hauts responsables, Mercedes V-Class pour les délégations intermédiaires et minibus pour les assistants et équipes techniques. Un coordinateur est déployé sur site pour orchestrer l'ensemble du convoi.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sd.faq.5.q">La facturation peut-elle être adressée directement à l'ambassade ou à l'institution ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sd.faq.5.a">Oui. Nous établissons des contrats directement avec les ambassades, missions permanentes, organisations internationales et institutions européennes. La facturation est adressée à l'entité juridique de votre choix, dans le format requis par votre département comptable, avec TVA diplomatique exonérée si applicable.</p></div>
+        </div>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2 data-i18n="sd.cta.h2">Un partenaire de confiance pour <span>vos missions diplomatiques</span></h2>
+    <p data-i18n="sd.cta.p">Contactez notre équipe dédiée aux services diplomatiques pour discuter de vos besoins spécifiques.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange" data-i18n="sd.cta.btn1">Contacter notre équipe diplomatique →</a>
+        <a href="service-evenements.html" class="btn-ghost" data-i18n="sd.cta.btn2">Voir les services événements</a>
+    </div>
+</div>
+
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="shared.partners.sub">Membres des plus grands réseaux de transport premium au monde.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Services</div><ul class="flinks"><li><a href="service-aeroport.html">Aéroport</a></li><li><a href="service-corporate.html">Corporate</a></li><li><a href="service-diplomatique.html">Diplomatique</a></li><li><a href="service-evenements.html">Événements</a></li><li><a href="service-heure.html">À l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:info@airport-transfers.be">Email</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+            item.classList.toggle('open');
+        });
+    });
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,298 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S-Class · Hôtel Amigo Bruxelles — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .story-hero { position:relative; height:72vh; min-height:520px; overflow:hidden; display:flex; align-items:flex-end; }
+        .story-hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.5); }
+        .story-hero::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.2) 60%, transparent 100%); }
+        .story-hero-content { position:relative; z-index:2; padding:0 64px 64px; max-width:960px; }
+        .story-crumb { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
+        .story-crumb a { color:var(--orange); text-decoration:none; }
+        .story-h1 { font-family:var(--font-h); font-size:clamp(2.4rem,5vw,4rem); font-weight:900; text-transform:uppercase; color:#fff; line-height:1.05; margin-bottom:14px; }
+        .story-h1 span { color:var(--orange); }
+        .story-meta { display:flex; gap:24px; flex-wrap:wrap; }
+        .story-tag { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.6); display:flex; align-items:center; gap:6px; }
+        .story-tag::before { content:''; width:16px; height:2px; background:var(--orange); }
+
+        .story-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+        .story-lead { font-size:.95rem; color:rgba(255,255,255,.85); line-height:1.9; margin-bottom:18px; }
+        .story-pull { font-family:var(--font-h); font-size:1.3rem; font-weight:900; text-transform:uppercase; color:var(--white); line-height:1.25; border-left:4px solid var(--orange); padding-left:24px; margin:36px 0; }
+        .story-body p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:16px; }
+        .story-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:36px; }
+        .story-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .story-stat-n { font-family:var(--font-h); font-size:2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .story-stat-l { font-size:.74rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+
+        .hotel-section { background:var(--black); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .hotel-visual { background:var(--card); min-height:520px; overflow:hidden; border-radius:8px; position:relative; }
+        .hotel-visual img { width:100%; height:520px; object-fit:cover; opacity:.8; }
+        .hotel-badge { position:absolute; top:28px; left:28px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; padding:10px 20px; }
+        .hotel-stars { color:var(--orange); font-size:.9rem; letter-spacing:2px; margin-bottom:16px; }
+        .hotel-text p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:16px; }
+        .hotel-address { display:flex; align-items:flex-start; gap:12px; margin-top:24px; padding:20px 24px; border-left:3px solid var(--orange); background:rgba(232,97,26,.06); }
+        .hotel-address-icon { font-size:1.2rem; flex-shrink:0; margin-top:2px; }
+        .hotel-address-text { font-size:.84rem; color:var(--grey); line-height:1.6; }
+        .hotel-address-text strong { display:block; font-family:var(--font-h); font-size:.7rem; letter-spacing:.1em; text-transform:uppercase; color:var(--white); margin-bottom:3px; }
+
+        .sclass-spotlight { background:var(--orange); padding:80px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .spotlight-label { font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:16px; }
+        .spotlight-h2 { font-family:var(--font-h); font-size:2.4rem; font-weight:900; text-transform:uppercase; color:#fff; line-height:1.1; margin-bottom:20px; }
+        .spotlight-text { font-size:.88rem; color:rgba(255,255,255,.85); line-height:1.8; margin-bottom:16px; }
+        .spotlight-specs { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:28px; }
+        .sp-spec { background:rgba(0,0,0,.18); padding:18px 20px; }
+        .sp-spec-l { font-family:var(--font-h); font-size:.58rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:4px; }
+        .sp-spec-v { font-family:var(--font-h); font-size:.88rem; font-weight:700; color:#fff; }
+        .spotlight-visual { background:rgba(0,0,0,.2); min-height:440px; overflow:hidden; border-radius:8px; display:flex; align-items:center; justify-content:center; }
+        .spotlight-visual img { width:100%; height:440px; object-fit:contain; }
+
+        .experience-section { background:var(--dark); padding:100px 64px; }
+        .exp-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .exp-card { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition:border-top-color .2s; }
+        .exp-card:hover { border-top-color:var(--orange); }
+        .exp-icon { font-size:1.8rem; margin-bottom:16px; }
+        .exp-title { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:10px; }
+        .exp-desc { font-size:.82rem; color:var(--grey); line-height:1.75; }
+
+        .related-gallery { background:var(--black); padding:100px 64px; }
+        .related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .rel-item { position:relative; height:220px; overflow:hidden; text-decoration:none; display:block; }
+        .rel-item img { width:100%; height:100%; object-fit:cover; filter:brightness(.6); transition:transform .5s ease, filter .5s ease; }
+        .rel-item:hover img { transform:scale(1.06); filter:brightness(.4); }
+        .rel-cap { position:absolute; bottom:0; left:0; right:0; padding:14px 18px; background:linear-gradient(to top,rgba(0,0,0,.85),transparent); z-index:1; }
+        .rel-title { font-family:var(--font-h); font-size:.68rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:2px; }
+        .rel-sub { font-size:.68rem; color:rgba(255,255,255,.55); }
+        .rel-top { position:absolute; top:0; left:0; right:0; height:3px; background:var(--orange); transform:scaleX(0); transform-origin:left; transition:transform .3s; z-index:2; }
+        .rel-item:hover .rel-top { transform:scaleX(1); }
+
+        @media (max-width:768px) {
+            .story-hero-content { padding:0 24px 48px; }
+            .story-intro,.hotel-section,.sclass-spotlight,.experience-section,.related-gallery { padding:56px 24px; }
+            .story-intro,.hotel-section,.sclass-spotlight { grid-template-columns:1fr; gap:40px; }
+            .hotel-visual { min-height:260px; }
+            .hotel-visual img { height:260px; }
+            .spotlight-visual { min-height:240px; }
+            .spotlight-visual img { height:240px; }
+            .exp-grid { grid-template-columns:1fr; }
+            .related-grid { grid-template-columns:1fr 1fr; }
+            .story-stats { grid-template-columns:1fr 1fr; }
+            .spotlight-specs { grid-template-columns:1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item active"><span class="drop-num">03</span><span class="drop-name">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn">Réserver →</a>
+    </div>
+</nav>
+
+<div class="story-hero">
+    <img src="images/WhatsApp%20Image%202026-04-11%20at%2011.42.jpeg" alt="Mercedes S-Class Hôtel Amigo Bruxelles">
+    <div class="story-hero-content">
+        <div class="story-crumb"><a href="flotte.html">← Retour à la Flotte</a></div>
+        <h1 class="story-h1">S-Class · <span>Hôtel Amigo</span></h1>
+        <div class="story-meta">
+            <span class="story-tag">Grand-Place · Bruxelles</span>
+            <span class="story-tag">Mercedes S-Class First Class</span>
+            <span class="story-tag">Partenariat hôtelier 5★</span>
+        </div>
+    </div>
+</div>
+
+<section class="story-intro">
+    <div class="reveal-l">
+        <div class="section-label">Partenariat hôtelier d'exception</div>
+        <h2 class="section-h2">Quand deux <span>standards d'excellence se rencontrent.</span></h2>
+        <p class="story-lead">La Mercedes S-Class devant l'Hôtel Amigo — c'est l'image qui résume le mieux notre positionnement. Deux institutions bruxelloises, deux niveaux d'excellence, une seule promesse : l'arrivée de vos clients doit être à la hauteur de leur séjour. Black Limousine est le partenaire de transfert officiel de l'Hôtel Amigo depuis 2015.</p>
+        <div class="story-pull">"L'arrivée commence dès le terminal. Le séjour commence dans notre véhicule."</div>
+        <div class="story-stats">
+            <div class="story-stat"><div class="story-stat-n">2015</div><div class="story-stat-l">Partenariat avec l'Hôtel Amigo</div></div>
+            <div class="story-stat"><div class="story-stat-n">98.7%</div><div class="story-stat-l">Taux de ponctualité mesuré</div></div>
+            <div class="story-stat"><div class="story-stat-n">5★</div><div class="story-stat-l">Standard garanti pour chaque arrivée</div></div>
+        </div>
+    </div>
+    <div class="reveal-r">
+        <div class="story-body">
+            <p>L'Hôtel Amigo occupe un palais du XVIe siècle à quelques pas de la Grand-Place, au cœur du Bruxelles historique. Ancienne prison espagnole devenue l'une des adresses les plus prestigieuses d'Europe, il accueille depuis des décennies têtes couronnées, chefs d'État et célébrités mondiales. Exiger la ponctualité absolue et la discrétion maximale de ses partenaires de transfert n'est pas une option.</p>
+            <p>C'est dans ce contexte que la direction de la conciergerie de l'Hôtel Amigo nous a contactés en 2015. Après un processus de sélection rigoureux — test de ponctualité sur deux semaines, évaluation de la présentation des chauffeurs, audit du parc véhicule — Black Limousine a été retenu comme prestataire exclusif de transferts aéroport pour l'établissement.</p>
+            <p>Depuis, notre Mercedes S-Class assure quotidiennement les arrivées et départs des clients les plus exigeants de l'hôtel. Le chauffeur reçoit la liste des arrivées du jour depuis l'application de conciergerie de l'Amigo, se présente au terminal avec le nom gravé sur une tablette élégante et escorte le client jusqu'au hall de l'hôtel où le directeur l'attend.</p>
+            <p>Cette photographie a été prise lors d'une journée typique d'opération : notre S-Class positionné dans l'allée privée de l'hôtel, chauffeur en tenue, prêt pour le prochain départ vers Brussels Airport.</p>
+        </div>
+    </div>
+</section>
+
+<section class="hotel-section">
+    <div class="hotel-visual reveal-l">
+        <img src="images/WhatsApp%20Image%202026-04-11%20at%2011.42.jpeg" alt="Hôtel Amigo Bruxelles">
+        <div class="hotel-badge">Hôtel Amigo · 5★ · Depuis 2015</div>
+    </div>
+    <div class="hotel-text reveal-r">
+        <div class="section-label">L'établissement</div>
+        <h2 class="section-h2">Hôtel Amigo — <span>l'adresse légendaire.</span></h2>
+        <div class="hotel-stars">★★★★★</div>
+        <p>Fondé dans l'ancienne prison espagnole du XVIe siècle et entièrement rénové en palace 5 étoiles, l'Hôtel Amigo est l'une des adresses les plus iconiques de Bruxelles. Ses 173 chambres et suites sont décorées par des maîtres artisans, avec des œuvres de Tintin en référence au célèbre créateur bruxellois.</p>
+        <p>La clientèle de l'Amigo est internationale, exigeante et habituée aux meilleurs établissements du monde. Ils attendent de chaque prestataire — y compris le service de transfert — le même niveau de service irréprochable que celui qu'ils expérimentent dans leurs chambres.</p>
+        <p>Pour cette raison, nous avons développé en collaboration avec la direction de l'Amigo un protocole d'accueil spécifique : message de bienvenue personnalisé en voiture, température habituelle du client enregistrée dans notre CRM, préférences musicales, journaux du matin disponibles à bord.</p>
+        <div class="hotel-address">
+            <div class="hotel-address-icon">📍</div>
+            <div class="hotel-address-text">
+                <strong>Adresse</strong>
+                Rue de l'Amigo 1–3, 1000 Bruxelles<br>
+                À 200 m de la Grand-Place · À 35 min de Brussels Airport
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="sclass-spotlight">
+    <div class="reveal-l">
+        <div class="spotlight-label">Véhicule · Mercedes S-Class</div>
+        <h2 class="spotlight-h2">Le summum de l'automobile de prestige.</h2>
+        <p class="spotlight-text">La Mercedes S-Class W223 est la référence mondiale en matière de berline de prestige. Siège conducteur isolé par une cloison privative optionnelle, sièges arrière massants avec 10 programmes différents, ambiance lumineuse 64 couleurs, système de suspension pneumatique.</p>
+        <p class="spotlight-text">À bord de notre S-Class, vos clients découvrent un espace qui rivalise avec les salons des meilleurs hôtels. Aucun bruit de route, aucune vibration — une bulle de silence et de confort premium entre l'aéroport et l'Hôtel Amigo.</p>
+        <div class="spotlight-specs">
+            <div class="sp-spec"><div class="sp-spec-l">Modèle</div><div class="sp-spec-v">S 580 e · Hybride</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Puissance</div><div class="sp-spec-v">510 ch combinés</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Sièges arrière</div><div class="sp-spec-v">Massants · Chauffants</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Insonorisation</div><div class="sp-spec-v">Vitres acoustiques</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Intérieur</div><div class="sp-spec-v">Nappa Espresso/Macchiato</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Wi-Fi</div><div class="sp-spec-v">4G · 100 Mbps</div></div>
+        </div>
+    </div>
+    <div class="spotlight-visual reveal-r">
+        <img src="images/classeS (2).png" alt="Mercedes S-Class Black Limousine" style="object-fit:contain; background:transparent;">
+    </div>
+</div>
+
+<section class="experience-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">L'expérience Amigo</div>
+        <h2 class="section-h2" style="text-align:center">Ce que vivent vos clients <span>à chaque trajet</span></h2>
+    </div>
+    <div class="exp-grid">
+        <div class="exp-card reveal">
+            <div class="exp-icon">🛬</div>
+            <div class="exp-title">Accueil terminal</div>
+            <p class="exp-desc">Dès la sortie du tapis bagages, votre client est accueilli par notre chauffeur avec une tablette portant son nom. Pas de délai d'attente — le vol est suivi en temps réel. La S-Class est positionnée à 90 secondes du point de rendez-vous.</p>
+        </div>
+        <div class="exp-card reveal" style="transition-delay:.1s">
+            <div class="exp-icon">🚗</div>
+            <div class="exp-title">Trajet premium</div>
+            <p class="exp-desc">Eau minérale à température choisie, journaux disponibles, Wi-Fi haute vitesse. La température de l'habitacle est préconfigurée selon les préférences du client enregistrées lors de ses précédents séjours. Musique d'ambiance ou silence complet.</p>
+        </div>
+        <div class="exp-card reveal" style="transition-delay:.2s">
+            <div class="exp-icon">🏨</div>
+            <div class="exp-title">Arrivée à l'Amigo</div>
+            <p class="exp-desc">Notre chauffeur prévient la conciergerie de l'Amigo 10 minutes avant l'arrivée. Le personnel de l'hôtel est prêt en lobby. Dépose dans l'allée privée, assistance bagagerie jusqu'au hall. Aucun détail laissé au hasard.</p>
+        </div>
+        <div class="exp-card reveal" style="transition-delay:.3s">
+            <div class="exp-icon">📱</div>
+            <div class="exp-title">Coordination numérique</div>
+            <p class="exp-desc">La conciergerie de l'Amigo accède à notre portail de réservation en temps réel. Chaque transfert est visible : chauffeur affecté, position GPS du véhicule, heure estimée d'arrivée. Zéro appel téléphonique nécessaire.</p>
+        </div>
+        <div class="exp-card reveal" style="transition-delay:.4s">
+            <div class="exp-icon">🔐</div>
+            <div class="exp-title">Confidentialité absolue</div>
+            <p class="exp-desc">Nos chauffeurs signent un accord de non-divulgation. Les informations sur les clients ne sont jamais partagées. Pour les personnalités sensibles, nos S-Class sont disponibles sans marquage et avec un chauffeur en tenue civile discrète.</p>
+        </div>
+        <div class="exp-card reveal" style="transition-delay:.5s">
+            <div class="exp-icon">🔄</div>
+            <div class="exp-title">Retour &amp; suivi</div>
+            <p class="exp-desc">En fin de séjour, nous gérons aussi les départs. La conciergerie programme le transfert depuis le portail, notre S-Class est présente 15 minutes avant le départ prévu. Facturation mensuelle centralisée à l'hôtel.</p>
+        </div>
+    </div>
+</section>
+
+<section class="related-gallery">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Galerie · Notre flotte en action</div>
+        <h2 class="section-h2" style="text-align:center">Découvrez <span>les autres scènes</span></h2>
+    </div>
+    <div class="related-grid">
+        <a href="galerie-cinquantenaire.html" class="rel-item reveal">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-1.42.jpeg" alt="Cinquantenaire">
+            <div class="rel-cap"><div class="rel-title">Flotte au Cinquantenaire</div><div class="rel-sub">Bruxelles · Séance officielle</div></div>
+        </a>
+        <a href="galerie-vclass-eu.html" class="rel-item reveal" style="transition-delay:.1s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.31.42.jpeg" alt="V-Class EU">
+            <div class="rel-cap"><div class="rel-title">V-Class · Institutions EU</div><div class="rel-sub">Quartier européen · Bruxelles</div></div>
+        </a>
+        <a href="galerie-eclass-dominican.html" class="rel-item reveal" style="transition-delay:.2s">
+            <div class="rel-top"></div>
+            <img src="images/Whatmage%202026-04-11%20at%2017.31.42.jpeg" alt="E-Class Dominican">
+            <div class="rel-cap"><div class="rel-title">E-Class · The Dominican</div><div class="rel-sub">Centre historique · Bruxelles</div></div>
+        </a>
+        <a href="galerie-evenement-corporate.html" class="rel-item reveal" style="transition-delay:.3s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.3A1.42.jpeg" alt="Événement">
+            <div class="rel-cap"><div class="rel-title">Flotte · Événement Corporate</div><div class="rel-sub">BOZAR · Bruxelles</div></div>
+        </a>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2>Transferts <span>hôtels de prestige</span></h2>
+    <p>Découvrez notre programme partenariat hôtelier. Tarifs préférentiels et facturation centralisée.</p>
+    <div class="cta-banner-btns">
+        <a href="service-hotels.html" class="btn-orange">Voir le service hôtels →</a>
+        <a href="contact.html" class="btn-ghost">Demander un partenariat</a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Galerie</div><ul class="flinks"><li><a href="galerie-cinquantenaire.html">Cinquantenaire</a></li><li><a href="galerie-vclass-eu.html">V-Class EU</a></li><li><a href="galerie-sclass-amigo.html">S-Class Amigo</a></li><li><a href="galerie-eclass-dominican.html">E-Class Dominican</a></li><li><a href="galerie-evenement-corporate.html">Événement Corporate</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:hotels@belgiumairport.be">hotels@belgiumairport.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

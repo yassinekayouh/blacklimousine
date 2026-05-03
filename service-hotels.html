@@ -1,0 +1,419 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transferts Hôtels de Prestige Bruxelles — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .detail-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .detail-lead { font-size:.92rem; color:var(--grey); line-height:1.9; margin-bottom:16px; }
+        .detail-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:40px; }
+        .detail-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .detail-stat-n { font-family:var(--font-h); font-size:2.2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .detail-stat-l { font-size:.76rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+        .detail-visual { background:#1a1a1a; min-height:460px; display:flex; align-items:center; justify-content:center; overflow:hidden; border-radius:8px; position:relative; }
+        .detail-visual-badge { position:absolute; top:24px; left:24px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.6rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; padding:8px 18px; z-index:2; }
+        .detail-visual img { width:100%; height:460px; object-fit:cover; opacity:.8; }
+
+        .detail-features { background:var(--black); padding:100px 64px; }
+        .feats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .feat-card { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition:border-color .3s; }
+        .feat-card:hover { border-top-color:var(--orange); }
+        .feat-icon { font-size:1.8rem; margin-bottom:16px; }
+        .feat-title { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:10px; }
+        .feat-desc { font-size:.82rem; color:var(--grey); line-height:1.75; }
+
+        .hotel-partners { background:var(--dark); padding:100px 64px; }
+        .hotels-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .hotel-card { background:var(--card); padding:36px 30px; border-bottom:3px solid var(--border); transition:all .3s; }
+        .hotel-card:hover { border-bottom-color:var(--orange); }
+        .hotel-stars { color:var(--orange); font-size:.9rem; margin-bottom:10px; letter-spacing:2px; }
+        .hotel-name { font-family:var(--font-h); font-size:.9rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:6px; }
+        .hotel-area { font-size:.72rem; font-family:var(--font-h); letter-spacing:.12em; color:var(--orange); text-transform:uppercase; margin-bottom:12px; }
+        .hotel-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+
+        .hotel-spotlight { background:var(--orange); padding:80px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .spotlight-label { font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:16px; }
+        .spotlight-h2 { font-family:var(--font-h); font-size:2.4rem; font-weight:900; text-transform:uppercase; color:#fff; line-height:1.1; margin-bottom:20px; }
+        .spotlight-text { font-size:.88rem; color:rgba(255,255,255,.85); line-height:1.8; }
+        .spotlight-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:32px; }
+        .spotlight-stat { background:rgba(0,0,0,.18); padding:24px 20px; text-align:center; }
+        .spotlight-stat-n { font-family:var(--font-h); font-size:2rem; font-weight:900; color:#fff; line-height:1; }
+        .spotlight-stat-l { font-size:.7rem; color:rgba(255,255,255,.75); margin-top:6px; }
+        .spotlight-visual { background:rgba(0,0,0,.2); min-height:420px; overflow:hidden; border-radius:8px; display:flex; align-items:center; justify-content:center; }
+        .spotlight-visual img { width:100%; height:420px; object-fit:cover; opacity:.75; }
+
+        .detail-included { background:var(--black); padding:100px 64px; }
+        .included-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.87rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; font-family:var(--font-h); flex-shrink:0; }
+
+        .detail-process { background:var(--dark); padding:100px 64px; }
+        .process-row { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:56px; }
+        .pstep { padding:36px 28px; border-right:1px solid var(--border); position:relative; }
+        .pstep:last-child { border-right:none; }
+        .pstep-n { font-family:var(--font-h); font-size:3rem; font-weight:900; color:rgba(232,97,26,.15); line-height:1; margin-bottom:16px; }
+        .pstep-title { font-family:var(--font-h); font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:10px; }
+        .pstep-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+
+        .detail-faq { background:var(--black); padding:100px 64px; }
+        .faq-wrap { max-width:900px; margin:56px auto 0; display:flex; flex-direction:column; gap:2px; }
+        .faq-item { background:var(--card); border-left:3px solid transparent; transition:border-color .3s; }
+        .faq-item.open { border-left-color:var(--orange); }
+        .faq-q { display:flex; align-items:center; justify-content:space-between; padding:22px 28px; cursor:pointer; font-family:var(--font-h); font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--white); gap:16px; user-select:none; }
+        .faq-plus { color:var(--orange); font-size:1.4rem; flex-shrink:0; transition:transform .3s; }
+        .faq-item.open .faq-plus { transform:rotate(45deg); }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+        .faq-item.open .faq-a { max-height:500px; }
+        .faq-a p { padding:0 28px 22px; font-size:.86rem; color:var(--grey); line-height:1.8; }
+
+        @media (max-width:768px) {
+            .detail-intro { grid-template-columns:1fr; padding:56px 24px; gap:40px; }
+            .detail-features,.hotel-partners,.detail-included,.detail-process,.detail-faq { padding:56px 24px; }
+            .feats-grid,.hotels-grid { grid-template-columns:1fr; }
+            .included-cols { grid-template-columns:1fr; gap:32px; }
+            .process-row { grid-template-columns:1fr 1fr; }
+            .detail-visual { min-height:260px; }
+            .detail-visual img { height:260px; }
+            .hotel-spotlight { grid-template-columns:1fr; padding:56px 24px; gap:36px; }
+            .spotlight-visual { min-height:240px; }
+            .spotlight-visual img { height:240px; }
+            .spotlight-stats { grid-template-columns:1fr 1fr 1fr; }
+            .faq-q { font-size:.75rem; padding:18px 20px; }
+            .faq-a p { padding:0 20px 18px; }
+        }
+        @media (max-width:480px) {
+            .process-row { grid-template-columns:1fr; }
+            .detail-stats { grid-template-columns:1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item active"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<div class="page-hero" style="background-image:url('images/Uz76GFq8UI4ijrUS.webp')">
+    <div class="page-hero-content">
+        <div class="page-hero-label">02 — Services · 06</div>
+        <h1 data-i18n="sht.h1">Hôtels de <span>Prestige</span></h1>
+        <p class="page-hero-sub" data-i18n="sht.sub">Partenaire officiel des plus grands hôtels 5 étoiles de Bruxelles. Accueil de vos clients avec ponctualité, élégance et discrétion absolue — 24h/24, 7j/7.</p>
+    </div>
+</div>
+
+<!-- INTRO -->
+<section class="detail-intro">
+    <div class="reveal-l">
+        <div class="section-label" data-i18n="sht.intro.lbl">Partenaire hôtelier premium</div>
+        <h2 class="section-h2" data-i18n="sht.intro.h2">L'excellence au service <span>de vos hôtes.</span></h2>
+        <p class="detail-lead" data-i18n="sht.intro.p1">Vos clients méritent une arrivée à la hauteur de leur séjour. Black Limousine est le partenaire de transfert de référence pour les hôtels 5 étoiles, les palaces et les établissements de luxe à Bruxelles et dans tout le Benelux. Nous accueillons vos hôtes à l'aéroport, aux gares et dans toute la ville avec le même standard d'excellence que celui de votre établissement.</p>
+        <p class="detail-lead" data-i18n="sht.intro.p2">De l'arrivée du groupe VIP au transfert discret d'un chef d'État, nos chauffeurs professionnels garantissent ponctualité, tenue impeccable et connaissance parfaite des protocoles hôteliers les plus exigeants. Un seul contact, une facturation centralisée, un service sans défaut.</p>
+        <div class="detail-stats">
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sht.stat1.n">5★</div><div class="detail-stat-l" data-i18n="sht.stat1.l">Niveau de service garanti</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sht.stat2.n">30+</div><div class="detail-stat-l" data-i18n="sht.stat2.l">Hôtels partenaires actifs</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sht.stat3.n">24/7</div><div class="detail-stat-l" data-i18n="sht.stat3.l">Disponibilité permanente</div></div>
+        </div>
+    </div>
+    <div class="detail-visual reveal-r">
+        <div class="detail-visual-badge">Hôtels de Prestige</div>
+        <img src="images/L5HTEKLOLrFICRqO.webp" alt="Transferts Hôtels de Prestige Bruxelles">
+    </div>
+</section>
+
+<!-- FEATURES -->
+<section class="detail-features">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sht.feats.lbl">Pourquoi nous choisir</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sht.feats.h2">Un service conçu pour <span>l'hôtellerie de luxe</span></h2>
+    </div>
+    <div class="feats-grid">
+        <div class="feat-card reveal">
+            <div class="feat-icon">🏨</div>
+            <div class="feat-title" data-i18n="sht.f1.t">Accueil en lobby</div>
+            <p class="feat-desc" data-i18n="sht.f1.d">Nos chauffeurs se présentent directement à l'entrée de votre hôtel pour récupérer vos clients, avec plaquette nominative discrète. Coordination en temps réel avec votre équipe de conciergerie pour une prise en charge parfaitement fluide.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.1s">
+            <div class="feat-icon">✈️</div>
+            <div class="feat-title" data-i18n="sht.f2.t">Transferts aéroport dédiés</div>
+            <p class="feat-desc" data-i18n="sht.f2.d">Suivi des vols en temps réel, adaptation automatique aux retards, accueil avec panneau nominatif au terminal d'arrivée. Vos clients ne patientent jamais. 45 minutes d'attente gratuites incluses, bagagerie assistée.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.2s">
+            <div class="feat-icon">👔</div>
+            <div class="feat-title" data-i18n="sht.f3.t">Chauffeurs en tenue de cérémonie</div>
+            <p class="feat-desc" data-i18n="sht.f3.d">Nos chauffeurs partenaires des hôtels de prestige portent une tenue de cérémonie (costume sombre ou livery sur demande). Maîtrise de l'anglais, du français et du néerlandais. Formation protocole hôtelier.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.3s">
+            <div class="feat-icon">🔗</div>
+            <div class="feat-title" data-i18n="sht.f4.t">Intégration conciergerie</div>
+            <p class="feat-desc" data-i18n="sht.f4.d">Nous travaillons directement avec votre département conciergerie. Accès à un portail de réservation dédié, notifications en temps réel, suivi de chaque transfert depuis votre desk. Contact unique pour toutes les demandes.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.4s">
+            <div class="feat-icon">🚐</div>
+            <div class="feat-title" data-i18n="sht.f5.t">Navettes groupes & événements</div>
+            <p class="feat-desc" data-i18n="sht.f5.d">Séminaires, mariages, banquets de gala — Black Limousine gère les navettes de groupe entre votre hôtel et tous les points d'intérêt. Minivans 7 places, minibus, et coordination multi-véhicules pour les grands groupes.</p>
+        </div>
+        <div class="feat-card reveal" style="transition-delay:.5s">
+            <div class="feat-icon">📋</div>
+            <div class="feat-title" data-i18n="sht.f6.t">Facturation centralisée</div>
+            <p class="feat-desc" data-i18n="sht.f6.d">Fin de mois simplifié : une seule facture pour l'ensemble des transferts effectués pour vos clients. Codes de coûts par chambre ou par groupe, rapport mensuel détaillé. Paiement par virement ou mandat administratif.</p>
+        </div>
+    </div>
+</section>
+
+<!-- HOTEL PARTNERS -->
+<section class="hotel-partners">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sht.hotels.lbl">Établissements partenaires</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sht.hotels.h2">Les grands hôtels <span>qui nous font confiance</span></h2>
+        <p class="section-sub" style="text-align:center; margin:14px auto 0; max-width:680px" data-i18n="sht.hotels.sub">Depuis 2013, nous assurons les transferts des clients les plus exigeants des meilleurs établissements de Bruxelles.</p>
+    </div>
+    <div class="hotels-grid">
+        <div class="hotel-card reveal">
+            <div class="hotel-stars">★★★★★</div>
+            <div class="hotel-name" data-i18n="sht.h.1.n">Hôtel Amigo</div>
+            <div class="hotel-area">Grand-Place, Bruxelles</div>
+            <p class="hotel-desc" data-i18n="sht.h.1.d">Adresse légendaire à deux pas de la Grand-Place, l'Hôtel Amigo accueille une clientèle internationale d'exception. Nous assurons tous ses transferts aéroport et ses navettes VIP depuis 2015, avec une ponctualité de 98,7 % enregistrée.</p>
+        </div>
+        <div class="hotel-card reveal" style="transition-delay:.1s">
+            <div class="hotel-stars">★★★★★</div>
+            <div class="hotel-name" data-i18n="sht.h.2.n">The Hotel Brussels</div>
+            <div class="hotel-area">Boulevard de Waterloo, Ixelles</div>
+            <p class="hotel-desc" data-i18n="sht.h.2.d">Situé sur le prestigieux boulevard de Waterloo, The Hotel est l'adresse de référence des voyageurs d'affaires internationaux. Notre service dédié assure des transferts quotidiens vers Brussels Airport, Eurostar et les institutions européennes.</p>
+        </div>
+        <div class="hotel-card reveal" style="transition-delay:.2s">
+            <div class="hotel-stars">★★★★★</div>
+            <div class="hotel-name" data-i18n="sht.h.3.n">Rocco Forte Hotel Amigo</div>
+            <div class="hotel-area">Quartier Sablon, Bruxelles</div>
+            <p class="hotel-desc" data-i18n="sht.h.3.d">Membre de la collection Rocco Forte, cet hôtel reçoit diplomates, chefs d'État et célébrités. Nos chauffeurs accrédités opèrent selon les protocoles de sécurité les plus stricts, avec véhicules banalisés sur demande.</p>
+        </div>
+        <div class="hotel-card reveal" style="transition-delay:.3s">
+            <div class="hotel-stars">★★★★★</div>
+            <div class="hotel-name" data-i18n="sht.h.4.n">Brussels Marriott Hotel</div>
+            <div class="hotel-area">Grand-Place, Centre historique</div>
+            <p class="hotel-desc" data-i18n="sht.h.4.d">Hôtel de congrès et de séminaires par excellence, le Marriott Grand Place accueille des centaines de délégations internationales chaque année. Black Limousine coordonne ses navettes de groupe et ses transferts individuels 24h/24.</p>
+        </div>
+        <div class="hotel-card reveal" style="transition-delay:.4s">
+            <div class="hotel-stars">★★★★</div>
+            <div class="hotel-name" data-i18n="sht.h.5.n">NH Collection Grand Sablon</div>
+            <div class="hotel-area">Place du Grand Sablon, Bruxelles</div>
+            <p class="hotel-desc">Niché au cœur du quartier des antiquaires et galeries d'art, le NH Collection Grand Sablon attire une clientèle cultivée et exigeante. Nos transferts discrets s'intègrent parfaitement à l'atmosphère raffinée de cet établissement.</p>
+        </div>
+        <div class="hotel-card reveal" style="transition-delay:.5s">
+            <div class="hotel-stars">★★★★</div>
+            <div class="hotel-name" data-i18n="sht.h.6.n">Sofitel Brussels Le Louise</div>
+            <div class="hotel-area">Avenue de la Toison d'Or, Ixelles</div>
+            <p class="hotel-desc">Au cœur du quartier le plus élégant de Bruxelles, entre l'Avenue Louise et le boulevard de Waterloo, le Sofitel Le Louise reçoit une clientèle shopping et corporate. Nos transferts vers les centres commerciaux, aéroports et gares sont disponibles à toute heure.</p>
+        </div>
+    </div>
+</section>
+
+<!-- SPOTLIGHT : Conciergerie -->
+<div class="hotel-spotlight">
+    <div class="reveal-l">
+        <div class="spotlight-label" data-i18n="sht.spot.lbl">Partenariat conciergerie</div>
+        <h2 class="spotlight-h2" data-i18n="sht.spot.h2">Votre extension de service — pas juste un prestataire.</h2>
+        <p class="spotlight-text" data-i18n="sht.spot.p1">Nos chauffeurs portent votre image autant que la nôtre. Discrets, polyglotes, formés aux protocoles hôteliers, ils représentent votre établissement dès la sortie du terminal. Nous sommes l'extension naturelle de votre service de conciergerie : joignables à toute heure, capables de gérer une urgence de dernière minute, et proactifs dans la communication avec vos équipes.</p>
+        <p class="spotlight-text" style="margin-top:12px" data-i18n="sht.spot.p2">Pour les hôtels ayant un fort volume mensuel, nous proposons un tarif préférentiel et l'attribution d'un account manager dédié qui connaît personnellement votre équipe et vos standards.</p>
+        <div class="spotlight-stats">
+            <div class="spotlight-stat"><div class="spotlight-stat-n" data-i18n="sht.spot.s1.n">98.7%</div><div class="spotlight-stat-l" data-i18n="sht.spot.s1.l">Ponctualité mesurée</div></div>
+            <div class="spotlight-stat"><div class="spotlight-stat-n" data-i18n="sht.spot.s2.n">30+</div><div class="spotlight-stat-l" data-i18n="sht.spot.s2.l">Hôtels partenaires</div></div>
+            <div class="spotlight-stat"><div class="spotlight-stat-n" data-i18n="sht.spot.s3.n">2013</div><div class="spotlight-stat-l" data-i18n="sht.spot.s3.l">Depuis cette année-là</div></div>
+        </div>
+    </div>
+    <div class="spotlight-visual reveal-r">
+        <img src="images/classeS (2).png" alt="Mercedes S-Class Transfert Hôtel" style="object-fit:contain; background:transparent;">
+    </div>
+</div>
+
+<!-- INCLUDED -->
+<section class="detail-included">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sht.inc.lbl">Tout inclus</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sht.inc.h2">Ce que comprend <span>chaque transfert hôtelier</span></h2>
+    </div>
+    <div class="included-cols">
+        <div class="reveal-l">
+            <div class="inc-title" data-i18n="sht.inc.col1">Services inclus dans chaque transfert</div>
+            <ul class="inc-list" data-i18n="sht.inc.l1">
+                <li>Accueil avec panneau nominatif au terminal ou en lobby</li>
+                <li>Assistance bagagerie complète (chargement et déchargement)</li>
+                <li>Suivi des vols en temps réel — adaptation automatique aux retards</li>
+                <li>45 minutes d'attente gratuites (aéroport) ou 15 min (ville)</li>
+                <li>Eau minérale et rafraîchissements à bord</li>
+                <li>Wi-Fi gratuit et chargeur téléphone disponibles</li>
+                <li>Journaux et magazines disponibles sur demande</li>
+                <li>Tenue de cérémonie du chauffeur</li>
+                <li>Notification SMS de départ et d'arrivée à votre conciergerie</li>
+                <li>Rapport de transfert transmis par email après chaque mission</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title" data-i18n="sht.inc.col2">Offre partenariat hôtelier</div>
+            <ul class="inc-list" data-i18n="sht.inc.l2">
+                <li>Account manager dédié (volume &gt; 10 transferts/mois)</li>
+                <li>Portail de réservation en ligne avec accès conciergerie</li>
+                <li>Facturation mensuelle centralisée avec codes par chambre</li>
+                <li>Tarifs préférentiels négociés pour volumes réguliers</li>
+                <li>Accès prioritaire aux véhicules même en période de forte demande</li>
+                <li>Formation chauffeurs aux standards de votre établissement</li>
+                <li>Coordination multi-véhicules pour arrivées de groupe</li>
+                <li>Service navette inter-hôtels disponible</li>
+                <li>Disponibilité 24h/24, 7j/7, 365 jours par an</li>
+                <li>Contact dédié : hotels@belgiumairport.be</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- PROCESS -->
+<section class="detail-process">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sht.proc.lbl">Démarrage partenariat</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sht.proc.h2">Devenir hôtel <span>partenaire</span></h2>
+    </div>
+    <div class="process-row">
+        <div class="pstep reveal">
+            <div class="pstep-n">01</div>
+            <div class="pstep-title" data-i18n="sht.p1.t">Prise de contact</div>
+            <p class="pstep-desc" data-i18n="sht.p1.d">Contactez-nous par email à hotels@belgiumairport.be ou appelez directement le +32 2 615 23 00. Nous répondons sous 4 heures ouvrées pour convenir d'un rendez-vous.</p>
+        </div>
+        <div class="pstep reveal" style="transition-delay:.1s">
+            <div class="pstep-n">02</div>
+            <div class="pstep-title" data-i18n="sht.p2.t">Réunion & audit</div>
+            <p class="pstep-desc" data-i18n="sht.p2.d">Notre account manager se déplace dans votre établissement pour comprendre vos standards, rencontrer votre équipe de conciergerie et définir les protocoles sur mesure adaptés à votre clientèle.</p>
+        </div>
+        <div class="pstep reveal" style="transition-delay:.2s">
+            <div class="pstep-n">03</div>
+            <div class="pstep-title" data-i18n="sht.p3.t">Convention & accès</div>
+            <p class="pstep-desc" data-i18n="sht.p3.d">Signature d'une convention de partenariat avec tarifs négociés. Mise en place de l'accès au portail de réservation et formation de votre équipe conciergerie à l'outil en moins de 2 heures.</p>
+        </div>
+        <div class="pstep reveal" style="transition-delay:.3s">
+            <div class="pstep-n">04</div>
+            <div class="pstep-title" data-i18n="sht.p4.t">Lancement opérationnel</div>
+            <p class="pstep-desc" data-i18n="sht.p4.d">Démarrage immédiat. Votre account manager reste disponible pendant les deux premières semaines pour tout ajustement. Premier rapport de performance à 30 jours.</p>
+        </div>
+    </div>
+</section>
+
+<!-- FAQ -->
+<section class="detail-faq">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sht.faq.lbl">Questions fréquentes</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sht.faq.h2">Hôtels de Prestige — <span>FAQ</span></h2>
+    </div>
+    <div class="faq-wrap">
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sht.faq.1.q">Comment fonctionne la réservation pour un transfert client de l'hôtel ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sht.faq.1.a">Votre équipe de conciergerie accède à notre portail de réservation en ligne, disponible 24h/24. En moins de 2 minutes, ils saisissent le nom du client, l'heure et la destination. Confirmation immédiate par email et SMS envoyée à votre desk et directement au client si souhaité. Pour les demandes urgentes, un numéro WhatsApp dédié hôtels est disponible à toute heure.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sht.faq.2.q">Vos chauffeurs connaissent-ils les protocoles hôteliers ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sht.faq.2.a">Oui. Tous nos chauffeurs partenaires d'établissements hôteliers suivent une formation spécifique aux standards du secteur de l'hospitalité : accueil discret, tenue de cérémonie, gestion des bagages, connaissance des protocoles diplomatiques, maîtrise des langues (FR/EN/NL minimum). Certains chauffeurs sont également formés au protocole des hôtels spécifiques avec lesquels nous travaillons depuis plusieurs années.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sht.faq.3.q">Peut-on gérer des arrivées simultanées de plusieurs clients ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sht.faq.3.a">Absolument. C'est l'un de nos points forts. Lors des arrivées de groupe — conférences, séminaires, délégations — nous coordonnons une flotte de plusieurs véhicules avec un dispatcher central. Chaque chauffeur est en contact radio/téléphone permanent avec notre centrale. Vous n'avez qu'un seul interlocuteur pour l'ensemble de l'opération, quelle que soit sa complexité.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sht.faq.4.q">Comment se passe la facturation mensuelle ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sht.faq.4.a">En fin de mois, nous vous envoyons une facture récapitulative de tous les transferts effectués, avec référence par numéro de chambre, nom de client ou code de coût selon votre préférence. Les détails de chaque course (heure de prise en charge, destination, durée, montant) sont disponibles en temps réel dans votre portail. Paiement accepté par virement bancaire SEPA à 30 jours.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sht.faq.5.q">Proposez-vous des véhicules banalisés pour les clients VIP ou diplomatiques ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sht.faq.5.a">Oui. Pour les transferts nécessitant une discrétion maximale — personnalités politiques, célébrités, délégations diplomatiques — nous disposons de Mercedes série noire sans marquage extérieur. Les chauffeurs opèrent selon un protocole de confidentialité strict : aucun renseignement communiqué, itinéraires sécurisés, coordination avec les équipes de sécurité du client si nécessaire.</p></div>
+        </div>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2 data-i18n="sht.cta.h2">Faites confiance à un partenaire <span>de prestige</span></h2>
+    <p data-i18n="sht.cta.p">Contactez notre équipe hôtels pour un devis personnalisé et une convention de partenariat adaptée à vos volumes.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange" data-i18n="sht.cta.btn1">Demander un partenariat →</a>
+        <a href="mailto:hotels@belgiumairport.be" class="btn-ghost" data-i18n="sht.cta.btn2">hotels@belgiumairport.be</a>
+    </div>
+</div>
+
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="shared.partners.sub">Membres des plus grands réseaux de transport premium au monde.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Services</div><ul class="flinks"><li><a href="service-aeroport.html">Aéroport</a></li><li><a href="service-corporate.html">Corporate</a></li><li><a href="service-diplomatique.html">Diplomatique</a></li><li><a href="service-evenements.html">Événements</a></li><li><a href="service-heure.html">À l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:hotels@belgiumairport.be">hotels@belgiumairport.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+            item.classList.toggle('open');
+        });
+    });
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

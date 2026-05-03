@@ -1,0 +1,336 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Service Chauffeur à l'Heure — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .detail-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .detail-lead { font-size:.92rem; color:var(--grey); line-height:1.9; margin-bottom:16px; }
+        .detail-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:40px; }
+        .detail-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .detail-stat-n { font-family:var(--font-h); font-size:2.2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .detail-stat-l { font-size:.76rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+        .detail-visual { background:#1a1a1a; min-height:460px; overflow:hidden; border-radius:8px; position:relative; }
+        .detail-visual-badge { position:absolute; top:24px; left:24px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.6rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; padding:8px 18px; z-index:2; }
+        .detail-visual img { width:100%; height:460px; object-fit:cover; opacity:.8; }
+
+        .use-cases { background:var(--black); padding:100px 64px; }
+        .cases-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .case-card { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition:border-color .3s; }
+        .case-card:hover { border-top-color:var(--orange); }
+        .case-icon { font-size:1.8rem; margin-bottom:16px; }
+        .case-title { font-family:var(--font-h); font-size:.84rem; font-weight:800; text-transform:uppercase; letter-spacing:.06em; color:var(--white); margin-bottom:10px; }
+        .case-desc { font-size:.82rem; color:var(--grey); line-height:1.75; }
+
+        .how-works { background:var(--dark); padding:100px 64px; }
+        .hw-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; margin-top:56px; }
+        .hw-steps { display:flex; flex-direction:column; gap:0; }
+        .hw-step { display:flex; gap:24px; padding:28px 0; border-bottom:1px solid var(--border); align-items:flex-start; }
+        .hw-step:last-child { border-bottom:none; }
+        .hw-num { width:48px; height:48px; flex-shrink:0; background:var(--orange); font-family:var(--font-h); font-size:.9rem; font-weight:900; color:#fff; display:flex; align-items:center; justify-content:center; }
+        .hw-title { font-family:var(--font-h); font-size:.82rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:6px; }
+        .hw-desc { font-size:.82rem; color:var(--grey); line-height:1.7; }
+        .hw-img { background:var(--card); min-height:480px; overflow:hidden; border-radius:8px; position:relative; }
+        .hw-img img { width:100%; height:480px; object-fit:cover; opacity:.7; }
+        .hw-badge { position:absolute; bottom:28px; left:28px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; padding:10px 20px; }
+
+        .detail-included { background:var(--black); padding:100px 64px; }
+        .included-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.87rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; font-family:var(--font-h); flex-shrink:0; }
+
+        .detail-faq { background:var(--dark); padding:100px 64px; }
+        .faq-wrap { max-width:900px; margin:56px auto 0; display:flex; flex-direction:column; gap:2px; }
+        .faq-item { background:var(--card); border-left:3px solid transparent; transition:border-color .3s; }
+        .faq-item.open { border-left-color:var(--orange); }
+        .faq-q { display:flex; align-items:center; justify-content:space-between; padding:22px 28px; cursor:pointer; font-family:var(--font-h); font-size:.82rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--white); gap:16px; user-select:none; }
+        .faq-plus { color:var(--orange); font-size:1.4rem; flex-shrink:0; transition:transform .3s; }
+        .faq-item.open .faq-plus { transform:rotate(45deg); }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+        .faq-item.open .faq-a { max-height:500px; }
+        .faq-a p { padding:0 28px 22px; font-size:.86rem; color:var(--grey); line-height:1.8; }
+
+        @media (max-width:768px) {
+            .detail-intro,.use-cases,.how-works,.detail-included,.detail-faq { padding:56px 24px; }
+            .detail-intro,.hw-grid,.included-cols { grid-template-columns:1fr; gap:40px; }
+            .cases-grid { grid-template-columns:1fr; }
+            .detail-visual,.hw-img { min-height:240px; }
+            .detail-visual img,.hw-img img { height:240px; }
+            .faq-q { font-size:.75rem; padding:18px 20px; } .faq-a p { padding:0 20px 18px; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item active"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<div class="page-hero" style="background-image:url('images/H9yKbM3MRv1pTFad.webp')">
+    <div class="page-hero-content">
+        <div class="page-hero-label">02 — Services · 05</div>
+        <h1 data-i18n="sh.h1">Service <span>à l'Heure</span></h1>
+        <p class="page-hero-sub" data-i18n="sh.sub">Votre chauffeur privé à disposition pour la journée, la demi-journée ou quelques heures — multi-arrêts, tarif horaire fixe, disponible 24h/24.</p>
+    </div>
+</div>
+
+<section class="detail-intro">
+    <div class="reveal-l">
+        <div class="section-label" data-i18n="sh.intro.lbl">Chauffeur à disposition</div>
+        <h2 class="section-h2" data-i18n="sh.intro.h2">Votre chauffeur, <span>à votre rythme.</span></h2>
+        <p class="detail-lead" data-i18n="sh.intro.p1">Le service à l'heure est idéal lorsque vous avez besoin d'un chauffeur professionnel pour plusieurs déplacements dans la journée sans savoir exactement votre emploi du temps. Réunions successives, rendez-vous clients, shopping, visites — votre chauffeur vous attend entre chaque arrêt, discrètement, sans compteur qui tourne.</p>
+        <p class="detail-lead" data-i18n="sh.intro.p2">Réservez pour un minimum de 2 heures et profitez d'un tarif horaire tout compris, sans frais kilométriques supplémentaires dans un rayon raisonnable. Votre chauffeur est votre assistant de mobilité personnel pour toute la durée de la réservation.</p>
+        <div class="detail-stats">
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sh.stat1.n">2h</div><div class="detail-stat-l" data-i18n="sh.stat1.l">Minimum de réservation</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sh.stat2.n">∞</div><div class="detail-stat-l" data-i18n="sh.stat2.l">Arrêts inclus</div></div>
+            <div class="detail-stat"><div class="detail-stat-n" data-i18n="sh.stat3.n">24/7</div><div class="detail-stat-l" data-i18n="sh.stat3.l">Disponible en permanence</div></div>
+        </div>
+    </div>
+    <div class="detail-visual reveal-r">
+        <div class="detail-visual-badge">Chauffeur à l'Heure</div>
+        <img src="images/driver-requirements-1.webp" alt="Service Chauffeur Privé Bruxelles">
+    </div>
+</section>
+
+<section class="use-cases">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sh.cases.lbl">Cas d'utilisation</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sh.cases.h2">Parfait pour <span>chaque situation</span></h2>
+    </div>
+    <div class="cases-grid">
+        <div class="case-card reveal">
+            <div class="case-icon">💼</div>
+            <div class="case-title" data-i18n="sh.c1.t">Journée de réunions</div>
+            <p class="case-desc" data-i18n="sh.c1.d">Enchaînez vos rendez-vous professionnels à Bruxelles sans vous préoccuper du stationnement, des taxis ou de la navigation. Votre chauffeur vous attend entre chaque réunion et adapte les itinéraires en temps réel.</p>
+        </div>
+        <div class="case-card reveal" style="transition-delay:.1s">
+            <div class="case-icon">🏥</div>
+            <div class="case-title" data-i18n="sh.c2.t">Rendez-vous médicaux</div>
+            <p class="case-desc" data-i18n="sh.c2.d">Pour les déplacements médicaux nécessitant attente et retour, notre service à l'heure est la solution la plus confortable. Votre chauffeur vous accompagne et reste à votre disposition tout au long de votre journée.</p>
+        </div>
+        <div class="case-card reveal" style="transition-delay:.2s">
+            <div class="case-icon">🛍️</div>
+            <div class="case-title" data-i18n="sh.c3.t">Shopping & lifestyle</div>
+            <p class="case-desc" data-i18n="sh.c3.d">Avenue Louise, Galeries Royales Saint-Hubert, Delvaux, Neuhaus — explorez Bruxelles avec votre chauffeur personnel. Pas de parking à chercher, vos achats sont chargés dans le véhicule, vous vous concentrez sur votre plaisir.</p>
+        </div>
+        <div class="case-card reveal" style="transition-delay:.3s">
+            <div class="case-icon">🎭</div>
+            <div class="case-title" data-i18n="sh.c4.t">Sorties culturelles & soirées</div>
+            <p class="case-desc" data-i18n="sh.c4.d">Opéra, théâtre, restaurant gastronomique, soirée de gala — partez et revenez dans le confort et la sécurité d'un véhicule premium avec chauffeur. Pas de contrainte d'alcool, pas de taxi à trouver à minuit.</p>
+        </div>
+        <div class="case-card reveal" style="transition-delay:.4s">
+            <div class="case-icon">🏢</div>
+            <div class="case-title" data-i18n="sh.c5.t">Roadshow & visites clients</div>
+            <p class="case-desc" data-i18n="sh.c5.d">Optimisez vos tournées commerciales ou vos visites de sites. Votre chauffeur connaît Bruxelles, évite les embouteillages et vous permet de travailler (téléphone, email) entre chaque visite.</p>
+        </div>
+        <div class="case-card reveal" style="transition-delay:.5s">
+            <div class="case-icon">🌆</div>
+            <div class="case-title" data-i18n="sh.c6.t">Découverte de Bruxelles</div>
+            <p class="case-desc" data-i18n="sh.c6.d">Pour les visiteurs internationaux, notre service à l'heure permet de découvrir la ville à votre rythme — Grand-Place, Atomium, Châteaux, vignobles brabançons — avec un guide-chauffeur bilingue.</p>
+        </div>
+    </div>
+</section>
+
+<section class="how-works">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sh.hw.lbl">Comment ça fonctionne</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sh.hw.h2">Simple, flexible, <span>sans surprise.</span></h2>
+    </div>
+    <div class="hw-grid">
+        <div class="hw-steps">
+            <div class="hw-step reveal">
+                <div class="hw-num">01</div>
+                <div>
+                    <div class="hw-title" data-i18n="sh.hw1.t">Réservez par heure</div>
+                    <p class="hw-desc" data-i18n="sh.hw1.d">Indiquez l'heure de début, la durée souhaitée (minimum 2 heures) et votre point de départ. Mentionnez vos destinations prévues pour que nous assignions le véhicule le plus adapté. Tarif horaire fixe, tout compris.</p>
+                </div>
+            </div>
+            <div class="hw-step reveal" style="transition-delay:.1s">
+                <div class="hw-num">02</div>
+                <div>
+                    <div class="hw-title" data-i18n="sh.hw2.t">Votre chauffeur arrive</div>
+                    <p class="hw-desc" data-i18n="sh.hw2.d">À l'heure convenue, votre chauffeur est à votre adresse, prêt à partir. Il vous présente le programme de la journée et se met entièrement à votre disposition pour la durée de la réservation.</p>
+                </div>
+            </div>
+            <div class="hw-step reveal" style="transition-delay:.2s">
+                <div class="hw-num">03</div>
+                <div>
+                    <div class="hw-title" data-i18n="sh.hw3.t">Dirigez à votre gré</div>
+                    <p class="hw-desc" data-i18n="sh.hw3.d">Vous décidez, votre chauffeur exécute. Changements d'itinéraire, arrêts imprévus, extensions de durée — tout s'adapte à votre agenda en temps réel. Aucune contrainte, aucun compteur anxiogène.</p>
+                </div>
+            </div>
+            <div class="hw-step reveal" style="transition-delay:.3s">
+                <div class="hw-num">04</div>
+                <div>
+                    <div class="hw-title" data-i18n="sh.hw4.t">Prolongation si besoin</div>
+                    <p class="hw-desc" data-i18n="sh.hw4.d">Si votre journée s'étend au-delà du temps réservé, informez simplement votre chauffeur. La prolongation est facturée à la demi-heure selon le tarif horaire en vigueur, sans frais d'extension cachés.</p>
+                </div>
+            </div>
+        </div>
+        <div class="hw-img reveal-r">
+            <img src="images/CLASSE.png" alt="Mercedes Chauffeur Privé" style="object-fit:contain; background:#242424;">
+            <div class="hw-badge">Mercedes · Confort Premium</div>
+        </div>
+    </div>
+</section>
+
+<section class="detail-included">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sh.inc.lbl">Tout inclus</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sh.inc.h2">Ce que comprend <span>votre tarif horaire</span></h2>
+    </div>
+    <div class="included-cols">
+        <div class="reveal-l">
+            <div class="inc-title" data-i18n="sh.inc.col1">Inclus dans le tarif horaire</div>
+            <ul class="inc-list" data-i18n="sh.inc.l1">
+                <li>Chauffeur professionnel en tenue soignée</li>
+                <li>Véhicule Mercedes premium (E-Class, S-Class, V-Class ou Sprinter)</li>
+                <li>Carburant inclus</li>
+                <li>Frais de stationnement et péages inclus (rayon Bruxelles)</li>
+                <li>Arrêts illimités durant la période réservée</li>
+                <li>Eau minérale offerte à bord</li>
+                <li>Adaptation d'itinéraire en temps réel</li>
+                <li>Chargeur téléphone disponible</li>
+                <li>Wi-Fi à bord (selon véhicule)</li>
+                <li>Assurance tous risques passagers</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title" data-i18n="sh.inc.col2">Options et informations pratiques</div>
+            <ul class="inc-list" data-i18n="sh.inc.l2">
+                <li>Durée minimum : 2 heures</li>
+                <li>Réservation possible jusqu'à 2 heures avant le départ</li>
+                <li>Prolongation à la demi-heure disponible</li>
+                <li>Trajets longue distance possibles (supplément applicable)</li>
+                <li>Interprétation en anglais, français, néerlandais</li>
+                <li>Sièges enfants disponibles sur demande</li>
+                <li>Réservation pour plusieurs jours possible</li>
+                <li>Contrat journalier pour usage régulier</li>
+                <li>Facturation corporate disponible</li>
+                <li>Contact : hourly@belgiumairport.be</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="detail-faq">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center" data-i18n="sh.faq.lbl">Questions fréquentes</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="sh.faq.h2">Service à l'Heure — <span>FAQ</span></h2>
+    </div>
+    <div class="faq-wrap">
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sh.faq.1.q">Quelle est la durée minimum de réservation ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sh.faq.1.a">La durée minimum de réservation pour le service à l'heure est de 2 heures. Au-delà, vous pouvez réserver par tranche de 30 minutes. Pour une journée complète (8 à 10 heures), des tarifs journaliers préférentiels sont disponibles — contactez-nous pour un devis personnalisé.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sh.faq.2.q">Puis-je modifier mon itinéraire en cours de route ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sh.faq.2.a">Absolument. C'est l'un des grands avantages du service à l'heure : votre itinéraire est entièrement flexible. Vous pouvez ajouter des arrêts, changer de destination ou modifier l'ordre de vos visites à tout moment, sans notification préalable ni frais supplémentaires, dans la limite du temps réservé.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sh.faq.3.q">Le service couvre-t-il les trajets hors de Bruxelles ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sh.faq.3.a">Oui. Notre service à l'heure n'est pas limité à la région de Bruxelles. Vous pouvez vous rendre à Anvers, Gand, Bruges, Liège ou même dans les pays voisins. Pour les trajets dépassant 80 km de Bruxelles, un supplément kilométrique peut s'appliquer — demandez un devis lors de la réservation.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sh.faq.4.q">Comment contacter mon chauffeur pendant la mission ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sh.faq.4.a">Vous recevez le numéro de téléphone direct de votre chauffeur dans la confirmation de réservation. Vous pouvez le contacter par appel ou SMS à tout moment pendant la mission. Votre chauffeur est également joignable via notre centrale opérationnelle si nécessaire.</p></div>
+        </div>
+        <div class="faq-item">
+            <div class="faq-q" data-i18n="sh.faq.5.q">Puis-je réserver un service à l'heure pour un client ou un VIP ?<span class="faq-plus">+</span></div>
+            <div class="faq-a"><p data-i18n="sh.faq.5.a">Oui, et c'est l'une des utilisations les plus fréquentes. Vous réservez pour le compte d'un client, d'un invité ou d'un délégué. Nous gérons l'accueil, le transport et le retour de votre hôte avec le même niveau de service que si vous étiez présent. Facture adressée à votre entreprise.</p></div>
+        </div>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2 data-i18n="sh.cta.h2">Réservez votre chauffeur <span>à l'heure</span></h2>
+    <p data-i18n="sh.cta.p">Disponible 24h/24, 7j/7. Contactez-nous par email ou WhatsApp pour une réservation rapide.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange" data-i18n="sh.cta.btn1">Réserver un chauffeur →</a>
+        <a href="mailto:hourly@belgiumairport.be" class="btn-ghost" data-i18n="sh.cta.btn2">hourly@belgiumairport.be</a>
+    </div>
+</div>
+
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="shared.partners.sub">Membres des plus grands réseaux de transport premium au monde.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Services</div><ul class="flinks"><li><a href="service-aeroport.html">Aéroport</a></li><li><a href="service-corporate.html">Corporate</a></li><li><a href="service-diplomatique.html">Diplomatique</a></li><li><a href="service-evenements.html">Événements</a></li><li><a href="service-heure.html">À l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:hourly@belgiumairport.be">hourly@belgiumairport.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+            item.classList.toggle('open');
+        });
+    });
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

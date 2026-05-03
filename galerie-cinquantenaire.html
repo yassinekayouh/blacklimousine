@@ -1,0 +1,284 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flotte au Cinquantenaire — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .story-hero { position:relative; height:72vh; min-height:520px; overflow:hidden; display:flex; align-items:flex-end; }
+        .story-hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.55); }
+        .story-hero::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.85) 0%, rgba(0,0,0,.2) 60%, transparent 100%); }
+        .story-hero-content { position:relative; z-index:2; padding:0 64px 64px; max-width:960px; }
+        .story-crumb { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
+        .story-crumb a { color:var(--orange); text-decoration:none; }
+        .story-h1 { font-family:var(--font-h); font-size:clamp(2.4rem,5vw,4rem); font-weight:900; text-transform:uppercase; color:#fff; line-height:1.05; margin-bottom:14px; }
+        .story-h1 span { color:var(--orange); }
+        .story-meta { display:flex; gap:24px; flex-wrap:wrap; }
+        .story-tag { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.6); display:flex; align-items:center; gap:6px; }
+        .story-tag::before { content:''; width:16px; height:2px; background:var(--orange); }
+
+        .story-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+        .story-lead { font-size:.95rem; color:rgba(255,255,255,.85); line-height:1.9; margin-bottom:18px; }
+        .story-pull { font-family:var(--font-h); font-size:1.3rem; font-weight:900; text-transform:uppercase; color:var(--white); line-height:1.25; border-left:4px solid var(--orange); padding-left:24px; margin:36px 0; }
+        .story-body p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:16px; }
+
+        .story-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; }
+        .story-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .story-stat-n { font-family:var(--font-h); font-size:2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .story-stat-l { font-size:.74rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+
+        .vehicles-section { background:var(--black); padding:100px 64px; }
+        .vehicles-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .veh-card { background:var(--card); padding:40px 32px; border-top:3px solid var(--border); transition:border-top-color .2s; }
+        .veh-card:hover { border-top-color:var(--orange); }
+        .veh-badge { font-family:var(--font-h); font-size:.58rem; font-weight:700; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:12px; }
+        .veh-name { font-family:var(--font-h); font-size:1.05rem; font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:6px; }
+        .veh-cat { font-size:.78rem; color:var(--grey); margin-bottom:20px; }
+        .veh-specs { display:flex; flex-direction:column; gap:8px; }
+        .veh-spec { display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-bottom:1px solid var(--border); font-size:.8rem; }
+        .veh-spec-l { color:var(--grey); }
+        .veh-spec-v { color:var(--white); font-weight:600; font-family:var(--font-h); font-size:.78rem; }
+
+        .story-gallery { background:var(--dark); padding:100px 64px; }
+        .sgal-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .sgal-item { position:relative; height:260px; overflow:hidden; }
+        .sgal-item img { width:100%; height:100%; object-fit:cover; filter:brightness(.7); transition:transform .5s ease, filter .5s ease; }
+        .sgal-item:hover img { transform:scale(1.05); filter:brightness(.5); }
+        .sgal-item.wide { grid-column:span 2; }
+        .sgal-cap { position:absolute; bottom:0; left:0; right:0; padding:16px 20px; background:linear-gradient(to top,rgba(0,0,0,.8),transparent); }
+        .sgal-cap span { font-family:var(--font-h); font-size:.68rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:#fff; }
+
+        .context-section { background:var(--black); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .context-visual { background:var(--card); min-height:480px; overflow:hidden; border-radius:8px; position:relative; }
+        .context-visual img { width:100%; height:480px; object-fit:cover; opacity:.8; }
+        .context-badge { position:absolute; bottom:28px; left:28px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; padding:10px 20px; }
+        .context-text .section-label { margin-bottom:24px; }
+        .context-body p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:16px; }
+        .context-list { list-style:none; display:flex; flex-direction:column; gap:12px; margin-top:28px; }
+        .context-list li { display:flex; align-items:flex-start; gap:12px; font-size:.86rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .context-list li::before { content:'→'; color:var(--orange); font-weight:700; flex-shrink:0; }
+
+        .related-gallery { background:var(--dark); padding:100px 64px; }
+        .related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .rel-item { position:relative; height:220px; overflow:hidden; text-decoration:none; display:block; }
+        .rel-item img { width:100%; height:100%; object-fit:cover; filter:brightness(.6); transition:transform .5s ease, filter .5s ease; }
+        .rel-item:hover img { transform:scale(1.06); filter:brightness(.4); }
+        .rel-cap { position:absolute; bottom:0; left:0; right:0; padding:14px 18px; background:linear-gradient(to top,rgba(0,0,0,.85),transparent); z-index:1; }
+        .rel-title { font-family:var(--font-h); font-size:.68rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:2px; }
+        .rel-sub { font-size:.68rem; color:rgba(255,255,255,.55); }
+        .rel-top { position:absolute; top:0; left:0; right:0; height:3px; background:var(--orange); transform:scaleX(0); transform-origin:left; transition:transform .3s; z-index:2; }
+        .rel-item:hover .rel-top { transform:scaleX(1); }
+
+        @media (max-width:768px) {
+            .story-hero-content { padding:0 24px 48px; }
+            .story-intro { grid-template-columns:1fr; padding:56px 24px; gap:40px; }
+            .vehicles-section,.story-gallery,.context-section,.related-gallery { padding:56px 24px; }
+            .vehicles-grid,.sgal-grid { grid-template-columns:1fr; }
+            .sgal-item.wide { grid-column:span 1; }
+            .context-section { grid-template-columns:1fr; }
+            .context-visual { min-height:240px; }
+            .context-visual img { height:240px; }
+            .related-grid { grid-template-columns:1fr 1fr; }
+            .story-stats { grid-template-columns:1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item active"><span class="drop-num">03</span><span class="drop-name">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn">Réserver →</a>
+    </div>
+</nav>
+
+<div class="story-hero">
+    <img src="images/WhatsApp%20Image%202026-04-1.42.jpeg" alt="Flotte Black Limousine au Cinquantenaire">
+    <div class="story-hero-content">
+        <div class="story-crumb"><a href="flotte.html">← Retour à la Flotte</a></div>
+        <h1 class="story-h1">Flotte au <span>Cinquantenaire</span></h1>
+        <div class="story-meta">
+            <span class="story-tag">Bruxelles · Parc du Cinquantenaire</span>
+            <span class="story-tag">3 véhicules · E, S &amp; V-Class</span>
+            <span class="story-tag">Séance photo officielle</span>
+        </div>
+    </div>
+</div>
+
+<section class="story-intro">
+    <div class="reveal-l">
+        <div class="section-label">La flotte en représentation</div>
+        <h2 class="section-h2">Bruxelles comme <span>écrin de prestige.</span></h2>
+        <p class="story-lead">Le Parc du Cinquantenaire — avec ses arches triomphales et ses allées plantées d'arbres centenaires — est l'un des symboles les plus reconnaissables de Bruxelles. C'est ici que nous avons choisi de photographier notre flotte complète pour la première fois en 2024 : trois Mercedes alignées face à l'Arc de Triomphe, dans la lumière dorée d'une fin d'après-midi de septembre.</p>
+        <div class="story-pull">"Trois classes d'exception. Un seul standard d'excellence."</div>
+        <p class="story-body">Cette séance illustre parfaitement ce que nous faisons chaque jour : positionner nos véhicules dans les lieux les plus prestigieux de la capitale européenne. Du Grand-Place à l'Avenue Louise, du Sablon au quartier européen — nos Mercedes font partie du paysage premium de Bruxelles.</p>
+        <div class="story-stats" style="margin-top:36px">
+            <div class="story-stat"><div class="story-stat-n">3</div><div class="story-stat-l">Véhicules photographiés</div></div>
+            <div class="story-stat"><div class="story-stat-n">2013</div><div class="story-stat-l">Depuis cette année au Cinquantenaire</div></div>
+            <div class="story-stat"><div class="story-stat-n">100+</div><div class="story-stat-l">Transferts/semaine au départ de Bruxelles</div></div>
+        </div>
+    </div>
+    <div class="reveal-r">
+        <p class="story-body">Le Parc du Cinquantenaire est à moins de 10 minutes à pied de la Place du Luxembourg, du Parlement européen et du siège du Conseil de l'Union européenne. C'est l'un des points de convergence naturels de notre zone d'opération quotidienne : nous y passons régulièrement lors des transferts diplomatiques entre les institutions européennes et Brussels Airport.</p>
+        <p class="story-body">Pour cette séance photographique, nos trois véhicules vedettes — la Mercedes E-Class Business, la S-Class First Class et la V-Class Executive — ont été préparés et détaillés pendant deux jours. Chaque vitre polie à la main, chaque jante astiquée, chaque intérieur aspiré et traité au cuir. C'est le standard qui s'applique avant chaque mise en service.</p>
+        <p class="story-body">Le résultat : des images qui incarnent l'identité de Black Limousine — sobriété, excellence, ancrage dans la ville. Pas de mise en scène artificielle. Juste nos véhicules, là où nous travaillons réellement, dans la ville que nous servons depuis 2013.</p>
+        <p class="story-body">Ces photographies sont aujourd'hui utilisées dans toutes nos communications officielles, nos brochures partenaires hôteliers et nos présentations aux institutions européennes. Elles reflètent l'engagement que nous prenons auprès de chaque client : présenter un véhicule qui mérite les lieux où il se rend.</p>
+    </div>
+</section>
+
+<section class="vehicles-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Les véhicules présents</div>
+        <h2 class="section-h2" style="text-align:center">Trois Mercedes, <span>une seule exigence</span></h2>
+    </div>
+    <div class="vehicles-grid">
+        <div class="veh-card reveal">
+            <div class="veh-badge">Classe 01 · Business</div>
+            <div class="veh-name">Mercedes E-Class</div>
+            <div class="veh-cat">Berline de représentation · 1 à 3 passagers</div>
+            <div class="veh-specs">
+                <div class="veh-spec"><span class="veh-spec-l">Motorisation</span><span class="veh-spec-v">E 300 e · Hybride</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Longueur</span><span class="veh-spec-v">4 923 mm</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Capacité bagages</span><span class="veh-spec-v">3 valises cabine</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Intérieur</span><span class="veh-spec-v">Cuir Nappa noir</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Usage principal</span><span class="veh-spec-v">Transfert aéroport, corporate</span></div>
+            </div>
+        </div>
+        <div class="veh-card reveal" style="transition-delay:.1s">
+            <div class="veh-badge">Classe 02 · First Class</div>
+            <div class="veh-name">Mercedes S-Class</div>
+            <div class="veh-cat">Berline de prestige · 1 à 3 passagers</div>
+            <div class="veh-specs">
+                <div class="veh-spec"><span class="veh-spec-l">Motorisation</span><span class="veh-spec-v">S 580 e · Hybride</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Longueur</span><span class="veh-spec-v">5 289 mm</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Sièges arrière</span><span class="veh-spec-v">Massage &amp; chauffants</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Intérieur</span><span class="veh-spec-v">Cuir Nappa biton</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Usage principal</span><span class="veh-spec-v">VIP, diplomatique, hôtels 5★</span></div>
+            </div>
+        </div>
+        <div class="veh-card reveal" style="transition-delay:.2s">
+            <div class="veh-badge">Classe 03 · Executive Van</div>
+            <div class="veh-name">Mercedes V-Class</div>
+            <div class="veh-cat">Monospace de prestige · 1 à 7 passagers</div>
+            <div class="veh-specs">
+                <div class="veh-spec"><span class="veh-spec-l">Motorisation</span><span class="veh-spec-v">V 300 d · Diesel</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Longueur</span><span class="veh-spec-v">5 370 mm (Extra-Long)</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Configuration</span><span class="veh-spec-v">Face-to-face possible</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Bagages</span><span class="veh-spec-v">6 à 8 valises</span></div>
+                <div class="veh-spec"><span class="veh-spec-l">Usage principal</span><span class="veh-spec-v">Groupes, événements, familles</span></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="context-section">
+    <div class="context-visual reveal-l">
+        <img src="images/CLASSE.png" alt="Mercedes E-Class Black Limousine" style="object-fit:contain; background:#1a1a1a;">
+        <div class="context-badge">Cinquantenaire · Bruxelles</div>
+    </div>
+    <div class="context-text reveal-r">
+        <div class="section-label">Le Cinquantenaire</div>
+        <h2 class="section-h2">Un monument, <span>une adresse.</span></h2>
+        <div class="context-body">
+            <p>Le Parc du Cinquantenaire a été inauguré en 1880 à l'occasion du 50e anniversaire de l'indépendance de la Belgique. Ses 37 hectares, ses trois arches monumentales et ses musées royaux en font l'un des espaces les plus photographiés et les plus visités de Bruxelles.</p>
+            <p>Situé dans la commune d'Etterbeek, à deux pas du quartier européen, le Cinquantenaire est un passage naturel dans nos itinéraires quotidiens. Nous assurons régulièrement des transferts depuis ou vers les institutions de l'UE situées à moins d'un kilomètre de l'arcade.</p>
+            <p>Choisir ce lieu pour notre séance officielle n'était pas anodin : il symbolise la permanence, l'ancrage dans la capitale et la dimension européenne de notre activité. Nos clients viennent du monde entier — et Bruxelles, avec le Cinquantenaire en toile de fond, les accueille à leur mesure.</p>
+        </div>
+        <ul class="context-list">
+            <li>Parc du Cinquantenaire, 1000 Bruxelles · Commune d'Etterbeek</li>
+            <li>À 900 m du Parlement européen</li>
+            <li>À 1,2 km du siège du Conseil de l'UE</li>
+            <li>À 8 min de Brussels Airport en véhicule</li>
+            <li>Accès privilégié aux zones diplomatiques environnantes</li>
+        </ul>
+    </div>
+</section>
+
+<section class="related-gallery">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Galerie · Notre flotte en action</div>
+        <h2 class="section-h2" style="text-align:center">Découvrez <span>les autres scènes</span></h2>
+    </div>
+    <div class="related-grid">
+        <a href="galerie-vclass-eu.html" class="rel-item reveal">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.31.42.jpeg" alt="V-Class EU">
+            <div class="rel-cap"><div class="rel-title">V-Class · Institutions EU</div><div class="rel-sub">Quartier européen · Bruxelles</div></div>
+        </a>
+        <a href="galerie-sclass-amigo.html" class="rel-item reveal" style="transition-delay:.1s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2011.42.jpeg" alt="S-Class Amigo">
+            <div class="rel-cap"><div class="rel-title">S-Class · Hôtel Amigo</div><div class="rel-sub">Grand-Place · Bruxelles</div></div>
+        </a>
+        <a href="galerie-eclass-dominican.html" class="rel-item reveal" style="transition-delay:.2s">
+            <div class="rel-top"></div>
+            <img src="images/Whatmage%202026-04-11%20at%2017.31.42.jpeg" alt="E-Class Dominican">
+            <div class="rel-cap"><div class="rel-title">E-Class · The Dominican</div><div class="rel-sub">Rue Léopold · Bruxelles</div></div>
+        </a>
+        <a href="galerie-evenement-corporate.html" class="rel-item reveal" style="transition-delay:.3s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.3A1.42.jpeg" alt="Flotte Événement">
+            <div class="rel-cap"><div class="rel-title">Flotte · Événement Corporate</div><div class="rel-sub">Palais des Beaux-Arts · Bruxelles</div></div>
+        </a>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2>Réservez votre <span>transfert premium</span></h2>
+    <p>Découvrez nos véhicules en vrai. Disponibles 24h/24 dans tout Bruxelles et la Belgique.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange">Réserver maintenant →</a>
+        <a href="flotte.html" class="btn-ghost">Voir toute la flotte</a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Galerie</div><ul class="flinks"><li><a href="galerie-cinquantenaire.html">Cinquantenaire</a></li><li><a href="galerie-vclass-eu.html">V-Class EU</a></li><li><a href="galerie-sclass-amigo.html">S-Class Amigo</a></li><li><a href="galerie-eclass-dominican.html">E-Class Dominican</a></li><li><a href="galerie-evenement-corporate.html">Événement Corporate</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:info@belgiumairport.be">info@belgiumairport.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

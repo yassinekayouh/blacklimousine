@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ — Questions Fréquentes — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .faq-section { background:var(--black); padding:100px 64px; }
+        .faq-layout { display:grid; grid-template-columns:280px 1fr; gap:60px; margin-top:56px; align-items:start; }
+        .faq-nav { position:sticky; top:96px; }
+        .faq-nav-title { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.22em; text-transform:uppercase; color:var(--orange); margin-bottom:16px; }
+        .faq-nav-list { list-style:none; display:flex; flex-direction:column; gap:2px; }
+        .faq-nav-list a { display:flex; align-items:center; gap:10px; padding:12px 16px; font-family:var(--font-h); font-size:.72rem; font-weight:700; text-transform:uppercase; letter-spacing:.08em; color:var(--grey); text-decoration:none; border-left:2px solid var(--border); transition:all .25s; }
+        .faq-nav-list a:hover, .faq-nav-list a.active { color:var(--orange); border-left-color:var(--orange); background:rgba(232,97,26,.06); }
+
+        .faq-content { display:flex; flex-direction:column; gap:56px; }
+        .faq-group-title { font-family:var(--font-h); font-size:1.1rem; font-weight:900; text-transform:uppercase; color:var(--white); margin-bottom:20px; padding-bottom:16px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:14px; }
+        .faq-group-title span { color:var(--orange); font-size:1.4rem; }
+        .faq-list { display:flex; flex-direction:column; gap:2px; }
+        .faq-item { background:var(--card); border-left:3px solid transparent; transition:border-color .3s; }
+        .faq-item.open { border-left-color:var(--orange); }
+        .faq-q { display:flex; align-items:center; justify-content:space-between; padding:20px 26px; cursor:pointer; font-family:var(--font-h); font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.04em; color:var(--white); gap:16px; user-select:none; }
+        .faq-plus { color:var(--orange); font-size:1.3rem; flex-shrink:0; transition:transform .3s; }
+        .faq-item.open .faq-plus { transform:rotate(45deg); }
+        .faq-a { max-height:0; overflow:hidden; transition:max-height .4s ease; }
+        .faq-item.open .faq-a { max-height:600px; }
+        .faq-a p { padding:0 26px 20px; font-size:.85rem; color:var(--grey); line-height:1.82; }
+        .faq-a ul { padding:0 26px 20px; margin:0; list-style:none; display:flex; flex-direction:column; gap:8px; }
+        .faq-a ul li { font-size:.85rem; color:var(--grey); line-height:1.7; padding-left:16px; position:relative; }
+        .faq-a ul li::before { content:'—'; position:absolute; left:0; color:var(--orange); }
+
+        .faq-contact-box { background:var(--orange); padding:60px 64px; }
+        .faq-contact-inner { display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; max-width:1100px; margin:0 auto; }
+        .faq-contact-title { font-family:var(--font-h); font-size:clamp(1.6rem,2.8vw,2.2rem); font-weight:900; text-transform:uppercase; color:#fff; margin-bottom:14px; }
+        .faq-contact-p { font-size:.9rem; color:rgba(255,255,255,.85); line-height:1.8; }
+        .faq-contact-btns { display:flex; flex-direction:column; gap:12px; }
+        .faq-contact-btn { display:flex; align-items:center; gap:14px; background:rgba(0,0,0,.25); color:#fff; padding:16px 22px; text-decoration:none; font-family:var(--font-h); font-size:.75rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; transition:background .25s; }
+        .faq-contact-btn:hover { background:rgba(0,0,0,.4); }
+        .faq-contact-icon { font-size:1.2rem; flex-shrink:0; }
+
+        @media (max-width:1024px) {
+            .faq-layout { grid-template-columns:1fr; gap:40px; }
+            .faq-nav { position:static; display:none; }
+        }
+        @media (max-width:768px) {
+            .faq-section { padding:56px 24px; }
+            .faq-contact-box { padding:48px 24px; }
+            .faq-contact-inner { grid-template-columns:1fr; gap:36px; }
+            .faq-q { font-size:.75rem; padding:16px 20px; }
+            .faq-a p, .faq-a ul { padding-left:20px; padding-right:20px; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name" data-i18n="drop.accueil">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name" data-i18n="drop.services">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item"><span class="drop-num">03</span><span class="drop-name" data-i18n="drop.flotte">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name" data-i18n="drop.apropos">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name" data-i18n="drop.contact">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn" data-i18n="nav.book">Réserver →</a>
+    </div>
+</nav>
+
+<div class="page-hero" style="background-image:url('images/private-taxi-banner.webp')">
+    <div class="page-hero-content">
+        <div class="page-hero-label" data-i18n="faq.hero.lbl">Questions Fréquentes</div>
+        <h1 data-i18n="faq.hero.h1">Tout ce que vous <span>voulez savoir</span></h1>
+        <p class="page-hero-sub" data-i18n="faq.hero.sub">Retrouvez les réponses à toutes vos questions sur nos services, tarifs, réservations et politique d'annulation.</p>
+    </div>
+</div>
+
+<section class="faq-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">FAQ</div>
+        <h2 class="section-h2" style="text-align:center" data-i18n="faq.h2">Questions <span>& Réponses</span></h2>
+    </div>
+    <div class="faq-layout">
+        <!-- Sidebar nav -->
+        <div class="faq-nav">
+            <div class="faq-nav-title" data-i18n="faq.nav.ttl">Catégories</div>
+            <ul class="faq-nav-list">
+                <li><a href="#reservations" class="active" data-i18n="faq.cat.1">✈ Réservations</a></li>
+                <li><a href="#tarifs" data-i18n="faq.cat.2">💳 Tarifs & Paiement</a></li>
+                <li><a href="#chauffeurs" data-i18n="faq.cat.3">👔 Chauffeurs</a></li>
+                <li><a href="#aeroport" data-i18n="faq.cat.4">🛬 Aéroport</a></li>
+                <li><a href="#corporate" data-i18n="faq.cat.5">🏢 Corporate</a></li>
+                <li><a href="#flotte" data-i18n="faq.cat.6">🚗 Flotte</a></li>
+                <li><a href="#annulation" data-i18n="faq.cat.7">❌ Annulation</a></li>
+            </ul>
+        </div>
+
+        <!-- FAQ Content -->
+        <div class="faq-content">
+
+            <!-- RÉSERVATIONS -->
+            <div id="reservations">
+                <div class="faq-group-title"><span>✈</span> <span data-i18n="faq.g1.ttl">Réservations</span></div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.r.q1">Comment réserver un transfert ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.r.a1"><p>Vous pouvez réserver via notre formulaire en ligne sur la page Contact, par téléphone au +32 2 615 23 00, par WhatsApp au +32 485 96 40 08, ou par email à info@airport-transfers.be. La confirmation est instantanée et vous recevez les détails de votre chauffeur par email et SMS.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.r.q2">Combien de temps à l'avance dois-je réserver ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.r.a2"><p>Nous recommandons de réserver au minimum 24 heures à l'avance pour garantir la disponibilité du véhicule de votre choix. Cependant, nous acceptons les réservations de dernière minute selon les disponibilités — contactez-nous directement par WhatsApp pour les urgences.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.r.q3">Quelles informations sont nécessaires pour la réservation ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.r.a3">
+                            <ul>
+                                <li>Adresse exacte de prise en charge</li>
+                                <li>Destination (adresse précise ou nom de l'hôtel)</li>
+                                <li>Date et heure souhaitées</li>
+                                <li>Numéro de vol (pour les transferts aéroport)</li>
+                                <li>Nombre de passagers et de bagages</li>
+                                <li>Préférences particulières (siège bébé, véhicule spécifique)</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.r.q4">Puis-je réserver pour quelqu'un d'autre ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.r.a4"><p>Oui, absolument. Vous pouvez réserver pour un client, un collègue, un membre de votre famille ou un invité. Indiquez le nom du passager lors de la réservation — c'est ce nom qui figurera sur le panneau d'accueil du chauffeur. La facture sera émise à votre nom ou celui de votre entreprise.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.r.q5">Puis-je réserver un trajet retour en même temps ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.r.a5"><p>Oui et nous vous le recommandons. Lors de votre réservation, mentionnez les détails du trajet retour (date, heure, numéro de vol si applicable) et nous les planifions simultanément. Cela vous assure une disponibilité garantie et évite toute recherche de dernière minute.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TARIFS -->
+            <div id="tarifs">
+                <div class="faq-group-title"><span>💳</span> <span data-i18n="faq.g2.ttl">Tarifs & Paiement</span></div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.t.q1">Les tarifs de Black Limousine sont-ils fixes ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.t.a1"><p>Oui, 100% fixes. Le tarif est défini au moment de la réservation et ne change jamais — ni pour les embouteillages, ni pour les retards de vol, ni pour les horaires nocturnes. Parking d'aéroport, péages et taxes sont inclus. Aucune mauvaise surprise à l'arrivée.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.t.q2">Le tarif est-il par personne ou par véhicule ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.t.a2"><p>Tous nos tarifs sont par véhicule, pas par personne. Que vous soyez 1 ou 3 passagers dans une Mercedes E-Class, le tarif est le même. C'est particulièrement avantageux pour les couples, familles et groupes — plus vous êtes nombreux, moins ça coûte par personne.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.t.q3">Quels modes de paiement acceptez-vous ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.t.a3"><p>Nous acceptons les paiements par carte bancaire (Visa, Mastercard, American Express), PayPal et virement bancaire. Pour les entreprises, la facturation mensuelle consolidée est disponible. Le paiement en espèces est possible dans certains cas — contactez-nous pour confirmation.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.t.q4">Y a-t-il des frais supplémentaires pour les trajets de nuit ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.t.a4"><p>Non. Nos tarifs sont identiques 24h/24, 7j/7, y compris les nuits, week-ends et jours fériés. Pas de majoration nocturne, pas de supplément week-end. Le tarif fixe est le même quelle que soit l'heure de votre transfert.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.t.q5">Le pourboire est-il inclus dans le tarif ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.t.a5"><p>Le pourboire n'est pas inclus dans le tarif et reste entièrement à votre discrétion. Nos chauffeurs ne l'attendent pas et n'en font pas la demande. Si vous êtes satisfait du service, un geste est bien sûr apprécié, mais en aucun cas obligatoire.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CHAUFFEURS -->
+            <div id="chauffeurs">
+                <div class="faq-group-title"><span>👔</span> <span data-i18n="faq.g3.ttl">Chauffeurs</span></div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.c.q1">Vos chauffeurs parlent-ils anglais ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.c.a1"><p>Oui, tous nos chauffeurs parlent anglais couramment. C'est une condition non négociable de notre recrutement. La grande majorité parle également le français et le néerlandais. D'autres langues (allemand, espagnol, arabe, portugais) sont disponibles chez certains chauffeurs — mentionnez votre préférence lors de la réservation.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.c.q2">Comment sont sélectionnés vos chauffeurs ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.c.a2"><p>Nos chauffeurs sont sélectionnés selon des critères stricts : casier judiciaire vierge, permis de conduire professionnel (minimum 2 ans), excellente connaissance de Bruxelles et de la Belgique, maîtrise de l'anglais, présentation soignée et expérience du service client. Chaque chauffeur suit une formation sur nos standards de service avant d'accepter des missions.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.c.q3">Puis-je demander le même chauffeur pour mes prochains trajets ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.c.a3"><p>Oui. Si vous avez apprécié votre chauffeur et souhaitez le retrouver pour vos prochaines réservations, mentionnez-le dans votre demande. Nous ferons notre possible pour assigner le même professionnel, sous réserve de ses disponibilités. Pour les clients corporate, un chauffeur attitré peut être configuré par défaut.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AÉROPORT -->
+            <div id="aeroport">
+                <div class="faq-group-title"><span>🛬</span> <span data-i18n="faq.g4.ttl">Transferts Aéroport</span></div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.a.q1">Que se passe-t-il si mon vol est retardé ou annulé ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.a.a1"><p>En cas de retard : notre système suit votre vol en temps réel. Votre chauffeur adapte automatiquement son heure d'arrivée sans frais supplémentaires. Le temps d'attente gratuit (45–60 min) est compté à partir de l'atterrissage réel. En cas d'annulation de vol : contactez-nous dès que possible par WhatsApp ou téléphone pour reprogrammer votre transfert. Si l'annulation est causée par la compagnie aérienne et que vous nous prévenez rapidement, aucuns frais d'annulation ne s'appliquent.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.a.q2">Où retrouver mon chauffeur à l'aéroport de Bruxelles-Zaventem ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.a.a2"><p>Votre chauffeur vous attend dans le hall des arrivées de l'aéroport de Bruxelles-Zaventem (BRU), niveau 2, avec un panneau à votre nom. Après avoir récupéré vos bagages, suivez les panneaux "Arrivées" et vous le trouverez dans la zone d'accueil. Vous recevez également son numéro de téléphone direct dans votre confirmation pour le contacter directement.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.a.q3">Couvrez-vous également l'aéroport de Charleroi (CRL) ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.a.a3"><p>Oui. Nous couvrons tous les aéroports belges : Brussels Airport Zaventem (BRU), Brussels South Charleroi Airport (CRL), Anvers (ANR) et Liège (LGG). Nous opérons également depuis Amsterdam-Schiphol (AMS) et Paris-CDG pour les trajets intercontinentaux rejoignant la Belgique.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.a.q4">Puis-je emporter des bagages surdimensionnés (ski, vélo, poussette) ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.a.a4"><p>Oui, mais mentionnez-le impérativement lors de la réservation. Selon le type et le volume des bagages, nous assignerons le véhicule adapté (Mercedes V-Class pour les grands volumes). Des équipements sportifs comme les skis, planches de surf ou vélos peuvent nécessiter un rack ou un véhicule avec espace de chargement spécifique — précisez vos besoins au moment de la réservation.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CORPORATE -->
+            <div id="corporate">
+                <div class="faq-group-title"><span>🏢</span> <span data-i18n="faq.g5.ttl">Comptes Corporate</span></div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.co.q1">Comment ouvrir un compte corporate ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.co.a1"><p>Contactez-nous par téléphone au +32 2 615 23 00 ou par email à info@airport-transfers.be. Un account manager vous recontacte sous 2 heures ouvrables pour établir une proposition tarifaire personnalisée selon votre volume mensuel. L'activation du compte prend 24 à 48 heures. Aucun minimum de trajets requis, aucun frais d'ouverture.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.co.q2">Puis-je assigner des codes de projet à chaque trajet ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.co.a2"><p>Oui. Notre plateforme corporate permet d'associer chaque réservation à un code projet, centre de coût, département ou client. Ces références apparaissent sur votre facture mensuelle, facilitant l'imputation comptable et les remboursements de frais. Les codes peuvent être pré-configurés ou saisis lors de chaque réservation.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.co.q3">Pouvons-nous payer par virement mensuel ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.co.a3"><p>Oui. Les clients corporate reçoivent une facture mensuelle consolidée payable par virement bancaire sous 30 jours. La facture détaille chaque mission (date, passager, trajet, montant) et est émise entre le 1er et le 5 du mois suivant. La TVA belge est applicable selon votre statut fiscal.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FLOTTE -->
+            <div id="flotte">
+                <div class="faq-group-title"><span>🚗</span> <span data-i18n="faq.g6.ttl">Flotte & Véhicules</span></div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.f.q1">Quels types de véhicules proposez-vous ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.f.a1">
+                            <ul>
+                                <li><strong style="color:var(--white)">Mercedes E-Class</strong> — Business Class, jusqu'à 3 passagers, 2 valises</li>
+                                <li><strong style="color:var(--white)">Mercedes S-Class</strong> — First Class, jusqu'à 3 passagers, 3 valises, sièges massants</li>
+                                <li><strong style="color:var(--white)">Mercedes V-Class</strong> — VIP Group, jusqu'à 7 passagers, 7 valises, configuration salon</li>
+                                <li><strong style="color:var(--white)">Minibus 8–20 places</strong> — pour groupes et événements</li>
+                                <li><strong style="color:var(--white)">Autocar 50 places</strong> — pour grands événements et transferts collectifs</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.f.q2">Les véhicules sont-ils équipés du Wi-Fi ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.f.a2"><p>Le Wi-Fi est disponible sur certains véhicules de notre flotte, notamment sur les Mercedes S-Class et V-Class premium. Si cette option est importante pour vous, mentionnez-le lors de la réservation et nous ferons notre possible pour assigner un véhicule équipé. Pour les trajets intercity et internationaux (Bruxelles–Amsterdam, Bruxelles–Paris), le Wi-Fi est disponible en standard.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.f.q3">Proposez-vous des véhicules accessibles PMR ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.f.a3"><p>Nous pouvons organiser des véhicules adaptés aux personnes à mobilité réduite selon les disponibilités de notre réseau partenaire. Mentionnez vos besoins spécifiques (fauteuil roulant pliant/électrique, rampe d'accès, espace de rangement adapté) lors de la réservation afin que nous puissions trouver la solution la plus appropriée.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ANNULATION -->
+            <div id="annulation">
+                <div class="faq-group-title"><span>❌</span> <span data-i18n="faq.g7.ttl">Annulation & Modification</span></div>
+                <div class="faq-list">
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.x.q1">Quelle est votre politique d'annulation ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.x.a1">
+                            <ul>
+                                <li><strong style="color:var(--white)">Plus de 24 heures avant :</strong> Annulation gratuite, remboursement intégral</li>
+                                <li><strong style="color:var(--white)">Entre 12 et 24 heures :</strong> Frais d'annulation de 50% du tarif</li>
+                                <li><strong style="color:var(--white)">Moins de 12 heures :</strong> Frais d'annulation de 100% du tarif</li>
+                                <li><strong style="color:var(--white)">No-show (chauffeur présent) :</strong> Tarif plein facturé</li>
+                            </ul>
+                            <p style="padding-top:8px;">En cas d'annulation de vol par la compagnie aérienne, contactez-nous immédiatement pour un arrangement sans frais.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.x.q2">Puis-je modifier l'heure ou la destination de mon transfert ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.x.a2"><p>Oui. Les modifications sont acceptées gratuitement jusqu'à 6 heures avant le départ, selon les disponibilités. Pour les modifications moins de 6 heures avant le départ, contactez-nous directement par WhatsApp ou téléphone — nous ferons notre possible pour vous accommoder, sans frais dans la mesure du possible.</p></div>
+                    </div>
+                    <div class="faq-item">
+                        <div class="faq-q"><span data-i18n="faq.x.q3">Comment obtenir un remboursement ?</span><span class="faq-plus">+</span></div>
+                        <div class="faq-a" data-i18n="faq.x.a3"><p>Les remboursements sont traités sous 5 à 10 jours ouvrables selon votre banque, sur le même moyen de paiement utilisé lors de la réservation. Pour déclencher un remboursement, contactez-nous par email à info@airport-transfers.be avec votre numéro de réservation. Toute demande de remboursement doit être effectuée dans les 30 jours suivant le transfert.</p></div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<!-- CONTACT BOX -->
+<div class="faq-contact-box">
+    <div class="faq-contact-inner">
+        <div>
+            <div class="faq-contact-title" data-i18n="faq.cta.ttl">Vous n'avez pas trouvé votre réponse ?</div>
+            <p class="faq-contact-p" data-i18n="faq.cta.p">Notre équipe est disponible 24h/24, 7j/7 pour répondre à toutes vos questions. Choisissez le canal qui vous convient le mieux — nous répondons en moins de 30 minutes.</p>
+        </div>
+        <div class="faq-contact-btns">
+            <a href="https://wa.me/32485964008" class="faq-contact-btn"><span class="faq-contact-icon">💬</span>WhatsApp — +32 485 96 40 08</a>
+            <a href="tel:+3226152300" class="faq-contact-btn"><span class="faq-contact-icon">📞</span>Téléphone — +32 2 615 23 00</a>
+            <a href="mailto:info@airport-transfers.be" class="faq-contact-btn"><span class="faq-contact-icon">📧</span>Email — info@airport-transfers.be</a>
+        </div>
+    </div>
+</div>
+
+<div class="partners-strip">
+    <div class="partners-header">
+        <div class="section-label" style="justify-content:center" data-i18n="partners.label">Partenaires & Accréditations</div>
+        <p class="partners-sub" data-i18n="partners.sub">Membres des plus grands réseaux de transport premium au monde.</p>
+    </div>
+    <div class="partners-track-wrap">
+        <div class="partners-track">
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+            <div class="partner-item"><img src="images/partner-a.png" alt="NLA"></div>
+            <div class="partner-item"><img src="images/partner-b.png" alt="GBTA"></div>
+            <div class="partner-item"><img src="images/partner-c.png" alt="GNET"></div>
+            <div class="partner-item"><img src="images/partner-d.png" alt="Travel Awards"></div>
+            <div class="partner-item"><img src="images/partner-e.png" alt="Events"></div>
+        </div>
+    </div>
+</div>
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag" data-i18n="footer.tag">Votre service de transfert aéroport premium en Belgique depuis 2013. TVA BE 0791.634.024</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t" data-i18n="footer.col.pages">Pages</div><ul class="flinks"><li><a href="index.html" data-i18n="footer.link.home">Accueil</a></li><li><a href="services.html" data-i18n="drop.services">Services</a></li><li><a href="flotte.html" data-i18n="drop.flotte">Flotte</a></li><li><a href="a-propos.html" data-i18n="drop.apropos">À propos</a></li><li><a href="contact.html" data-i18n="drop.contact">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t" data-i18n="footer.col.services">Services</div><ul class="flinks"><li><a href="service-aeroport.html" data-i18n="footer.link.airport">Aéroport</a></li><li><a href="service-corporate.html" data-i18n="footer.link.corp">Corporate</a></li><li><a href="service-diplomatique.html" data-i18n="footer.link.diplo">Diplomatique</a></li><li><a href="service-evenements.html" data-i18n="footer.link.events">Événements</a></li><li><a href="service-heure.html">À l'Heure</a></li><li><a href="service-hotels.html">Hôtels</a></li></ul></div>
+        <div><div class="fcol-t" data-i18n="footer.col.contact">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:info@airport-transfers.be">info@airport-transfers.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#" data-i18n="footer.mentions">Mentions légales</a><a href="#" data-i18n="footer.privacy">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+    document.querySelectorAll('.faq-q').forEach(q => {
+        q.addEventListener('click', () => {
+            const item = q.parentElement;
+            document.querySelectorAll('.faq-item').forEach(i => { if (i !== item) i.classList.remove('open'); });
+            item.classList.toggle('open');
+        });
+    });
+    // Sidebar nav highlight
+    const sections = document.querySelectorAll('.faq-content > div[id]');
+    const navLinks = document.querySelectorAll('.faq-nav-list a');
+    window.addEventListener('scroll', () => {
+        let current = '';
+        sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) current = s.id; });
+        navLinks.forEach(a => { a.classList.toggle('active', a.getAttribute('href') === '#' + current); });
+    });
+</script>
+<script src="translations.js"></script>
+</body>
+</html>

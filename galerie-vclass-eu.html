@@ -1,0 +1,344 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>V-Class · Institutions Européennes — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .story-hero { position:relative; height:72vh; min-height:520px; overflow:hidden; display:flex; align-items:flex-end; }
+        .story-hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.5); }
+        .story-hero::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.2) 60%, transparent 100%); }
+        .story-hero-content { position:relative; z-index:2; padding:0 64px 64px; max-width:960px; }
+        .story-crumb { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
+        .story-crumb a { color:var(--orange); text-decoration:none; }
+        .story-h1 { font-family:var(--font-h); font-size:clamp(2.4rem,5vw,4rem); font-weight:900; text-transform:uppercase; color:#fff; line-height:1.05; margin-bottom:14px; }
+        .story-h1 span { color:var(--orange); }
+        .story-meta { display:flex; gap:24px; flex-wrap:wrap; }
+        .story-tag { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.6); display:flex; align-items:center; gap:6px; }
+        .story-tag::before { content:''; width:16px; height:2px; background:var(--orange); }
+
+        .story-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+        .story-lead { font-size:.95rem; color:rgba(255,255,255,.85); line-height:1.9; margin-bottom:18px; }
+        .story-pull { font-family:var(--font-h); font-size:1.3rem; font-weight:900; text-transform:uppercase; color:var(--white); line-height:1.25; border-left:4px solid var(--orange); padding-left:24px; margin:36px 0; }
+        .story-body p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:16px; }
+
+        .story-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:36px; }
+        .story-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .story-stat-n { font-family:var(--font-h); font-size:2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .story-stat-l { font-size:.74rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+
+        .institutions-section { background:var(--black); padding:100px 64px; }
+        .inst-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:56px; }
+        .inst-card { background:var(--card); padding:36px 30px; border-top:3px solid var(--border); transition:border-top-color .2s; }
+        .inst-card:hover { border-top-color:var(--orange); }
+        .inst-flag { font-size:1.6rem; margin-bottom:14px; }
+        .inst-name { font-family:var(--font-h); font-size:.88rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:4px; }
+        .inst-addr { font-family:var(--font-h); font-size:.62rem; letter-spacing:.1em; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
+        .inst-desc { font-size:.82rem; color:var(--grey); line-height:1.7; }
+
+        .vclass-spotlight { background:var(--orange); padding:80px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .spotlight-label { font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:16px; }
+        .spotlight-h2 { font-family:var(--font-h); font-size:2.4rem; font-weight:900; text-transform:uppercase; color:#fff; line-height:1.1; margin-bottom:20px; }
+        .spotlight-text { font-size:.88rem; color:rgba(255,255,255,.85); line-height:1.8; margin-bottom:16px; }
+        .spotlight-specs { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:28px; }
+        .sp-spec { background:rgba(0,0,0,.18); padding:18px 20px; }
+        .sp-spec-l { font-family:var(--font-h); font-size:.58rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:4px; }
+        .sp-spec-v { font-family:var(--font-h); font-size:.88rem; font-weight:700; color:#fff; }
+        .spotlight-visual { background:rgba(0,0,0,.2); min-height:440px; overflow:hidden; border-radius:8px; display:flex; align-items:center; justify-content:center; }
+        .spotlight-visual img { width:100%; height:440px; object-fit:contain; }
+
+        .protocol-section { background:var(--dark); padding:100px 64px; }
+        .protocol-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:0; margin-top:56px; }
+        .prot-step { padding:36px 28px; border-right:1px solid var(--border); }
+        .prot-step:last-child { border-right:none; }
+        .prot-n { font-family:var(--font-h); font-size:3rem; font-weight:900; color:rgba(232,97,26,.15); line-height:1; margin-bottom:16px; }
+        .prot-title { font-family:var(--font-h); font-size:.82rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:10px; }
+        .prot-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+
+        .included-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.87rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; font-family:var(--font-h); flex-shrink:0; }
+
+        .related-gallery { background:var(--black); padding:100px 64px; }
+        .related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .rel-item { position:relative; height:220px; overflow:hidden; text-decoration:none; display:block; }
+        .rel-item img { width:100%; height:100%; object-fit:cover; filter:brightness(.6); transition:transform .5s ease, filter .5s ease; }
+        .rel-item:hover img { transform:scale(1.06); filter:brightness(.4); }
+        .rel-cap { position:absolute; bottom:0; left:0; right:0; padding:14px 18px; background:linear-gradient(to top,rgba(0,0,0,.85),transparent); z-index:1; }
+        .rel-title { font-family:var(--font-h); font-size:.68rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:2px; }
+        .rel-sub { font-size:.68rem; color:rgba(255,255,255,.55); }
+        .rel-top { position:absolute; top:0; left:0; right:0; height:3px; background:var(--orange); transform:scaleX(0); transform-origin:left; transition:transform .3s; z-index:2; }
+        .rel-item:hover .rel-top { transform:scaleX(1); }
+
+        @media (max-width:768px) {
+            .story-hero-content { padding:0 24px 48px; }
+            .story-intro,.institutions-section,.vclass-spotlight,.protocol-section,.related-gallery { padding:56px 24px; }
+            .story-intro { grid-template-columns:1fr; gap:40px; }
+            .inst-grid { grid-template-columns:1fr; }
+            .vclass-spotlight { grid-template-columns:1fr; gap:36px; }
+            .spotlight-visual { min-height:240px; }
+            .spotlight-visual img { height:240px; }
+            .protocol-grid { grid-template-columns:1fr 1fr; }
+            .included-cols { grid-template-columns:1fr; gap:32px; }
+            .related-grid { grid-template-columns:1fr 1fr; }
+            .story-stats { grid-template-columns:1fr 1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item active"><span class="drop-num">03</span><span class="drop-name">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn">Réserver →</a>
+    </div>
+</nav>
+
+<div class="story-hero">
+    <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.31.42.jpeg" alt="V-Class Mercedes Institutions Européennes Bruxelles">
+    <div class="story-hero-content">
+        <div class="story-crumb"><a href="flotte.html">← Retour à la Flotte</a></div>
+        <h1 class="story-h1">V-Class · <span>Institutions EU</span></h1>
+        <div class="story-meta">
+            <span class="story-tag">Quartier européen · Bruxelles</span>
+            <span class="story-tag">Mercedes V-Class Executive</span>
+            <span class="story-tag">Transferts diplomatiques</span>
+        </div>
+    </div>
+</div>
+
+<section class="story-intro">
+    <div class="reveal-l">
+        <div class="section-label">Au cœur de l'Europe</div>
+        <h2 class="section-h2">La Mercedes V-Class <span>au service des institutions.</span></h2>
+        <p class="story-lead">Chaque jour, nos Mercedes V-Class sillonnent le quartier européen de Bruxelles pour transporter délégations officielles, fonctionnaires de haut rang et représentants des États membres. Entre le Berlaymont, le Justus Lipsius et le siège de l'OTAN, notre V-Class est devenue le véhicule de référence pour les transferts institutionnels dans la capitale de l'Europe.</p>
+        <div class="story-pull">"180+ ambassades. 50 véhicules. Un protocole sans faille."</div>
+        <div class="story-stats">
+            <div class="story-stat"><div class="story-stat-n">180+</div><div class="story-stat-l">Ambassades et institutions desservies</div></div>
+            <div class="story-stat"><div class="story-stat-n">7</div><div class="story-stat-l">Passagers maximum confortablement</div></div>
+            <div class="story-stat"><div class="story-stat-n">24/7</div><div class="story-stat-l">Disponibilité y compris week-ends</div></div>
+        </div>
+    </div>
+    <div class="reveal-r">
+        <div class="story-body">
+            <p>La Mercedes V-Class Extra-Long est le choix naturel pour les délégations institutionnelles. Sa configuration intérieure face-à-face permet de tenir des réunions en route entre le Berlaymont et Brussels Airport. Sa discrétion extérieure — finition noire intégrale sans marquage visible — la rend invisible dans le protocole bruxellois.</p>
+            <p>Nous assurons quotidiennement les transferts entre Brussels Airport International (BRU) et les institutions européennes, les ambassades du quartier des Chasses Royales et les bureaux de représentation des pays membres situés rue de la Loi et alentours. Notre connaissance précise des zones d'accès restreint, des points de dépose protocolaires et des procédures de sécurité des institutions fait la différence.</p>
+            <p>La V-Class que vous voyez sur cette photographie opère principalement sur l'axe Zaventem–Quartier Européen–NATO HQ. Elle est équipée de vitres teintées niveau 5 (opacité maximale légale), d'un système audio discret, d'une tablette de travail arrière et d'une connexion Wi-Fi 4G partagée entre passagers.</p>
+            <p>Nos chauffeurs affectés aux missions institutionnelles suivent une formation spécifique aux protocoles de l'UE, aux procédures d'accès des institutions et aux règles de confidentialité diplomatique. Ils sont tous trilingues FR/EN/NL et peuvent accueillir dans d'autres langues sur demande.</p>
+        </div>
+    </div>
+</section>
+
+<section class="institutions-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Destinations institutionnelles</div>
+        <h2 class="section-h2" style="text-align:center">Les adresses que <span>nous maîtrisons</span></h2>
+    </div>
+    <div class="inst-grid">
+        <div class="inst-card reveal">
+            <div class="inst-flag">🇪🇺</div>
+            <div class="inst-name">Commission Européenne</div>
+            <div class="inst-addr">Bâtiment Berlaymont · Rond-Point Schuman 1</div>
+            <p class="inst-desc">Siège de la Commission européenne depuis 1967. Accès par Rond-Point Schuman, zone de dépose protocolaire côté Rue de la Loi. Nos chauffeurs connaissent les procédures de badging visiteurs et les points d'attente autorisés.</p>
+        </div>
+        <div class="inst-card reveal" style="transition-delay:.1s">
+            <div class="inst-flag">🇪🇺</div>
+            <div class="inst-name">Conseil de l'UE</div>
+            <div class="inst-addr">Bâtiment Europa · Rue de la Loi 175</div>
+            <p class="inst-desc">Siège de la présidence tournante de l'UE et du Conseil européen. Entrée principale Rue de la Loi, entrée protocolaire par la Rue Archimède. Nous coordonnons régulièrement des transferts multi-délégations lors des Sommets européens.</p>
+        </div>
+        <div class="inst-card reveal" style="transition-delay:.2s">
+            <div class="inst-flag">🇺🇳</div>
+            <div class="inst-name">NATO Headquarters</div>
+            <div class="inst-addr">Boulevard Léopold III · Evere, Bruxelles</div>
+            <p class="inst-desc">Siège de l'Organisation du Traité de l'Atlantique Nord depuis 2018. Accès par checkpoint sécurisé. Nos chauffeurs sont accrédités pour les opérations de transfert intra-OTAN et disposent de la habilitation de sécurité requise.</p>
+        </div>
+        <div class="inst-card reveal" style="transition-delay:.3s">
+            <div class="inst-flag">🇧🇪</div>
+            <div class="inst-name">Parlement Européen</div>
+            <div class="inst-addr">Rue Wiertz 60 · Quartier Léopold</div>
+            <p class="inst-desc">Deuxième siège du Parlement européen (avec Strasbourg). Plus de 700 eurodéputés y siègent en session plénière mensuelle. Nos navettes assurent les transferts aéroport lors des semaines de plénière bruxelloise.</p>
+        </div>
+        <div class="inst-card reveal" style="transition-delay:.4s">
+            <div class="inst-flag">🇧🇪</div>
+            <div class="inst-name">Palais d'Egmont</div>
+            <div class="inst-addr">Place du Petit Sablon · Bruxelles-Centre</div>
+            <p class="inst-desc">Résidence officielle des hôtes d'État étrangers et lieu de signature de grands traités. Black Limousine assure les transferts protocolaires pour les délégations étrangères accueillies par la Belgique en visite officielle.</p>
+        </div>
+        <div class="inst-card reveal" style="transition-delay:.5s">
+            <div class="inst-flag">🌐</div>
+            <div class="inst-name">Zone Ambassades</div>
+            <div class="inst-addr">Avenue de Tervuren &amp; Drève de Lorraine</div>
+            <p class="inst-desc">Bruxelles héberge 180 ambassades et plus de 2 500 organisations internationales. Nous opérons des transferts réguliers dans toute la zone diplomatique entre le Bois de la Cambre et Tervuren pour les corps diplomatiques accrédités.</p>
+        </div>
+    </div>
+</section>
+
+<div class="vclass-spotlight">
+    <div class="reveal-l">
+        <div class="spotlight-label">Véhicule · Mercedes V-Class</div>
+        <h2 class="spotlight-h2">L'espace d'un bureau. Le confort d'un salon.</h2>
+        <p class="spotlight-text">La Mercedes V-Class Extra-Long est la seule fourgonnette de prestige capable d'accueillir 7 passagers avec des équipements dignes d'une berline haut de gamme. Configuration intérieure disponible en face-à-face pour faciliter les échanges diplomatiques en route.</p>
+        <p class="spotlight-text">Vitres teintées niveau 5, isolation phonique renforcée, climatisation individuelle à 4 zones, Wi-Fi partagé et prise électrique 220V pour ordinateurs portables. Tout ce qu'il faut pour transformer un trajet en réunion mobile.</p>
+        <div class="spotlight-specs">
+            <div class="sp-spec"><div class="sp-spec-l">Modèle exact</div><div class="sp-spec-v">V 300 d EL AMG</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Longueur</div><div class="sp-spec-v">5 370 mm</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Passagers max</div><div class="sp-spec-v">7 places</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Bagages</div><div class="sp-spec-v">6 à 8 valises</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Teinture vitre</div><div class="sp-spec-v">Niveau 5 · Opaque</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Wi-Fi</div><div class="sp-spec-v">4G · Partagé</div></div>
+        </div>
+    </div>
+    <div class="spotlight-visual reveal-r">
+        <img src="images/classeV (2).png" alt="Mercedes V-Class Black Limousine" style="object-fit:contain; background:transparent;">
+    </div>
+</div>
+
+<section class="protocol-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Comment ça se passe</div>
+        <h2 class="section-h2" style="text-align:center">Transfert institutionnel <span>en 4 étapes</span></h2>
+    </div>
+    <div class="protocol-grid">
+        <div class="prot-step reveal">
+            <div class="prot-n">01</div>
+            <div class="prot-title">Briefing préalable</div>
+            <p class="prot-desc">48 heures avant la mission, nous recevons le détail de la délégation : noms, rôles, exigences de protocole. Notre chauffeur est briefé sur les restrictions d'accès et les procédures de sécurité de l'institution destinataire.</p>
+        </div>
+        <div class="prot-step reveal" style="transition-delay:.1s">
+            <div class="prot-n">02</div>
+            <div class="prot-title">Accueil nominatif</div>
+            <p class="prot-desc">À Brussels Airport, notre chauffeur attend dans le hall d'arrivée avec un panneau portant le nom du chef de délégation. Assistance bagagerie immédiate, guidage vers le véhicule garé en zone VIP réservée.</p>
+        </div>
+        <div class="prot-step reveal" style="transition-delay:.2s">
+            <div class="prot-n">03</div>
+            <div class="prot-title">Trajet sécurisé</div>
+            <p class="prot-desc">Itinéraire validé avec les équipes de sécurité si nécessaire. Communication radio disponible avec un dispatcher central tout au long du trajet. Neutralité totale : pas de discussion sur des sujets politiques ou sensibles.</p>
+        </div>
+        <div class="prot-step reveal" style="transition-delay:.3s">
+            <div class="prot-n">04</div>
+            <div class="prot-title">Dépose protocolaire</div>
+            <p class="prot-desc">Dépose à l'entrée désignée par le protocole de l'institution (pas toujours l'entrée principale). Attente sur place si demandée, avec disponibilité immédiate pour le retour ou la prochaine destination.</p>
+        </div>
+    </div>
+
+    <div class="included-cols" style="margin-top:80px">
+        <div class="reveal-l">
+            <div class="inc-title">Ce qui est inclus dans chaque mission institutionnelle</div>
+            <ul class="inc-list">
+                <li>Briefing chauffeur personnalisé avant chaque mission</li>
+                <li>Panneau nominatif discret (pas de logo entreprise visible si requis)</li>
+                <li>Accueil en zone d'arrivée dédiée à Brussels Airport</li>
+                <li>Assistance bagagerie complète</li>
+                <li>Wi-Fi haut débit partagé à bord</li>
+                <li>Eau minérale et rafraîchissements</li>
+                <li>Rapport de mission par email (heure arrivée, départ, kilométrage)</li>
+                <li>Facturation centralisée pour organisations multi-transferts</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title">Accréditations et certifications</div>
+            <ul class="inc-list">
+                <li>Accréditation accès Zone NATO (Evere)</li>
+                <li>Inscription registre prestataires Commission Européenne</li>
+                <li>Chauffeurs certifiés formation protocole diplomatique</li>
+                <li>Assurance responsabilité civile professionnelle étendue</li>
+                <li>Licence de transport professionnel belge (LPT)</li>
+                <li>Conformité RGPD pour la gestion des données passagers</li>
+                <li>Contrats cadre disponibles pour ambassades permanentes</li>
+                <li>Contact dédié : diplomatic@belgiumairport.be</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="related-gallery">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Galerie · Notre flotte en action</div>
+        <h2 class="section-h2" style="text-align:center">Découvrez <span>les autres scènes</span></h2>
+    </div>
+    <div class="related-grid">
+        <a href="galerie-cinquantenaire.html" class="rel-item reveal">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-1.42.jpeg" alt="Cinquantenaire">
+            <div class="rel-cap"><div class="rel-title">Flotte au Cinquantenaire</div><div class="rel-sub">Bruxelles · Séance officielle</div></div>
+        </a>
+        <a href="galerie-sclass-amigo.html" class="rel-item reveal" style="transition-delay:.1s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2011.42.jpeg" alt="S-Class Amigo">
+            <div class="rel-cap"><div class="rel-title">S-Class · Hôtel Amigo</div><div class="rel-sub">Grand-Place · Bruxelles</div></div>
+        </a>
+        <a href="galerie-eclass-dominican.html" class="rel-item reveal" style="transition-delay:.2s">
+            <div class="rel-top"></div>
+            <img src="images/Whatmage%202026-04-11%20at%2017.31.42.jpeg" alt="E-Class Dominican">
+            <div class="rel-cap"><div class="rel-title">E-Class · The Dominican</div><div class="rel-sub">Centre historique · Bruxelles</div></div>
+        </a>
+        <a href="galerie-evenement-corporate.html" class="rel-item reveal" style="transition-delay:.3s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.3A1.42.jpeg" alt="Événement">
+            <div class="rel-cap"><div class="rel-title">Flotte · Événement Corporate</div><div class="rel-sub">BOZAR · Bruxelles</div></div>
+        </a>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2>Transferts <span>diplomatiques &amp; institutionnels</span></h2>
+    <p>Contactez notre équipe dédiée pour les missions institutionnelles. Accréditations et protocoles disponibles.</p>
+    <div class="cta-banner-btns">
+        <a href="service-diplomatique.html" class="btn-orange">Voir le service diplomatique →</a>
+        <a href="contact.html" class="btn-ghost">Demander un devis</a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Galerie</div><ul class="flinks"><li><a href="galerie-cinquantenaire.html">Cinquantenaire</a></li><li><a href="galerie-vclass-eu.html">V-Class EU</a></li><li><a href="galerie-sclass-amigo.html">S-Class Amigo</a></li><li><a href="galerie-eclass-dominican.html">E-Class Dominican</a></li><li><a href="galerie-evenement-corporate.html">Événement Corporate</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:diplomatic@belgiumairport.be">diplomatic@belgiumairport.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,325 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-Class · The Dominican Bruxelles — Black Limousine</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .story-hero { position:relative; height:72vh; min-height:520px; overflow:hidden; display:flex; align-items:flex-end; }
+        .story-hero img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:brightness(.5); }
+        .story-hero::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(0,0,0,.88) 0%, rgba(0,0,0,.2) 60%, transparent 100%); }
+        .story-hero-content { position:relative; z-index:2; padding:0 64px 64px; max-width:960px; }
+        .story-crumb { font-family:var(--font-h); font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--orange); margin-bottom:14px; }
+        .story-crumb a { color:var(--orange); text-decoration:none; }
+        .story-h1 { font-family:var(--font-h); font-size:clamp(2.4rem,5vw,4rem); font-weight:900; text-transform:uppercase; color:#fff; line-height:1.05; margin-bottom:14px; }
+        .story-h1 span { color:var(--orange); }
+        .story-meta { display:flex; gap:24px; flex-wrap:wrap; }
+        .story-tag { font-family:var(--font-h); font-size:.62rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:rgba(255,255,255,.6); display:flex; align-items:center; gap:6px; }
+        .story-tag::before { content:''; width:16px; height:2px; background:var(--orange); }
+
+        .story-intro { background:var(--dark); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+        .story-lead { font-size:.95rem; color:rgba(255,255,255,.85); line-height:1.9; margin-bottom:18px; }
+        .story-pull { font-family:var(--font-h); font-size:1.3rem; font-weight:900; text-transform:uppercase; color:var(--white); line-height:1.25; border-left:4px solid var(--orange); padding-left:24px; margin:36px 0; }
+        .story-body p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:16px; }
+        .story-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:2px; margin-top:36px; }
+        .story-stat { background:var(--card); padding:28px 24px; border-left:3px solid var(--orange); }
+        .story-stat-n { font-family:var(--font-h); font-size:2rem; font-weight:900; color:var(--orange); line-height:1; }
+        .story-stat-l { font-size:.74rem; color:var(--grey); margin-top:6px; line-height:1.4; }
+
+        .eclass-spotlight { background:var(--orange); padding:80px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .spotlight-label { font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.22em; text-transform:uppercase; color:rgba(255,255,255,.7); margin-bottom:16px; }
+        .spotlight-h2 { font-family:var(--font-h); font-size:2.4rem; font-weight:900; text-transform:uppercase; color:#fff; line-height:1.1; margin-bottom:20px; }
+        .spotlight-text { font-size:.88rem; color:rgba(255,255,255,.85); line-height:1.8; margin-bottom:16px; }
+        .spotlight-specs { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:28px; }
+        .sp-spec { background:rgba(0,0,0,.18); padding:18px 20px; }
+        .sp-spec-l { font-family:var(--font-h); font-size:.58rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.6); margin-bottom:4px; }
+        .sp-spec-v { font-family:var(--font-h); font-size:.88rem; font-weight:700; color:#fff; }
+        .spotlight-visual { background:rgba(0,0,0,.2); min-height:440px; overflow:hidden; border-radius:8px; display:flex; align-items:center; justify-content:center; }
+        .spotlight-visual img { width:100%; height:440px; object-fit:contain; }
+
+        .hotel-profile { background:var(--black); padding:100px 64px; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+        .hotel-info p { font-size:.88rem; color:var(--grey); line-height:1.85; margin-bottom:16px; }
+        .hotel-details { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:28px; }
+        .hd-item { background:var(--card); padding:20px 22px; border-left:3px solid var(--orange); }
+        .hd-label { font-family:var(--font-h); font-size:.58rem; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--grey); margin-bottom:4px; }
+        .hd-value { font-family:var(--font-h); font-size:.84rem; font-weight:700; color:var(--white); }
+        .hotel-visual { background:var(--card); min-height:500px; overflow:hidden; border-radius:8px; position:relative; }
+        .hotel-visual img { width:100%; height:500px; object-fit:cover; opacity:.8; }
+        .hotel-badge { position:absolute; top:28px; left:28px; background:var(--orange); color:#fff; font-family:var(--font-h); font-size:.62rem; font-weight:800; letter-spacing:.16em; text-transform:uppercase; padding:10px 20px; }
+
+        .usecases-section { background:var(--dark); padding:100px 64px; }
+        .uc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .uc-card { background:var(--card); padding:36px 28px; border-top:3px solid var(--border); transition:border-top-color .2s; }
+        .uc-card:hover { border-top-color:var(--orange); }
+        .uc-num { font-family:var(--font-h); font-size:2.2rem; font-weight:900; color:rgba(232,97,26,.2); line-height:1; margin-bottom:14px; }
+        .uc-title { font-family:var(--font-h); font-size:.8rem; font-weight:800; text-transform:uppercase; color:var(--white); margin-bottom:10px; }
+        .uc-desc { font-size:.8rem; color:var(--grey); line-height:1.7; }
+
+        .included-section { background:var(--black); padding:100px 64px; }
+        .included-cols { display:grid; grid-template-columns:1fr 1fr; gap:60px; margin-top:56px; }
+        .inc-title { font-family:var(--font-h); font-size:.72rem; font-weight:800; letter-spacing:.18em; text-transform:uppercase; color:var(--orange); margin-bottom:24px; }
+        .inc-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+        .inc-list li { display:flex; align-items:flex-start; gap:12px; font-size:.87rem; color:rgba(255,255,255,.75); line-height:1.6; }
+        .inc-list li::before { content:'✓'; color:var(--orange); font-weight:700; font-family:var(--font-h); flex-shrink:0; }
+
+        .related-gallery { background:var(--dark); padding:100px 64px; }
+        .related-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-top:56px; }
+        .rel-item { position:relative; height:220px; overflow:hidden; text-decoration:none; display:block; }
+        .rel-item img { width:100%; height:100%; object-fit:cover; filter:brightness(.6); transition:transform .5s ease, filter .5s ease; }
+        .rel-item:hover img { transform:scale(1.06); filter:brightness(.4); }
+        .rel-cap { position:absolute; bottom:0; left:0; right:0; padding:14px 18px; background:linear-gradient(to top,rgba(0,0,0,.85),transparent); z-index:1; }
+        .rel-title { font-family:var(--font-h); font-size:.68rem; font-weight:800; letter-spacing:.1em; text-transform:uppercase; color:#fff; margin-bottom:2px; }
+        .rel-sub { font-size:.68rem; color:rgba(255,255,255,.55); }
+        .rel-top { position:absolute; top:0; left:0; right:0; height:3px; background:var(--orange); transform:scaleX(0); transform-origin:left; transition:transform .3s; z-index:2; }
+        .rel-item:hover .rel-top { transform:scaleX(1); }
+
+        @media (max-width:768px) {
+            .story-hero-content { padding:0 24px 48px; }
+            .story-intro,.eclass-spotlight,.hotel-profile,.usecases-section,.included-section,.related-gallery { padding:56px 24px; }
+            .story-intro,.eclass-spotlight,.hotel-profile { grid-template-columns:1fr; gap:40px; }
+            .spotlight-visual,.hotel-visual { min-height:240px; }
+            .spotlight-visual img,.hotel-visual img { height:240px; }
+            .uc-grid { grid-template-columns:1fr 1fr; }
+            .included-cols { grid-template-columns:1fr; gap:32px; }
+            .related-grid { grid-template-columns:1fr 1fr; }
+            .story-stats { grid-template-columns:1fr 1fr; }
+            .hotel-details { grid-template-columns:1fr; }
+        }
+    </style>
+</head>
+<body>
+<nav id="nav">
+    <a href="index.html" class="nav-logo">
+        <img class="nav-logo-shield" src="images/logo.png" alt="Black Limousine" height="46">
+        <div class="nav-logo-text">Black <span>Limousine</span></div>
+    </a>
+    <div class="nav-right">
+        <div class="nav-dropdown" id="navDD">
+            <button class="nav-drop-btn" id="menuBtn" onclick="toggleMenu()">
+                <div class="menu-icon"><span></span><span></span><span></span></div>
+                Menu <span class="drop-chevron">▾</span>
+            </button>
+            <div class="nav-drop-list" id="dropList">
+                <a href="index.html" class="drop-item"><span class="drop-num">01</span><span class="drop-name">Accueil</span><span class="drop-arrow">→</span></a>
+                <a href="services.html" class="drop-item"><span class="drop-num">02</span><span class="drop-name">Services</span><span class="drop-arrow">→</span></a>
+                <a href="flotte.html" class="drop-item active"><span class="drop-num">03</span><span class="drop-name">Flotte</span><span class="drop-arrow">→</span></a>
+                <a href="a-propos.html" class="drop-item"><span class="drop-num">04</span><span class="drop-name">À propos</span><span class="drop-arrow">→</span></a>
+                <a href="contact.html" class="drop-item"><span class="drop-num">05</span><span class="drop-name">Contact</span><span class="drop-arrow">→</span></a>
+            </div>
+        </div>
+        <div class="lang-switcher">
+            <button class="lang-btn" data-lang="fr" onclick="setLang('fr')">FR</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn active" data-lang="en" onclick="setLang('en')">EN</button>
+            <span class="lang-sep">|</span>
+            <button class="lang-btn" data-lang="nl" onclick="setLang('nl')">NL</button>
+        </div>
+        <a href="contact.html" class="nav-cta-btn">Réserver →</a>
+    </div>
+</nav>
+
+<div class="story-hero">
+    <img src="images/Whatmage%202026-04-11%20at%2017.31.42.jpeg" alt="Mercedes E-Class The Dominican Bruxelles">
+    <div class="story-hero-content">
+        <div class="story-crumb"><a href="flotte.html">← Retour à la Flotte</a></div>
+        <h1 class="story-h1">E-Class · <span>The Dominican</span></h1>
+        <div class="story-meta">
+            <span class="story-tag">Rue Léopold · Bruxelles-Centre</span>
+            <span class="story-tag">Mercedes E-Class Business</span>
+            <span class="story-tag">Boutique hôtel 5★</span>
+        </div>
+    </div>
+</div>
+
+<section class="story-intro">
+    <div class="reveal-l">
+        <div class="section-label">La précision au service du luxe</div>
+        <h2 class="section-h2">La Mercedes E-Class <span>comme standard quotidien.</span></h2>
+        <p class="story-lead">The Dominican est l'un des boutique-hôtels les plus acclamés de Bruxelles. Installé dans une ancienne abbaye dominicaine du XVe siècle, à quelques dizaines de mètres de la Grand-Place et des Galeries Royales Saint-Hubert, il attire une clientèle d'affaires internationale qui valorise le raffinement discret plutôt que l'ostentation. La Mercedes E-Class, élégante sans être ostentatoire, lui correspond parfaitement.</p>
+        <div class="story-pull">"L'efficacité est elle-même une forme d'élégance."</div>
+        <div class="story-stats">
+            <div class="story-stat"><div class="story-stat-n">150+</div><div class="story-stat-l">Transferts/mois pour The Dominican</div></div>
+            <div class="story-stat"><div class="story-stat-n">35 min</div><div class="story-stat-l">Temps moyen BRU → The Dominican</div></div>
+            <div class="story-stat"><div class="story-stat-n">2017</div><div class="story-stat-l">Début du partenariat</div></div>
+        </div>
+    </div>
+    <div class="reveal-r">
+        <div class="story-body">
+            <p>La clientèle de The Dominican est principalement composée de voyageurs d'affaires internationaux — cadres supérieurs, consultants en mission, journalistes accrédités, conférenciers internationaux. Ils attendent un service de transfert qui respecte leur temps, leur confidentialité et leur confort, sans cérémonial excessif.</p>
+            <p>Pour cette raison, The Dominican et Black Limousine ont opté ensemble pour la Mercedes E-Class comme véhicule standard de partenariat. Moins encombrante qu'une S-Class, plus élégante qu'une berline ordinaire, l'E-Class offre exactement le niveau de service attendu : irréprochable, efficace, discret.</p>
+            <p>Depuis 2017, nous assurons en moyenne 150 transferts par mois pour les clients du Dominican. La conciergerie de l'hôtel dispose d'un accès direct à notre système de réservation et peut commander un véhicule en 60 secondes. Nos chauffeurs connaissent l'emplacement exact des allées de dépose, les préférences de l'équipe du front desk, et les exigences particulières des clients réguliers.</p>
+            <p>Cette photographie a été prise lors d'une mission typique de fin de soirée : une conférence internationale venait de se terminer au centre-ville, et trois de nos E-Class assuraient les retours à Brussels Airport, Zaventem et vers plusieurs hôtels du boulevard de Waterloo. Coordination parfaite, zéro délai.</p>
+        </div>
+    </div>
+</section>
+
+<div class="eclass-spotlight">
+    <div class="reveal-l">
+        <div class="spotlight-label">Véhicule · Mercedes E-Class</div>
+        <h2 class="spotlight-h2">La berline de référence pour les voyageurs d'affaires.</h2>
+        <p class="spotlight-text">La Mercedes E-Class W214 combine technologie de pointe, confort premium et efficacité dynamique. Pour les voyageurs d'affaires qui enchaînent les déplacements, c'est le compagnon idéal : assez grand pour travailler à l'arrière, assez agile pour naviguer dans le trafic bruxellois.</p>
+        <p class="spotlight-text">Équipée d'un grand écran arrière, d'une tablette de travail, du Wi-Fi et de deux prises USB-C, notre E-Class est configurée pour la productivité mobile. Vos clients arrivent à destination avec leur email consulté, leur réunion préparée.</p>
+        <div class="spotlight-specs">
+            <div class="sp-spec"><div class="sp-spec-l">Modèle</div><div class="sp-spec-v">E 300 e · Hybride</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Puissance</div><div class="sp-spec-v">313 ch combinés</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Wi-Fi</div><div class="sp-spec-v">4G intégré</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Prises</div><div class="sp-spec-v">2× USB-C + 220V</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Coffre</div><div class="sp-spec-v">540 L · 3 valises</div></div>
+            <div class="sp-spec"><div class="sp-spec-l">Intérieur</div><div class="sp-spec-v">Cuir Nappa noir</div></div>
+        </div>
+    </div>
+    <div class="spotlight-visual reveal-r">
+        <img src="images/CLASSE.png" alt="Mercedes E-Class Black Limousine" style="object-fit:contain; background:transparent;">
+    </div>
+</div>
+
+<section class="hotel-profile">
+    <div class="hotel-visual reveal-l">
+        <img src="images/Whatmage%202026-04-11%20at%2017.31.42.jpeg" alt="The Dominican Bruxelles">
+        <div class="hotel-badge">The Dominican · 5★ · Depuis 2017</div>
+    </div>
+    <div class="hotel-info reveal-r">
+        <div class="section-label">L'établissement</div>
+        <h2 class="section-h2">The Dominican — <span>l'abbaye réinventée.</span></h2>
+        <p>Ancienne abbaye dominicaine fondée au XVe siècle, The Dominican a été transformé en boutique-hôtel 5 étoiles de 150 chambres en 2008. Son architecture mêle harmonieusement les murs de pierre du cloître médiéval et un design contemporain signé par l'architecte Gilles de Bure.</p>
+        <p>Le restaurant Grand Lounge, les suites sous les combles et le cocktail bar souterrain font de The Dominican l'une des adresses les plus recherchées des connaisseurs bruxellois. Sa position — à 80 mètres des Galeries Royales et à 150 mètres de la Grand-Place — en fait l'adresse idéale pour découvrir le vieux Bruxelles à pied.</p>
+        <p>Pour ses clients d'affaires, The Dominican propose une offre complète de salles de réunion et d'événements dans les espaces voûtés de l'ancienne abbaye — un cadre unique pour les séminaires et conférences haut de gamme. Black Limousine gère l'ensemble des transferts liés à ces événements.</p>
+        <div class="hotel-details">
+            <div class="hd-item"><div class="hd-label">Adresse</div><div class="hd-value">Rue Léopold 9, 1000 BXL</div></div>
+            <div class="hd-item"><div class="hd-label">Chambres</div><div class="hd-value">150 chambres &amp; suites</div></div>
+            <div class="hd-item"><div class="hd-label">Distance BRU</div><div class="hd-value">35 min · 18,4 km</div></div>
+            <div class="hd-item"><div class="hd-label">Depuis</div><div class="hd-value">Partenaire depuis 2017</div></div>
+        </div>
+    </div>
+</section>
+
+<section class="usecases-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Ce que nous gérons</div>
+        <h2 class="section-h2" style="text-align:center">Les 4 missions <span>principales</span></h2>
+    </div>
+    <div class="uc-grid">
+        <div class="uc-card reveal">
+            <div class="uc-num">01</div>
+            <div class="uc-title">Arrivées aéroport</div>
+            <p class="uc-desc">Accueil nominatif à Brussels Airport avec suivi de vol en temps réel. 45 minutes d'attente incluses. Transfert direct vers le lobby de The Dominican en 35 minutes de porte à porte.</p>
+        </div>
+        <div class="uc-card reveal" style="transition-delay:.1s">
+            <div class="uc-num">02</div>
+            <div class="uc-title">Départs ponctuels</div>
+            <p class="uc-desc">Planification du départ selon l'heure de vol. Rappel automatique au client 90 minutes avant. Véhicule en attente 15 minutes avant l'heure convenue dans l'allée privée de l'hôtel.</p>
+        </div>
+        <div class="uc-card reveal" style="transition-delay:.2s">
+            <div class="uc-num">03</div>
+            <div class="uc-title">Transferts événements</div>
+            <p class="uc-desc">Gestion des navettes lors des conférences dans les espaces de The Dominican. Coordination multi-véhicules pour les arrivées groupées. Un seul contact pour toute la logistique de transport de l'événement.</p>
+        </div>
+        <div class="uc-card reveal" style="transition-delay:.3s">
+            <div class="uc-num">04</div>
+            <div class="uc-title">Transferts city</div>
+            <p class="uc-desc">Transferts entre The Dominican et les entreprises du centre, les institutions européennes, les autres hôtels. Disponible à toute heure, réservation en moins de 2 minutes depuis le portail de la conciergerie.</p>
+        </div>
+    </div>
+</section>
+
+<section class="included-section">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Tout inclus</div>
+        <h2 class="section-h2" style="text-align:center">Ce qui est inclus dans <span>chaque transfert</span></h2>
+    </div>
+    <div class="included-cols">
+        <div class="reveal-l">
+            <div class="inc-title">Inclus systématiquement</div>
+            <ul class="inc-list">
+                <li>Accueil nominatif au terminal d'arrivée ou en lobby</li>
+                <li>Suivi de vol et adaptation aux retards sans frais supplémentaires</li>
+                <li>45 minutes d'attente gratuites (aéroport) ou 15 min (city)</li>
+                <li>Assistance bagagerie complète</li>
+                <li>Eau minérale à température ambiante et fraîche</li>
+                <li>Wi-Fi 4G et 2 prises USB-C à bord</li>
+                <li>Chargeur téléphone universel (USB-C, Lightning, micro-USB)</li>
+                <li>Notification SMS de suivi au client et à la conciergerie</li>
+            </ul>
+        </div>
+        <div class="reveal-r">
+            <div class="inc-title">Options disponibles</div>
+            <ul class="inc-list">
+                <li>Journaux et magazines du matin (sur commande préalable)</li>
+                <li>Bouquet de fleurs pour arrivée VIP (sur commande 24h)</li>
+                <li>Panneau d'accueil personnalisé au logo de votre entreprise</li>
+                <li>Boissons chaudes à bord (café, thé) pour trajets longue durée</li>
+                <li>Siège enfant ou rehausseur (gratuit, sur demande préalable)</li>
+                <li>Véhicule banalisé sans logo visible pour clients discrets</li>
+                <li>Chauffeur bilingue EN/FR ou trilingue EN/FR/NL</li>
+                <li>Rapport de transfert détaillé pour notes de frais</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="related-gallery">
+    <div style="text-align:center">
+        <div class="section-label" style="justify-content:center">Galerie · Notre flotte en action</div>
+        <h2 class="section-h2" style="text-align:center">Découvrez <span>les autres scènes</span></h2>
+    </div>
+    <div class="related-grid">
+        <a href="galerie-cinquantenaire.html" class="rel-item reveal">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-1.42.jpeg" alt="Cinquantenaire">
+            <div class="rel-cap"><div class="rel-title">Flotte au Cinquantenaire</div><div class="rel-sub">Bruxelles · Séance officielle</div></div>
+        </a>
+        <a href="galerie-vclass-eu.html" class="rel-item reveal" style="transition-delay:.1s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.31.42.jpeg" alt="V-Class EU">
+            <div class="rel-cap"><div class="rel-title">V-Class · Institutions EU</div><div class="rel-sub">Quartier européen · Bruxelles</div></div>
+        </a>
+        <a href="galerie-sclass-amigo.html" class="rel-item reveal" style="transition-delay:.2s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2011.42.jpeg" alt="S-Class Amigo">
+            <div class="rel-cap"><div class="rel-title">S-Class · Hôtel Amigo</div><div class="rel-sub">Grand-Place · Bruxelles</div></div>
+        </a>
+        <a href="galerie-evenement-corporate.html" class="rel-item reveal" style="transition-delay:.3s">
+            <div class="rel-top"></div>
+            <img src="images/WhatsApp%20Image%202026-04-11%20at%2017.3A1.42.jpeg" alt="Événement">
+            <div class="rel-cap"><div class="rel-title">Flotte · Événement Corporate</div><div class="rel-sub">Palais des Beaux-Arts</div></div>
+        </a>
+    </div>
+</section>
+
+<div class="cta-banner">
+    <h2>Transferts <span>Business &amp; Hôtels</span></h2>
+    <p>Mercedes E-Class disponible 24h/24 dans tout Bruxelles. Réservation en 60 secondes.</p>
+    <div class="cta-banner-btns">
+        <a href="contact.html" class="btn-orange">Réserver un E-Class →</a>
+        <a href="service-aeroport.html" class="btn-ghost">Voir le service aéroport</a>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-top">
+        <div>
+            <a href="index.html" class="footer-logo"><img src="images/logo.png" alt="" height="36" style="display:block"><div class="footer-logo-txt">Black <span>Limousine</span></div></a>
+            <p class="footer-tag">Votre service de transfert aéroport premium en Belgique depuis 2013.</p>
+            <div class="fsoc"><a href="#">in</a><a href="#">f</a><a href="#">ig</a></div>
+        </div>
+        <div><div class="fcol-t">Pages</div><ul class="flinks"><li><a href="index.html">Accueil</a></li><li><a href="services.html">Services</a></li><li><a href="flotte.html">Flotte</a></li><li><a href="a-propos.html">À propos</a></li><li><a href="contact.html">Contact</a></li><li><a href="faq.html">FAQ</a></li></ul></div>
+        <div><div class="fcol-t">Galerie</div><ul class="flinks"><li><a href="galerie-cinquantenaire.html">Cinquantenaire</a></li><li><a href="galerie-vclass-eu.html">V-Class EU</a></li><li><a href="galerie-sclass-amigo.html">S-Class Amigo</a></li><li><a href="galerie-eclass-dominican.html">E-Class Dominican</a></li><li><a href="galerie-evenement-corporate.html">Événement Corporate</a></li></ul></div>
+        <div><div class="fcol-t">Contact</div><ul class="flinks"><li><a href="tel:+3226152300">+32 2 615 23 00</a></li><li><a href="https://wa.me/32485964008">WhatsApp</a></li><li><a href="mailto:info@belgiumairport.be">info@belgiumairport.be</a></li></ul></div>
+    </div>
+    <div class="footer-bot">
+        <p class="footer-copy">© 2025 <span>Black Limousine</span> — Benelux Global Solutions SRL</p>
+        <div class="footer-leg"><a href="#">Mentions légales</a><a href="#">Confidentialité</a></div>
+    </div>
+</footer>
+<script>
+    window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 60));
+    function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
+    document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
+    const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
+    document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+</script>
+<script src="translations.js"></script>
+</body>
+</html>
+
