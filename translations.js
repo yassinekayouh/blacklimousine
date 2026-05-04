@@ -2,6 +2,13 @@
    Black Limousine — Système de traduction FR / EN / NL
 ═══════════════════════════════════════════════ */
 
+/* ── Non-blocking Google Fonts (fallback for pages without inline preload) ── */
+if (!document.querySelector('link[href*="fonts.googleapis.com"]')) {
+    var _pc1 = document.createElement('link'); _pc1.rel = 'preconnect'; _pc1.href = 'https://fonts.googleapis.com'; document.head.appendChild(_pc1);
+    var _pc2 = document.createElement('link'); _pc2.rel = 'preconnect'; _pc2.href = 'https://fonts.gstatic.com'; _pc2.crossOrigin = ''; document.head.appendChild(_pc2);
+    var _fl = document.createElement('link'); _fl.rel = 'stylesheet'; _fl.href = 'https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600&display=swap'; document.head.appendChild(_fl);
+}
+
 const T = {
     fr: {
         /* ── NAV ── */

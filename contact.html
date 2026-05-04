@@ -331,28 +331,46 @@
     function toggleMenu() { document.getElementById('menuBtn').classList.toggle('open'); document.getElementById('dropList').classList.toggle('open'); }
     document.addEventListener('click', e => { if (!document.getElementById('navDD').contains(e.target)) { document.getElementById('menuBtn').classList.remove('open'); document.getElementById('dropList').classList.remove('open'); } });
     async function handleSubmit(e) {
-        const form = e.target;
-        // Si Formspree pas encore configuré (YOUR_FORM_ID), utilise mailto en fallback
-        if (form.action.includes('YOUR_FORM_ID')) {
-            e.preventDefault();
-            const data = new FormData(form);
-            const body = [...data.entries()].map(([k,v]) => `${k}: ${v}`).join('\n');
-            window.location.href = `mailto:info@blacklimousine.be?subject=Nouvelle demande Black Limousine&body=${encodeURIComponent(body)}`;
-            showSuccess();
-            return;
-        }
-        // Formspree configuré : soumission AJAX
         e.preventDefault();
+        const form = e.target;
         const btn = form.querySelector('button[type="submit"]');
+        const origText = btn.textContent;
         btn.textContent = 'Envoi en cours...';
         btn.disabled = true;
+
+        const g = name => document.querySelector(`[name="${name}"]`)?.value || '';
+
         try {
+            // 1. Soumettre à Formspree (notification propriétaire)
             const res = await fetch(form.action, {
                 method: 'POST',
                 body: new FormData(form),
                 headers: { 'Accept': 'application/json' }
             });
+
             if (res.ok) {
+                // 2. Envoyer l'email de confirmation au client via EmailJS
+                const clientEmail = g('email');
+                if (clientEmail && EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
+                    try {
+                        await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                            client_name:  g('prenom') + ' ' + g('nom'),
+                            client_email: clientEmail,
+                            service:      g('service')        || 'Non précisé',
+                            vehicle:      g('vehicule')       || 'Sans préférence',
+                            date:         g('date')           || 'Non précisée',
+                            time:         g('heure')          || 'Non précisée',
+                            pickup:       g('adresse_depart') || 'Non précisée',
+                            dropoff:      g('adresse_depot')  || 'Non précisé',
+                            persons:      g('nb_personnes')   || 'Non précisé',
+                            luggage:      g('nb_bagages')     || 'Non précisé',
+                            message:      g('message')        || ''
+                        });
+                    } catch (ejErr) {
+                        console.warn('EmailJS confirmation failed:', ejErr);
+                        // La demande est quand même reçue — Formspree a fonctionné
+                    }
+                }
                 showSuccess();
                 form.reset();
             } else {
@@ -393,6 +411,25 @@
     }
     const obs = new IntersectionObserver(e => e.forEach(x => { if (x.isIntersecting) x.target.classList.add('on'); }), { threshold: 0.1 });
     document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el => obs.observe(el));
+</script>
+<!-- EmailJS SDK — envoie l'email de confirmation au client -->
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+<script>
+    // ══════════════════════════════════════════════════════
+    //  CONFIGURATION EMAILJS — remplir ces 3 valeurs :
+    //  1. Aller sur https://www.emailjs.com → créer un compte
+    //  2. Connecter votre Gmail (Email Services)
+    //  3. Créer un template (Email Templates) avec les variables
+    //     {{client_name}}, {{client_email}}, {{service}},
+    //     {{vehicle}}, {{date}}, {{time}}, {{pickup}}, {{dropoff}},
+    //     {{persons}}, {{luggage}}, {{message}}
+    //  4. Copier les IDs ci-dessous
+    // ══════════════════════════════════════════════════════
+    const EMAILJS_PUBLIC_KEY  = 'YOUR_PUBLIC_KEY';   // Account → API Keys
+    const EMAILJS_SERVICE_ID  = 'YOUR_SERVICE_ID';   // Email Services → Service ID
+    const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';  // Email Templates → Template ID
+
+    emailjs.init(EMAILJS_PUBLIC_KEY);
 </script>
 <script src="translations.js"></script>
 </body>
